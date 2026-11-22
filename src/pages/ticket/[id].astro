@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { TicketViewer } from '../../components/TicketViewer';
+
+export function getStaticPaths() {
+  return [
+    { params: { id: 'sale-001' } },
+    { params: { id: 'sale-002' } },
+    { params: { id: 'sale-003' } },
+    { params: { id: 'sale-004' } },
+    { params: { id: 'sale-005' } },
+  ];
+}
+
+const { id } = Astro.params;
+---
+
+<Layout title={`Boleto Oficial #${id} — Gran Rifa FIIS 2026`}>
+  <div class="space-y-6">
+    <div class="text-center max-w-xl mx-auto space-y-2">
+      <a href="/" class="inline-flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 transition-colors">
+        <span>←</span> Volver al Portal Principal
+      </a>
+      <h1 class="font-heading font-black text-2xl sm:text-3xl text-white">
+        Boleto Digital Autenticado
+      </h1>
+      <p class="text-xs text-slate-300">
+        Comprobante oficial de participación en la Rifa FIIS 2026
+      </p>
+    </div>
+
+    <!-- Ticket Viewer Component with pre-selected ID -->
+    <TicketViewer client:load initialSaleId={id} />
+  </div>
+</Layout>

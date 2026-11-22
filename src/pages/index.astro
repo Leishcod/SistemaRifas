@@ -1,0 +1,144 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Leaderboard } from '../components/Leaderboard';
+import { PROMO_CODES, TARGET_PER_PROMO } from '../data/students';
+---
+
+<Layout title="Gran Rifa FIIS 2026 — CEIIS UNI">
+  <div class="space-y-16">
+    <!-- Hero Section -->
+    <section class="relative pt-6 pb-12 sm:pt-10 sm:pb-16 text-center space-y-6">
+      <!-- Glow Badge -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 text-xs font-semibold shadow-[0_0_20px_rgba(0,240,255,0.2)]">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        Facultad de Ingeniería Industrial y de Sistemas — UNI
+      </div>
+
+      <!-- Main Headline -->
+      <div class="space-y-3 max-w-4xl mx-auto">
+        <h1 class="font-heading font-black text-4xl sm:text-6xl md:text-7xl tracking-tight leading-[1.1] text-white">
+          GRAN RIFA PRO-FONDOS <br />
+          <span class="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-300 bg-clip-text text-transparent glow-text-cyan">
+            FIIS UNI 2026
+          </span>
+        </h1>
+        <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-normal">
+          Plataforma oficial de venta, asignación y seguimiento de rifas por códigos de ingreso.
+          Boletos virtuales automáticos y envío instantáneo por WhatsApp.
+        </p>
+      </div>
+
+      <!-- Hero Call To Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 max-w-md mx-auto">
+        <a
+          href="/vender"
+          class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-heading font-extrabold text-base shadow-[0_0_30px_rgba(0,240,255,0.35)] transition-all active:scale-[0.98] flex items-center justify-center gap-2 group"
+        >
+          <span>✍️</span>
+          <span>Soy Estudiante: Registrar Venta</span>
+          <span class="group-hover:translate-x-1 transition-transform">→</span>
+        </a>
+
+        <a
+          href="/consultar"
+          class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-200 font-semibold text-sm border border-cyan-500/20 hover:border-cyan-400/40 transition-all flex items-center justify-center gap-2"
+        >
+          <span>🎟️</span>
+          <span>Consultar mi Boleto</span>
+        </a>
+      </div>
+
+      <!-- Mini Feature Highlights -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto pt-8 text-left">
+        <div class="p-4 rounded-2xl bg-[#060621]/80 border border-cyan-500/20 backdrop-blur-sm">
+          <span class="text-xl mb-1 block">⚡</span>
+          <h4 class="font-bold text-white text-xs">Acceso por Código</h4>
+          <p class="text-[11px] text-slate-400">Sin claves: ingresas con tu código UNI y tu base.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-[#060621]/80 border border-cyan-500/20 backdrop-blur-sm">
+          <span class="text-xl mb-1 block">🎟️</span>
+          <h4 class="font-bold text-white text-xs">Boleto Digital QR</h4>
+          <p class="text-[11px] text-slate-400">Asignación automática y comprobante descargable.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-[#060621]/80 border border-cyan-500/20 backdrop-blur-sm">
+          <span class="text-xl mb-1 block">📲</span>
+          <h4 class="font-bold text-white text-xs">Envío por WhatsApp</h4>
+          <p class="text-[11px] text-slate-400">Envía al comprador su ticket en 1 solo clic.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-[#060621]/80 border border-cyan-500/20 backdrop-blur-sm">
+          <span class="text-xl mb-1 block">🛡️</span>
+          <h4 class="font-bold text-white text-xs">Revisión de Vouchers</h4>
+          <p class="text-[11px] text-slate-400">Delegados y organizadores validan los pagos.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leaderboard / Ranking Section -->
+    <section id="ranking" class="scroll-mt-24">
+      <Leaderboard client:load />
+    </section>
+
+    <!-- Códigos Participantes List -->
+    <section class="space-y-6 pt-4">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white">
+          11 Códigos Participantes
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">
+          Cada base tiene una meta asignada de {TARGET_PER_PROMO} rifas. Elige tu código para registrar tus ventas.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+        {PROMO_CODES.map((promo) => (
+          <a
+            href={`/vender?base=${promo}`}
+            class="p-4 rounded-xl bg-[#060621] border border-cyan-500/20 hover:border-cyan-400 hover:bg-cyan-950/20 transition-all group text-center"
+          >
+            <span class="text-xs uppercase tracking-wider text-slate-500 font-semibold block group-hover:text-cyan-400">
+              Código
+            </span>
+            <span class="font-heading font-black text-2xl text-white group-hover:text-cyan-300">
+              {promo}
+            </span>
+            <span class="text-[10px] text-slate-400 block mt-1">
+              Meta: {TARGET_PER_PROMO} rifas
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- FAQ / Important Instructions Section -->
+    <section class="glass-panel p-6 sm:p-8 rounded-2xl border border-cyan-500/20 space-y-6">
+      <h3 class="font-heading font-bold text-xl text-white flex items-center gap-2">
+        <span>💡</span> ¿Cómo funciona el proceso de venta para cada alumno?
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-300">
+        <div class="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+          <span class="font-heading font-bold text-cyan-400 text-sm block">Paso 1: Cobro</span>
+          <p>
+            Vendes la rifa a tu familiar, amigo o compañero (S/. 5.00 cada una). Te pagan vía Yape, Plin o transferencia bancaria y te envían la captura del comprobante.
+          </p>
+        </div>
+
+        <div class="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+          <span class="font-heading font-bold text-cyan-400 text-sm block">Paso 2: Registro en la Web</span>
+          <p>
+            Ingresas a la plataforma con tu código UNI (ej. <strong class="text-white">20244517G</strong>) y tu base. Registras el nombre del comprador, su teléfono, cantidad de rifas y subes la captura del voucher.
+          </p>
+        </div>
+
+        <div class="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+          <span class="font-heading font-bold text-cyan-400 text-sm block">Paso 3: Envío de Boleto</span>
+          <p>
+            El sistema asigna los números de boleto automáticamente. Presionas el botón de WhatsApp y se le envía el boleto virtual oficial a su celular con su código QR.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
