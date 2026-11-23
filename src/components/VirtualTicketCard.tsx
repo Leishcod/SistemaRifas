@@ -11,7 +11,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
   const waLink = generateWhatsAppLink(sale);
 
   return (
-    <div className="w-full max-w-lg mx-auto">
+    <div className="w-full max-w-2xl mx-auto">
       {/* Ticket Container */}
       <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-[#0c1236] via-[#070b24] to-[#030615] border border-cyan-500/30 shadow-[0_0_40px_rgba(0,195,255,0.18)]">
         {/* Holographic Top Glow */}
@@ -112,7 +112,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
               </span>
               <p className="font-bold text-sm text-cyan-200">{sale.sellerName}</p>
               <p className="text-slate-300 font-mono">
-                Cód. {sale.sellerStudentCode} • {sale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${sale.promoCode}`}
+                Cód. {sale.sellerStudentCode} | {sale.promoCode}
               </p>
             </div>
           </div>
