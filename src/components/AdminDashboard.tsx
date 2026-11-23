@@ -507,19 +507,19 @@ export const AdminDashboard: React.FC = () => {
               </button>
             </div>
 
-            {/* Modal Body: Proporción 7 a 5 en PC para imagen ultra espaciosa */}
-            <div className="p-4 sm:p-8 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-8 items-start md:items-center">
-              {/* Voucher Image: contenedor adaptable sin altura forzada en móvil para evitar recortes o cajas vacías gigantes */}
-              <div className="md:col-span-7 lg:col-span-8 rounded-2xl overflow-hidden border border-cyan-500/30 bg-[#030617] h-auto max-h-[50vh] md:max-h-none md:h-[620px] lg:h-[700px] flex items-center justify-center p-2 sm:p-4 shrink-0">
+            {/* Modal Body: flex en móvil (scroll natural vertical) y grid en PC */}
+            <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1 flex flex-col md:grid md:grid-cols-12 gap-5 sm:gap-8">
+              {/* Voucher Image Container: en móvil altura fija contenida (260px - 340px) y en PC altura amplia */}
+              <div className="w-full md:col-span-7 lg:col-span-8 rounded-2xl border border-cyan-500/30 bg-[#030617] h-[280px] sm:h-[350px] md:h-[600px] lg:h-[680px] flex items-center justify-center p-2.5 sm:p-4 shrink-0">
                 <img
                   src={selectedVoucherSale.voucherImage}
                   alt="Voucher Ampliado"
-                  className="max-h-[48vh] md:max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl"
+                  className="w-full h-full object-contain rounded-xl shadow-2xl block"
                 />
               </div>
 
               {/* Sale Info Summary */}
-              <div className="md:col-span-5 lg:col-span-4 space-y-4 text-xs sm:text-sm">
+              <div className="w-full md:col-span-5 lg:col-span-4 space-y-4 text-xs sm:text-sm flex flex-col justify-between">
                 <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                   <span className="text-[10px] sm:text-[11px] uppercase font-bold text-slate-400 block tracking-wider">
                     Comprador
