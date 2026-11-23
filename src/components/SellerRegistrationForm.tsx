@@ -134,7 +134,7 @@ export const SellerRegistrationForm: React.FC = () => {
     }
 
     if (!voucherImage) {
-      alert('Es obligatorio adjuntar la captura del comprobante (Yape / Plin / Transferencia).');
+      alert('Es obligatorio adjuntar la captura del comprobante de Plin.');
       return;
     }
 
@@ -201,7 +201,7 @@ export const SellerRegistrationForm: React.FC = () => {
           {/* Promo selector */}
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-              Código de Ingreso:
+              Código
             </label>
             <select
               value={selectedPromo}
@@ -214,7 +214,7 @@ export const SellerRegistrationForm: React.FC = () => {
             >
               {PROMO_CODES.map((code) => (
                 <option key={code} value={code} className="bg-[#060621] text-white">
-                  Código {code} (Meta: {TARGET_PER_PROMO} rifas)
+                  Código {code}
                 </option>
               ))}
             </select>
@@ -392,11 +392,10 @@ export const SellerRegistrationForm: React.FC = () => {
                       key={qty}
                       type="button"
                       onClick={() => setTicketsCount(qty)}
-                      className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                        ticketsCount === qty
+                      className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${ticketsCount === qty
                           ? 'bg-cyan-500 text-[#000c18] font-bold'
                           : 'bg-white/5 hover:bg-white/10 text-slate-300'
-                      }`}
+                        }`}
                     >
                       +{qty}
                     </button>
@@ -417,7 +416,7 @@ export const SellerRegistrationForm: React.FC = () => {
           {/* Voucher Upload Box */}
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-              Captura del Voucher de Pago (Yape / Plin / BCP): <span className="text-cyan-400">*</span>
+              Captura del Voucher de Pago (Plin): <span className="text-cyan-400">*</span>
             </label>
 
             {!voucherImage ? (
@@ -432,7 +431,7 @@ export const SellerRegistrationForm: React.FC = () => {
                   SUBIR
                 </div>
                 <p className="text-sm font-semibold text-white group-hover:text-cyan-300 transition-colors">
-                  Toca aquí para seleccionar o tomar foto del comprobante
+                  Toca aquí para seleccionar o tomar foto del comprobante Plin
                 </p>
                 <p className="text-xs text-slate-500 mt-1">Formatos permitidos: PNG, JPG, JPEG (máx. 8MB)</p>
               </label>
@@ -464,32 +463,18 @@ export const SellerRegistrationForm: React.FC = () => {
             )}
           </div>
 
-          {/* Optional: Operation Code */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                N° de Operación (Opcional):
-              </label>
-              <input
-                type="text"
-                value={operationNumber}
-                onChange={(e) => setOperationNumber(e.target.value)}
-                placeholder="Ej. OP-948123"
-                className="w-full font-mono bg-[#030617] border border-cyan-500/20 rounded-xl px-4 py-2.5 text-white text-xs focus:outline-none focus:border-cyan-400 placeholder:text-slate-600"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                Notas / Referencia (Opcional):
-              </label>
-              <input
-                type="text"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="Ej. Yapeado al delegado"
-                className="w-full bg-[#030617] border border-cyan-500/20 rounded-xl px-4 py-2.5 text-white text-xs focus:outline-none focus:border-cyan-400 placeholder:text-slate-600"
-              />
-            </div>
+          {/* Optional: Notes / Reference */}
+          <div>
+            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+              Notas / Referencia (Opcional):
+            </label>
+            <input
+              type="text"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Ej. Plin realizado al delegado"
+              className="w-full bg-[#030617] border border-cyan-500/20 rounded-xl px-4 py-2.5 text-white text-xs focus:outline-none focus:border-cyan-400 placeholder:text-slate-600"
+            />
           </div>
 
           {/* Submit Button */}

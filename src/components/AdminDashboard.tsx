@@ -125,7 +125,7 @@ export const AdminDashboard: React.FC = () => {
             Panel de Control CEIIS - FIIS
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Revisión de comprobantes Yape/Plin, control de cuotas y validación de boletos
+            Revisión de comprobantes Plin, control de códigos y validación de boletos
           </p>
         </div>
 
