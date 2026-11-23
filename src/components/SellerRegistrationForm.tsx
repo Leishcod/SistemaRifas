@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import type { PromoCode, Sale, Student } from '../types';
 import { PROMO_CODES, TICKET_PRICE, TARGET_PER_PROMO } from '../data/students';
-import { findStudentByCode, createSale, getSales } from '../utils/storage';
+import { findStudentByCode, createSaleAsync, getSales, fetchStudentsFromSupabase, fetchSalesFromSupabase } from '../utils/storage';
 import { VirtualTicketCard } from './VirtualTicketCard';
 
 export const SellerRegistrationForm: React.FC = () => {
@@ -37,7 +37,12 @@ export const SellerRegistrationForm: React.FC = () => {
         setSelectedPromo(paramPromo);
       }
     }
-    handleVerifyStudent(studentCodeInput, initialPromo, false);
+    fetchStudentsFromSupabase().then(() => {
+      handleVerifyStudent(studentCodeInput, initialPromo, false);
+    });
+    fetchSalesFromSupabase().then(() => {
+      updateSellerProgress(studentCodeInput);
+    });
   }, []);
 
   const handleVerifyStudent = (code: string, promo: PromoCode, showError = true) => {
@@ -110,7 +115,7 @@ export const SellerRegistrationForm: React.FC = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!authenticatedSeller) {
       alert('Primero debes verificar tu código de estudiante.');
@@ -141,7 +146,7 @@ export const SellerRegistrationForm: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const newSale = createSale({
+      const newSale = await createSaleAsync({
         buyerName,
         buyerPhone: cleanPhone,
         sellerStudentCode: authenticatedSeller.studentCode,

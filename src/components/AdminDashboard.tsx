@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { PromoCode, Sale, SaleStatus } from '../types';
 import { PROMO_CODES } from '../data/students';
-import { getSales, updateSaleStatus } from '../utils/storage';
+import { getSales, updateSaleStatusAsync, fetchSalesFromSupabase } from '../utils/storage';
 
 export const AdminDashboard: React.FC = () => {
   const [sales, setSales] = useState<Sale[]>([]);
@@ -13,14 +13,17 @@ export const AdminDashboard: React.FC = () => {
 
   useEffect(() => {
     loadSales();
+    fetchSalesFromSupabase().then((data) => {
+      setSales(data);
+    });
   }, []);
 
   const loadSales = () => {
     setSales(getSales());
   };
 
-  const handleStatusChange = (saleId: string, newStatus: SaleStatus) => {
-    updateSaleStatus(saleId, newStatus);
+  const handleStatusChange = async (saleId: string, newStatus: SaleStatus) => {
+    await updateSaleStatusAsync(saleId, newStatus);
     loadSales();
     if (selectedVoucherSale && selectedVoucherSale.id === saleId) {
       setSelectedVoucherSale({ ...selectedVoucherSale, status: newStatus });

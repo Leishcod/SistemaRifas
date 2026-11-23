@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { PromoStats } from '../types';
-import { getPromoStats } from '../utils/storage';
+import { getPromoStats, computePromoStats, fetchSalesFromSupabase } from '../utils/storage';
 import { TARGET_PER_PROMO } from '../data/students';
 
 export const Leaderboard: React.FC = () => {
@@ -9,8 +9,21 @@ export const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     loadStats();
-    // Refresh stats if sales update
-    const interval = setInterval(loadStats, 5000);
+    // Cargar ventas de Supabase
+    fetchSalesFromSupabase().then((sales) => {
+      const liveStats = computePromoStats(sales);
+      liveStats.sort((a, b) => b.soldTickets - a.soldTickets);
+      setStats(liveStats);
+    });
+
+    // Refresh continuo cada 5s para sincronizar en tiempo real
+    const interval = setInterval(() => {
+      fetchSalesFromSupabase().then((sales) => {
+        const liveStats = computePromoStats(sales);
+        liveStats.sort((a, b) => b.soldTickets - a.soldTickets);
+        setStats(liveStats);
+      });
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 

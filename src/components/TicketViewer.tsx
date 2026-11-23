@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { Sale } from '../types';
-import { getSales } from '../utils/storage';
+import { getSales, fetchSalesFromSupabase } from '../utils/storage';
 import { VirtualTicketCard } from './VirtualTicketCard';
 
 interface Props {
@@ -27,22 +27,39 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
         setSale(found);
         setHasSearched(true);
       }
+      fetchSalesFromSupabase().then((latestSales) => {
+        const remoteFound = latestSales.find((s) => s.id.toLowerCase() === targetId?.toLowerCase());
+        if (remoteFound) {
+          setSale(remoteFound);
+          setHasSearched(true);
+        }
+      });
     }
   }, [initialSaleId]);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasSearched(true);
     const q = searchQuery.trim().toLowerCase();
     if (!q) return;
 
-    const sales = getSales();
-    const found = sales.find((s) => {
+    let sales = getSales();
+    let found = sales.find((s) => {
       const matchId = s.id.toLowerCase() === q;
       const matchPhone = s.buyerPhone.includes(q);
       const matchTicket = s.ticketNumbers.some((n) => String(n) === q);
       return matchId || matchPhone || matchTicket;
     });
+
+    if (!found) {
+      const remoteSales = await fetchSalesFromSupabase();
+      found = remoteSales.find((s) => {
+        const matchId = s.id.toLowerCase() === q;
+        const matchPhone = s.buyerPhone.includes(q);
+        const matchTicket = s.ticketNumbers.some((n) => String(n) === q);
+        return matchId || matchPhone || matchTicket;
+      });
+    }
 
     setSale(found || null);
   };
