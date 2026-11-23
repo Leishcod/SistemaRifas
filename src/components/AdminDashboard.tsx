@@ -406,16 +406,23 @@ export const AdminDashboard: React.FC = () => {
                       </p>
                     </td>
 
-                    {/* Promo Code */}
-                    <td className="py-3 px-4">
-                      <span className="px-2 py-1 rounded-md bg-blue-950/60 border border-blue-500/40 text-blue-300 font-bold text-[11px]">
-                        {sale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${sale.promoCode}`}
+                    {/* Promo Code: En móvil muestra solo el número para ahorrar espacio, en PC muestra Código [num] */}
+                    <td className="py-3 px-3 sm:px-4">
+                      <span className="px-2 py-0.5 sm:py-1 rounded-md bg-blue-950/60 border border-blue-500/40 text-blue-300 font-bold text-[11px] whitespace-nowrap inline-block text-center">
+                        {sale.promoCode === 'CEIIS' ? (
+                          'CEIIS'
+                        ) : (
+                          <>
+                            <span className="sm:hidden">{sale.promoCode}</span>
+                            <span className="hidden sm:inline">Código {sale.promoCode}</span>
+                          </>
+                        )}
                       </span>
                     </td>
 
-                    {/* Amount */}
-                    <td className="py-3 px-4">
-                      <p className="font-heading font-bold text-white text-sm">
+                    {/* Amount: Fuente compacta y en una sola línea fija */}
+                    <td className="py-3 px-3 sm:px-4">
+                      <p className="font-heading font-bold text-white text-xs sm:text-sm whitespace-nowrap">
                         S/. {sale.totalAmount.toFixed(2)}
                       </p>
                     </td>

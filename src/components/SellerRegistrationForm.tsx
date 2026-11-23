@@ -6,9 +6,9 @@ import { findStudentByCode, createSaleAsync, getSales, fetchStudentsFromSupabase
 import { VirtualTicketCard } from './VirtualTicketCard';
 
 export const SellerRegistrationForm: React.FC = () => {
-  // Step 1: Seller Authentication & Verification
-  const [selectedPromo, setSelectedPromo] = useState<PromoCode>('24-2');
-  const [studentCodeInput, setStudentCodeInput] = useState<string>('20244517G');
+  // Step 1: Seller Authentication & Verification (inician vacíos por defecto)
+  const [selectedPromo, setSelectedPromo] = useState<PromoCode | ''>('');
+  const [studentCodeInput, setStudentCodeInput] = useState<string>('');
   const [authenticatedSeller, setAuthenticatedSeller] = useState<Student | null>(null);
   const [codeError, setCodeError] = useState<string | null>(null);
 
@@ -27,7 +27,7 @@ export const SellerRegistrationForm: React.FC = () => {
 
   // Initialize and check code on mount or when inputs change
   useEffect(() => {
-    let initialPromo = selectedPromo;
+    let initialPromo: PromoCode | '' = selectedPromo;
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       const paramPromo = (urlParams.get('codigo') || urlParams.get('base')) as PromoCode;
@@ -37,14 +37,18 @@ export const SellerRegistrationForm: React.FC = () => {
       }
     }
     fetchStudentsFromSupabase().then(() => {
-      handleVerifyStudent(studentCodeInput, initialPromo, false);
+      if (studentCodeInput.trim() && initialPromo) {
+        handleVerifyStudent(studentCodeInput, initialPromo, false);
+      }
     });
     fetchSalesFromSupabase().then(() => {
-      updateSellerProgress(studentCodeInput);
+      if (studentCodeInput.trim()) {
+        updateSellerProgress(studentCodeInput);
+      }
     });
   }, []);
 
-  const handleVerifyStudent = (code: string, promo: PromoCode, showError = true, autoSelect = false) => {
+  const handleVerifyStudent = (code: string, promo: PromoCode | '', showError = true, autoSelect = false) => {
     setCodeError(null);
     const cleanCode = code.trim().toUpperCase();
 
@@ -241,6 +245,9 @@ export const SellerRegistrationForm: React.FC = () => {
               }}
               className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
             >
+              <option value="" disabled className="bg-[#060621] text-slate-500">
+                Selecciona código
+              </option>
               {PROMO_CODES.map((code) => (
                 <option key={code} value={code} className="bg-[#060621] text-white">
                   {code === 'CEIIS' ? 'CEIIS' : `Código ${code}`}
