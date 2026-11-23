@@ -142,7 +142,7 @@ export const AdminDashboard: React.FC = () => {
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            🏛️ Vista General (Admin)
+            Vista General (Admin)
           </button>
           <button
             onClick={() => {
@@ -155,7 +155,7 @@ export const AdminDashboard: React.FC = () => {
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            👥 Vista por Delegado
+            Vista por Delegado
           </button>
         </div>
       </div>
@@ -214,9 +214,9 @@ export const AdminDashboard: React.FC = () => {
               className="w-full sm:w-auto bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400"
             >
               <option value="all">Todos los Estados</option>
-              <option value="pending">⏳ Solo Pendientes</option>
-              <option value="verified">✓ Solo Verificados</option>
-              <option value="rejected">✗ Solo Rechazados</option>
+              <option value="pending">Solo Pendientes</option>
+              <option value="verified">Solo Verificados</option>
+              <option value="rejected">Solo Rechazados</option>
             </select>
           </div>
 
@@ -238,7 +238,7 @@ export const AdminDashboard: React.FC = () => {
             onClick={exportToCSV}
             className="w-full sm:w-auto px-4 py-2.5 bg-emerald-700/60 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold border border-emerald-500/30 transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
           >
-            <span>📊</span> Exportar a Excel (CSV)
+            Exportar a Excel (CSV)
           </button>
         </div>
       </div>
@@ -280,8 +280,8 @@ export const AdminDashboard: React.FC = () => {
                           alt="Voucher"
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                         />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[10px] font-bold transition-opacity">
-                          🔍 Ver
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[10px] font-bold transition-opacity">
+                          Ver
                         </div>
                       </button>
                     </td>
@@ -304,7 +304,7 @@ export const AdminDashboard: React.FC = () => {
                     {/* Buyer */}
                     <td className="py-3 px-4">
                       <p className="font-semibold text-white">{sale.buyerName}</p>
-                      <p className="text-slate-400 font-mono text-[11px]">📱 +51 {sale.buyerPhone}</p>
+                      <p className="text-slate-400 font-mono text-[11px]">+51 {sale.buyerPhone}</p>
                     </td>
 
                     {/* Seller */}
@@ -339,7 +339,7 @@ export const AdminDashboard: React.FC = () => {
                             : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
                         }`}
                       >
-                        {sale.status === 'verified' ? '✓ Verificado' : sale.status === 'rejected' ? '✗ Rechazado' : '⏳ Pendiente'}
+                        {sale.status === 'verified' ? 'Verificado' : sale.status === 'rejected' ? 'Rechazado' : 'Pendiente'}
                       </span>
                     </td>
 
@@ -349,23 +349,23 @@ export const AdminDashboard: React.FC = () => {
                         <button
                           onClick={() => handleStatusChange(sale.id, 'verified')}
                           title="Aprobar Pago"
-                          className="p-1.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-500/30 text-emerald-300 transition-colors"
+                          className="px-2 py-1 rounded-lg bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold transition-colors"
                         >
-                          ✓
+                          Aprobar
                         </button>
                         <button
                           onClick={() => handleStatusChange(sale.id, 'rejected')}
                           title="Rechazar Comprobante"
-                          className="p-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 border border-rose-500/30 text-rose-300 transition-colors"
+                          className="px-2 py-1 rounded-lg bg-rose-950/60 hover:bg-rose-900 border border-rose-500/30 text-rose-300 text-[11px] font-bold transition-colors"
                         >
-                          ✗
+                          Rechazar
                         </button>
                         <button
                           onClick={() => setSelectedVoucherSale(sale)}
                           title="Detalles y Voucher"
-                          className="p-1.5 rounded-lg bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/30 text-cyan-300 transition-colors"
+                          className="px-2 py-1 rounded-lg bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/30 text-cyan-300 text-[11px] font-bold transition-colors"
                         >
-                          🔍
+                          Ver
                         </button>
                       </div>
                     </td>
@@ -445,13 +445,13 @@ export const AdminDashboard: React.FC = () => {
                     onClick={() => handleStatusChange(selectedVoucherSale.id, 'verified')}
                     className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]"
                   >
-                    ✓ Aprobar Pago
+                    Aprobar Pago
                   </button>
                   <button
                     onClick={() => handleStatusChange(selectedVoucherSale.id, 'rejected')}
                     className="flex-1 py-2.5 rounded-xl bg-rose-600/80 hover:bg-rose-500 text-white font-bold transition-all"
                   >
-                    ✗ Rechazar
+                    Rechazar
                   </button>
                 </div>
               </div>

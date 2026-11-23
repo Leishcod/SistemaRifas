@@ -43,6 +43,20 @@
   transform: translateY(-2px);
 }
 
+/* Feature card matching the reference style with blue/cyan hover shading */
+.tech-card {
+  background: rgba(6, 12, 34, 0.85);
+  border: 1px solid rgba(30, 58, 138, 0.35);
+  border-radius: 1rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tech-card:hover {
+  border-color: rgba(59, 130, 246, 0.7);
+  background: rgba(9, 21, 56, 0.85);
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.25), inset 0 0 15px rgba(59, 130, 246, 0.08);
+}
+
 .glow-text-cyan {
   text-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
 }

@@ -82,7 +82,6 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
         </div>
       ) : hasSearched ? (
         <div className="glass-panel p-8 rounded-2xl border border-rose-500/30 text-center text-xs text-slate-400 space-y-2">
-          <span className="text-3xl block">🔍</span>
           <p className="text-white font-semibold">No se encontró ningún boleto con los datos ingresados.</p>
           <p>Verifica que el número de teléfono o boleto esté correcto, o comunícate con tu vendedor.</p>
         </div>

@@ -62,7 +62,7 @@ export const SellerRegistrationForm: React.FC = () => {
     if (student.promoCode !== promo) {
       setAuthenticatedSeller(null);
       setCodeError(
-        `⚠️ El código ${cleanCode} pertenece a la Base ${student.promoCode}, pero tienes seleccionada la Base ${promo}. Por favor selecciona tu base correcta.`
+        `El código ${cleanCode} pertenece a la Base ${student.promoCode}, pero tienes seleccionada la Base ${promo}. Por favor selecciona tu base correcta.`
       );
       return;
     }
@@ -243,7 +243,7 @@ export const SellerRegistrationForm: React.FC = () => {
         {/* Verification Status Feedback */}
         {codeError && (
           <div className="mt-4 p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-200 text-xs flex items-center gap-2">
-            <span>⚠️</span>
+            <span className="font-bold text-[10px] uppercase px-1.5 py-0.5 rounded bg-rose-500/20">Aviso</span>
             <p>{codeError}</p>
           </div>
         )}
@@ -251,8 +251,8 @@ export const SellerRegistrationForm: React.FC = () => {
         {authenticatedSeller && (
           <div className="mt-5 p-4 rounded-xl bg-gradient-to-r from-cyan-950/40 to-blue-950/40 border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 font-bold">
-                ✓
+              <div className="w-9 h-9 rounded-full bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 font-bold text-xs">
+                OK
               </div>
               <div>
                 <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider">Vendedor Identificado</p>
@@ -276,10 +276,10 @@ export const SellerRegistrationForm: React.FC = () => {
       {completedSale ? (
         <div className="space-y-6 animate-fade-in">
           <div className="glass-panel p-6 rounded-2xl border border-emerald-500/30 text-center space-y-3">
-            <div className="w-14 h-14 mx-auto rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-2xl">
-              🎉
+            <div className="w-12 h-12 mx-auto rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-xs font-bold text-emerald-300 tracking-wider">
+              OK
             </div>
-            <h3 className="font-heading font-extrabold text-2xl text-white">¡Venta Registrada Exitosamente!</h3>
+            <h3 className="font-heading font-extrabold text-2xl text-white">Venta Registrada Exitosamente</h3>
             <p className="text-sm text-slate-300 max-w-md mx-auto">
               Se han asignado <strong className="text-cyan-300">{completedSale.ticketsCount} boleto(s)</strong> para{' '}
               <strong className="text-white">{completedSale.buyerName}</strong>. Ahora puedes enviarle su ticket digital oficial por WhatsApp.
@@ -293,7 +293,7 @@ export const SellerRegistrationForm: React.FC = () => {
               onClick={handleResetForNewSale}
               className="py-3 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(0,240,255,0.25)] transition-all"
             >
-              ➕ Registrar Otra Venta
+              Registrar Otra Venta
             </button>
           </div>
         </div>
@@ -419,13 +419,13 @@ export const SellerRegistrationForm: React.FC = () => {
                   onChange={handleImageUpload}
                   className="sr-only"
                 />
-                <div className="w-12 h-12 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-2xl text-cyan-400 group-hover:scale-110 transition-transform mb-3">
-                  📷
+                <div className="w-12 h-12 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-xs font-bold text-cyan-400 group-hover:scale-105 transition-transform mb-3">
+                  SUBIR
                 </div>
                 <p className="text-sm font-semibold text-white group-hover:text-cyan-300 transition-colors">
-                  Toca aquí para subir o tomar captura del comprobante
+                  Toca aquí para seleccionar o tomar foto del comprobante
                 </p>
-                <p className="text-xs text-slate-500 mt-1">Soporta PNG, JPG, JPEG (máx. 8MB)</p>
+                <p className="text-xs text-slate-500 mt-1">Formatos permitidos: PNG, JPG, JPEG (máx. 8MB)</p>
               </label>
             ) : (
               <div className="p-4 rounded-2xl bg-[#030617] border border-cyan-500/40 flex flex-col sm:flex-row items-center gap-4">
@@ -436,7 +436,7 @@ export const SellerRegistrationForm: React.FC = () => {
                 />
                 <div className="flex-1 space-y-1 text-center sm:text-left">
                   <div className="flex items-center justify-center sm:justify-start gap-2 text-emerald-400 text-xs font-bold">
-                    <span>✓</span> Captura cargada correctamente
+                    <span>Comprobante cargado correctamente</span>
                   </div>
                   <p className="text-xs text-slate-300 truncate max-w-xs">{voucherFileName || 'comprobante-pago.jpg'}</p>
                   <p className="text-[11px] text-slate-500">Listo para ser verificado por los delegados</p>
@@ -497,7 +497,6 @@ export const SellerRegistrationForm: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <span>🎟️</span>
                   <span>Registrar Venta y Generar Boleto Digital (S/. {(ticketsCount * TICKET_PRICE).toFixed(2)})</span>
                 </>
               )}

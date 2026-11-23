@@ -39,7 +39,7 @@ export const Leaderboard: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xl">🔥</span>
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
               <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
                 Guerra de Códigos FIIS 2026
               </span>
@@ -106,7 +106,7 @@ export const Leaderboard: React.FC = () => {
         {filteredStats.map((item, index) => {
           const percent = Math.min(100, Math.round((item.soldTickets / item.targetTickets) * 100));
           const isTop3 = index < 3 && selectedPromoFilter === 'all';
-          const medal = index === 0 ? '🥇 1er Lugar' : index === 1 ? '🥈 2do Lugar' : index === 2 ? '🥉 3er Lugar' : `#${index + 1}`;
+          const medal = index === 0 ? '1er Lugar' : index === 1 ? '2do Lugar' : index === 2 ? '3er Lugar' : `#${index + 1}`;
 
           return (
             <div

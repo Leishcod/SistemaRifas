@@ -41,7 +41,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
                   ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
                   : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
               }`}>
-                {sale.status === 'verified' ? '✓ Pago Verificado' : sale.status === 'rejected' ? '✗ Rechazado' : '⏳ Pago Pendiente'}
+                {sale.status === 'verified' ? 'Pago Verificado' : sale.status === 'rejected' ? 'Rechazado' : 'Pago Pendiente'}
               </span>
             </div>
           </div>
@@ -88,7 +88,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
               Comprador(a)
             </span>
             <p className="font-bold text-sm text-white">{sale.buyerName}</p>
-            <p className="text-slate-300 font-mono">📱 +51 {sale.buyerPhone}</p>
+            <p className="text-slate-300 font-mono">+51 {sale.buyerPhone}</p>
           </div>
 
           <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.03] border border-white/5">
@@ -128,13 +128,13 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
             rel="noopener noreferrer"
             className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all active:scale-[0.98]"
           >
-            <span>📲</span> Enviar Boleto por WhatsApp
+            Enviar Boleto por WhatsApp
           </a>
           <button
             onClick={() => window.print()}
             className="py-3 px-4 rounded-xl bg-white/10 hover:bg-white/15 text-slate-200 font-medium text-sm flex items-center justify-center gap-2 border border-white/10 transition-all"
           >
-            <span>🖨️</span> Imprimir / PDF
+            Imprimir / Guardar PDF
           </button>
         </div>
       )}
