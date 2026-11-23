@@ -16,7 +16,8 @@ export const PROMO_CODES: PromoCode[] = [
 ];
 
 export const TICKET_PRICE = 3.0; // S/. 3.00 por rifa
-export const TARGET_PER_PROMO = 150; // 150 rifas por código
+export const TARGET_PER_PROMO = 150; // Meta referencial de 150 rifas por código
+export const TOTAL_EXPECTED_TICKETS = 2000; // Estimado general de venta (~2,000 rifas)
 
 // Base de datos de estudiantes
 export const INITIAL_STUDENTS: Student[] = [

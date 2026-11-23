@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { PromoStats } from '../types';
 import { getPromoStats, computePromoStats, fetchSalesFromSupabase } from '../utils/storage';
-import { TARGET_PER_PROMO } from '../data/students';
+import { TARGET_PER_PROMO, TOTAL_EXPECTED_TICKETS } from '../data/students';
 
 export const Leaderboard: React.FC = () => {
   const [stats, setStats] = useState<PromoStats[]>([]);
@@ -40,8 +40,7 @@ export const Leaderboard: React.FC = () => {
 
   const totalSoldAll = stats.reduce((acc, s) => acc + s.soldTickets, 0);
   const totalAmountAll = stats.reduce((acc, s) => acc + s.totalAmount, 0);
-  const totalGoalAll = stats.length * TARGET_PER_PROMO;
-  const globalProgress = Math.round((totalSoldAll / totalGoalAll) * 100);
+  const globalProgress = Math.round((totalSoldAll / TOTAL_EXPECTED_TICKETS) * 100);
 
   return (
     <div className="w-full space-y-6">
@@ -55,7 +54,7 @@ export const Leaderboard: React.FC = () => {
               Ranking General de Ventas
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
-              Códigos y CEIIS compitiendo por liderar la recaudación. Meta: 150 rifas por código.
+              Códigos y CEIIS participando en la recaudación. Meta referencial: 150 rifas por código. Estimado general: ~2,000 rifas.
             </p>
           </div>
 
@@ -64,7 +63,7 @@ export const Leaderboard: React.FC = () => {
             <div>
               <span className="text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Total Rifas</span>
               <div className="text-2xl font-heading font-black text-white">
-                {totalSoldAll} <span className="text-xs font-normal text-slate-400">/ {totalGoalAll}</span>
+                {totalSoldAll} <span className="text-xs font-normal text-slate-400">/ ~{TOTAL_EXPECTED_TICKETS}</span>
               </div>
             </div>
             <div className="w-px h-10 bg-white/10"></div>
@@ -81,7 +80,7 @@ export const Leaderboard: React.FC = () => {
         <div className="mt-6 space-y-2">
           <div className="flex justify-between text-xs text-slate-300 font-semibold">
             <span>Avance general de la Facultad ({globalProgress}%)</span>
-            <span className="font-mono text-cyan-300">{totalSoldAll} vendidas</span>
+            <span className="font-mono text-cyan-300">{totalSoldAll} vendidas de ~{TOTAL_EXPECTED_TICKETS}</span>
           </div>
           <div className="w-full h-3 rounded-full bg-[#030617] p-0.5 border border-cyan-500/20 overflow-hidden">
             <div
@@ -102,7 +101,7 @@ export const Leaderboard: React.FC = () => {
               : 'text-slate-300 hover:text-white'
               }`}
           >
-            Todos los Códigos ({stats.length})
+            Todos ({stats.length})
           </button>
         </div>
       </div>
@@ -110,8 +109,9 @@ export const Leaderboard: React.FC = () => {
       {/* Leaderboard Table / Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredStats.map((item, index) => {
-          const percent = Math.min(100, Math.round((item.soldTickets / item.targetTickets) * 100));
-          const positionLabel = `#${index + 1}`;
+          const isCeiis = item.promoCode === 'CEIIS';
+          // Para códigos regulares, el % puede superar 100% si sobrepasan la meta referencial de 150
+          const percent = Math.round((item.soldTickets / item.targetTickets) * 100);
 
           return (
             <div
@@ -136,7 +136,7 @@ export const Leaderboard: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-heading font-extrabold text-xl text-white group-hover:text-cyan-300 transition-colors">
-                      Código {item.promoCode}
+                      {isCeiis ? 'CEIIS' : `Código ${item.promoCode}`}
                     </h3>
                     <span className="text-xs font-semibold text-slate-400">
                       Puesto #{index + 1}
@@ -148,28 +148,52 @@ export const Leaderboard: React.FC = () => {
                   <span className="text-2xl font-heading font-black text-cyan-300 font-mono">
                     {item.soldTickets}
                   </span>
-                  <span className="text-xs text-slate-400 block">/ {item.targetTickets}</span>
+                  {!isCeiis ? (
+                    <span className="text-xs text-slate-400 block">/ {item.targetTickets}</span>
+                  ) : (
+                    <span className="text-xs text-cyan-400/80 block font-medium">rifas</span>
+                  )}
                 </div>
               </div>
 
               {/* Progress bar */}
-              <div className="space-y-1.5 mb-4">
-                <div className="flex justify-between text-[11px] font-semibold">
-                  <span className="text-slate-400">Progreso de meta</span>
-                  <span className="text-cyan-300 font-mono">{percent}%</span>
-                </div>
-                <div className="w-full h-2 rounded-full bg-[#030617] overflow-hidden border border-white/5">
-                  <div
-                    className={`h-full rounded-full transition-all duration-500 ${percent >= 80
-                      ? 'bg-emerald-400'
-                      : percent >= 40
-                        ? 'bg-cyan-400'
-                        : 'bg-blue-500'
+              {!isCeiis ? (
+                <div className="space-y-1.5 mb-4">
+                  <div className="flex justify-between text-[11px] font-semibold">
+                    <span className="text-slate-400">Meta referencial</span>
+                    <span className={`font-mono ${percent >= 100 ? 'text-emerald-300 font-bold' : 'text-cyan-300'}`}>
+                      {percent}% {percent >= 100 && '🎯'}
+                    </span>
+                  </div>
+                  <div className="w-full h-2 rounded-full bg-[#030617] overflow-hidden border border-white/5">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        percent >= 100
+                          ? 'bg-gradient-to-r from-emerald-400 to-teal-300 shadow-[0_0_10px_rgba(52,211,153,0.5)]'
+                          : percent >= 80
+                            ? 'bg-emerald-400'
+                            : percent >= 40
+                              ? 'bg-cyan-400'
+                              : 'bg-blue-500'
                       }`}
-                    style={{ width: `${Math.max(4, percent)}%` }}
-                  ></div>
+                      style={{ width: `${Math.min(100, Math.max(4, percent))}%` }}
+                    ></div>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="space-y-1.5 mb-4">
+                  <div className="flex justify-between text-[11px] font-semibold">
+                    <span className="text-slate-400">Ventas directas CEIIS</span>
+                    <span className="text-cyan-300 font-mono">{item.soldTickets} rifas</span>
+                  </div>
+                  <div className="w-full h-2 rounded-full bg-[#030617] overflow-hidden border border-white/5">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 transition-all duration-500 shadow-[0_0_10px_rgba(0,240,255,0.3)]"
+                      style={{ width: item.soldTickets > 0 ? '100%' : '4%' }}
+                    ></div>
+                  </div>
+                </div>
+              )}
 
               {/* Stats Footer */}
               <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">

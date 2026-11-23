@@ -317,7 +317,7 @@ export const AdminDashboard: React.FC = () => {
                     {/* Promo Code */}
                     <td className="py-3 px-4">
                       <span className="px-2 py-1 rounded-md bg-blue-950/60 border border-blue-500/40 text-blue-300 font-bold text-[11px]">
-                        Código {sale.promoCode}
+                        {sale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${sale.promoCode}`}
                       </span>
                     </td>
 
@@ -383,7 +383,7 @@ export const AdminDashboard: React.FC = () => {
             <div className="p-4 px-6 border-b border-cyan-500/20 flex items-center justify-between bg-[#060621]">
               <div>
                 <h3 className="font-heading font-bold text-lg text-white">Inspección de Comprobante de Pago</h3>
-                <p className="text-xs text-slate-400">ID: {selectedVoucherSale.id} • Código {selectedVoucherSale.promoCode}</p>
+                <p className="text-xs text-slate-400">ID: {selectedVoucherSale.id} • {selectedVoucherSale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${selectedVoucherSale.promoCode}`}</p>
               </div>
               <button
                 onClick={() => setSelectedVoucherSale(null)}
@@ -416,7 +416,7 @@ export const AdminDashboard: React.FC = () => {
                   <span className="text-[10px] uppercase font-bold text-slate-400 block">Vendedor UNI</span>
                   <p className="text-sm font-bold text-cyan-300">{selectedVoucherSale.sellerName}</p>
                   <p className="font-mono text-slate-300">
-                    Cód: {selectedVoucherSale.sellerStudentCode} (Código {selectedVoucherSale.promoCode})
+                    Cód: {selectedVoucherSale.sellerStudentCode} ({selectedVoucherSale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${selectedVoucherSale.promoCode}`})
                   </p>
                 </div>
 

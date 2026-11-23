@@ -269,7 +269,7 @@ export const SellerRegistrationForm: React.FC = () => {
                 <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider">Vendedor Identificado</p>
                 <p className="font-heading font-bold text-white text-base">{authenticatedSeller.fullName}</p>
                 <p className="text-xs text-slate-400 font-mono">
-                  Cód: {authenticatedSeller.studentCode} • Código {authenticatedSeller.promoCode}
+                  Cód: {authenticatedSeller.studentCode} • {authenticatedSeller.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${authenticatedSeller.promoCode}`}
                 </p>
               </div>
             </div>
