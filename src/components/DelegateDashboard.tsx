@@ -151,87 +151,87 @@ export const DelegateDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header & Delegado Info */}
-      <div className="glass-panel p-6 rounded-2xl border border-cyan-500/25 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-cyan-500/25 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
-            <span className="text-xs uppercase font-bold tracking-widest text-cyan-400">
+            <span className="text-[11px] sm:text-xs uppercase font-bold tracking-widest text-cyan-400">
               Módulo de Supervisión de Delegados
             </span>
           </div>
-          <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-white">
+          <h1 className="font-heading font-extrabold text-xl sm:text-3xl text-white">
             Panel de Delegado {delegatePromo === 'CEIIS' ? 'CEIIS' : `${delegatePromo}`}
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Visualización y supervisión de boletos y comprobantes de tu base
+            Visualización y supervisión de boletos y comprobantes de tu código
           </p>
         </div>
 
         {/* User Card & Logout */}
-        <div className="flex items-center gap-3">
-          <div className="text-right">
-            <p className="text-sm font-bold text-white">{authUser.fullName}</p>
+        <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/10">
+          <div className="text-left sm:text-right">
+            <p className="text-xs sm:text-sm font-bold text-white">{authUser.fullName}</p>
             <p className="text-[11px] font-bold text-cyan-300 tracking-wider">
               Delegado: {delegatePromo === 'CEIIS' ? 'CEIIS' : `Código ${delegatePromo}`}
             </p>
           </div>
           <button
             onClick={handleLogout}
-            className="px-3.5 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900 border border-rose-500/30 text-rose-300 text-xs font-bold transition-all active:scale-95"
+            className="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900 border border-rose-500/30 text-rose-300 text-xs font-bold transition-all active:scale-95 shrink-0"
           >
             Cerrar Sesión
           </button>
         </div>
       </div>
 
-      {/* Metrics Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-cyan-500/20">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
-            Rifas Vendidas en tu Código
+      {/* Metrics Row: 2x2 en móvil con textos compactos */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="glass-panel p-3.5 sm:p-5 rounded-2xl border border-cyan-500/20">
+          <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+            Rifas en tu Código
           </span>
-          <p className="text-2xl sm:text-3xl font-heading font-black text-white mt-1">
+          <p className="text-xl sm:text-3xl font-heading font-black text-white mt-1">
             {totalTickets}
           </p>
-          <span className="text-[11px] text-cyan-300">en {filteredSales.length} transacciones</span>
+          <span className="text-[10px] sm:text-[11px] text-cyan-300 block truncate">en {filteredSales.length} transacciones</span>
         </div>
 
-        <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-cyan-500/20">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+        <div className="glass-panel p-3.5 sm:p-5 rounded-2xl border border-cyan-500/20">
+          <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
             Monto Total Recaudado
           </span>
-          <p className="text-2xl sm:text-3xl font-heading font-black text-cyan-400 mt-1">
+          <p className="text-xl sm:text-3xl font-heading font-black text-cyan-400 mt-1 whitespace-nowrap">
             S/. {totalAmount.toFixed(2)}
           </p>
-          <span className="text-[11px] text-slate-400">monto registrado</span>
+          <span className="text-[10px] sm:text-[11px] text-slate-400 block truncate">monto registrado</span>
         </div>
 
-        <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-cyan-500/20">
-          <span className="text-[11px] font-semibold text-amber-300 uppercase tracking-wider block">
+        <div className="glass-panel p-3.5 sm:p-5 rounded-2xl border border-cyan-500/20">
+          <span className="text-[10px] sm:text-[11px] font-semibold text-amber-300 uppercase tracking-wider block">
             Vouchers Pendientes
           </span>
-          <p className="text-2xl sm:text-3xl font-heading font-black text-amber-300 mt-1">
+          <p className="text-xl sm:text-3xl font-heading font-black text-amber-300 mt-1">
             {pendingCount}
           </p>
-          <span className="text-[11px] text-slate-400">en revisión por CEIIS</span>
+          <span className="text-[10px] sm:text-[11px] text-slate-400 block truncate">en revisión CEIIS</span>
         </div>
 
-        <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-cyan-500/20">
-          <span className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block">
+        <div className="glass-panel p-3.5 sm:p-5 rounded-2xl border border-cyan-500/20">
+          <span className="text-[10px] sm:text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block">
             Vouchers Verificados
           </span>
-          <p className="text-2xl sm:text-3xl font-heading font-black text-emerald-400 mt-1">
+          <p className="text-xl sm:text-3xl font-heading font-black text-emerald-400 mt-1">
             {verifiedCount}
           </p>
-          <span className="text-[11px] text-slate-400">aprobados por CEIIS</span>
+          <span className="text-[10px] sm:text-[11px] text-slate-400 block truncate">aprobados CEIIS</span>
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
-      <div className="glass-panel p-4 rounded-2xl border border-cyan-500/20 flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-        <div className="flex flex-wrap items-center gap-2">
+      {/* Filter and Search Bar: En móvil organizado en filas limpias */}
+      <div className="glass-panel p-3.5 sm:p-4 rounded-2xl border border-cyan-500/20 flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+        <div className="grid grid-cols-2 md:flex items-center gap-2">
           {/* El código se mantiene FIJO */}
-          <div className="px-3 py-2 rounded-xl bg-blue-950/60 border border-blue-500/40 text-blue-200 text-xs font-bold font-mono">
+          <div className="px-3 py-2 rounded-xl bg-blue-950/60 border border-blue-500/40 text-blue-200 text-xs font-bold font-mono text-center truncate">
             {delegatePromo === 'CEIIS' ? 'CEIIS' : `Código ${delegatePromo}`}
           </div>
 
@@ -239,7 +239,7 @@ export const DelegateDashboard: React.FC = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="bg-[#030617] border border-cyan-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"
+            className="w-full md:w-auto bg-[#030617] border border-cyan-500/30 rounded-xl px-2.5 sm:px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"
           >
             <option value="all">Todos los Estados</option>
             <option value="pending">Pendientes</option>

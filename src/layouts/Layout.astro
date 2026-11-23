@@ -44,9 +44,9 @@ const pathname = Astro.url.pathname;
       <div class="absolute bottom-10 right-0 w-[600px] h-[450px] bg-cyan-600/10 rounded-full blur-[140px]"></div>
     </div>
 
-    <!-- Header Navigation -->
-    <header class="sticky top-0 z-50 glass-panel border-b border-cyan-500/20 bg-[#060621]/90">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+    <!-- Header Navigation: Se oculta al scrollear hacia abajo y reaparece al scrollear hacia arriba -->
+    <header id="main-header" class="fixed top-0 inset-x-0 z-50 glass-panel border-b border-cyan-500/20 bg-[#060621]/90 transition-transform duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between">
         <!-- Brand Link: "RF" en celulares y "RIFAS FIIS 2026" en PC, ambos llevan al inicio -->
         <a href="/" class="font-heading font-extrabold text-xl sm:text-xl tracking-tight text-white hover:text-cyan-300 transition-colors flex items-center gap-2">
           <span class="sm:hidden font-black text-2xl text-cyan-400 drop-shadow-[0_0_10px_rgba(0,240,255,0.5)]">RF</span>
@@ -162,8 +162,8 @@ const pathname = Astro.url.pathname;
       </div>
     </header>
 
-    <!-- Main Content Slot -->
-    <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <!-- Main Content Slot: Añadido pt-20 en móvil para que el navbar fijo no tape el contenido -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-20 pb-8 sm:pt-24 sm:pb-12">
       <slot />
     </main>
 
@@ -176,13 +176,15 @@ const pathname = Astro.url.pathname;
       </div>
     </footer>
 
-    <!-- Script para abrir/cerrar el menú en celulares -->
+    <!-- Script para abrir/cerrar el menú en celulares y ocultar/mostrar navbar al scrollear -->
     <script>
       const menuBtn = document.getElementById('mobile-menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
       const iconOpen = document.getElementById('menu-icon-open');
       const iconClose = document.getElementById('menu-icon-close');
+      const header = document.getElementById('main-header');
 
+      // Toggle menú móvil
       if (menuBtn && mobileMenu && iconOpen && iconClose) {
         menuBtn.addEventListener('click', () => {
           const isHidden = mobileMenu.classList.contains('hidden');
@@ -197,6 +199,26 @@ const pathname = Astro.url.pathname;
           }
         });
       }
+
+      // Hide navbar on scroll down, show on scroll up
+      let lastScrollY = window.scrollY;
+      window.addEventListener('scroll', () => {
+        if (!header) return;
+        const currentScrollY = window.scrollY;
+        
+        // No ocultar si el menú móvil está abierto
+        const isMenuOpen = mobileMenu && !mobileMenu.classList.contains('hidden');
+        if (isMenuOpen) return;
+
+        if (currentScrollY > lastScrollY && currentScrollY > 70) {
+          // Deslizando hacia abajo -> ocultar navbar
+          header.classList.add('-translate-y-full');
+        } else {
+          // Deslizando hacia arriba -> mostrar navbar
+          header.classList.remove('-translate-y-full');
+        }
+        lastScrollY = currentScrollY;
+      }, { passive: true });
     </script>
   </body>
 </html>

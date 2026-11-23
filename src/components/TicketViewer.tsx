@@ -110,19 +110,19 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
           Ingresa tu número de celular (9 dígitos), número de boleto o ID de compra
         </p>
 
-        <form onSubmit={handleSearch} className="flex gap-2 max-w-md mx-auto">
+        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2.5 sm:gap-2 max-w-md mx-auto">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Ej. 987654321 o N° de boleto (ej. 1)"
-            className="flex-1 bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 placeholder:text-slate-600 font-mono"
+            placeholder="Ej. 987654321 o N° de boleto"
+            className="w-full sm:flex-1 bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-2.5 sm:py-3 text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-400 placeholder:text-slate-600 font-mono text-center sm:text-left"
           />
           <button
             type="submit"
-            className="px-5 py-3 bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 border border-cyan-500/30 text-white font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(0,240,255,0.2)] transition-all"
+            className="w-full sm:w-auto px-5 py-2.5 sm:py-3 bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 border border-cyan-500/30 text-white font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(0,240,255,0.2)] transition-all active:scale-[0.99]"
           >
-            Buscar
+            Buscar Boleto
           </button>
         </form>
       </div>

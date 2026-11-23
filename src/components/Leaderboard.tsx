@@ -59,17 +59,17 @@ export const Leaderboard: React.FC = () => {
           </div>
 
           {/* Quick Metrics */}
-          <div className="flex items-center gap-4 sm:gap-6 bg-[#030617]/70 p-4 rounded-xl border border-white/5">
+          <div className="flex items-center gap-3 sm:gap-6 bg-[#030617]/70 p-3 sm:p-4 rounded-xl border border-white/5 w-fit">
             <div>
-              <span className="text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Total Rifas</span>
-              <div className="text-2xl font-heading font-black text-white">
-                {totalSoldAll} <span className="text-xs font-normal text-slate-400">/ ~{TOTAL_EXPECTED_TICKETS}</span>
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Total Rifas</span>
+              <div className="text-lg sm:text-2xl font-heading font-black text-white whitespace-nowrap">
+                {totalSoldAll} <span className="text-[10px] sm:text-xs font-normal text-slate-400">/ ~{TOTAL_EXPECTED_TICKETS}</span>
               </div>
             </div>
-            <div className="w-px h-10 bg-white/10"></div>
+            <div className="w-px h-8 sm:h-10 bg-white/10"></div>
             <div>
-              <span className="text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Recaudado</span>
-              <div className="text-2xl font-heading font-black text-cyan-400">
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Recaudado</span>
+              <div className="text-lg sm:text-2xl font-heading font-black text-cyan-400 whitespace-nowrap">
                 S/. {totalAmountAll.toFixed(2)}
               </div>
             </div>

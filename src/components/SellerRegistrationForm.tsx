@@ -211,23 +211,23 @@ export const SellerRegistrationForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-8">
+    <div className="max-w-3xl mx-auto space-y-6 sm:space-y-8">
       {/* Step 1: Identity & Base Card */}
-      <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-cyan-500/20 shadow-xl">
+      <div className="glass-panel rounded-2xl p-4 sm:p-8 border border-cyan-500/20 shadow-xl">
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-sm">
+          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-sm shrink-0">
             1
           </div>
           <div>
-            <h2 className="font-heading font-bold text-lg text-white">Identificación del Vendedor</h2>
+            <h2 className="font-heading font-bold text-base sm:text-lg text-white">Identificación del Vendedor</h2>
             <p className="text-xs text-slate-400">Selecciona tu código de ingreso e ingresa tu código de estudiante UNI</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4">
           {/* Promo selector */}
           <div className="sm:col-span-4">
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
               Código
             </label>
             <select
@@ -239,7 +239,7 @@ export const SellerRegistrationForm: React.FC = () => {
                   handleVerifyStudent(studentCodeInput, newPromo, true, false);
                 }
               }}
-              className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+              className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
             >
               {PROMO_CODES.map((code) => (
                 <option key={code} value={code} className="bg-[#060621] text-white">
@@ -251,7 +251,7 @@ export const SellerRegistrationForm: React.FC = () => {
 
           {/* Student code input */}
           <div className="sm:col-span-8">
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
               Tu Código UNI:
             </label>
             <div className="flex gap-2">
@@ -275,12 +275,12 @@ export const SellerRegistrationForm: React.FC = () => {
                 }}
                 placeholder="Ej. 20244517G"
                 maxLength={10}
-                className="w-full uppercase font-mono tracking-wider bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600"
+                className="w-full uppercase font-mono tracking-wider bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600"
               />
               <button
                 type="button"
                 onClick={() => handleVerifyStudent(studentCodeInput, selectedPromo, true, true)}
-                className="px-4 py-3 bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 border border-cyan-500/30 text-white rounded-xl text-xs font-bold transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+                className="px-4 py-3 bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 border border-cyan-500/30 text-white rounded-xl text-xs font-bold transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)] shrink-0"
               >
                 Verificar
               </button>
@@ -291,30 +291,32 @@ export const SellerRegistrationForm: React.FC = () => {
         {/* Verification Status Feedback */}
         {codeError && (
           <div className="mt-4 p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-200 text-xs flex items-center gap-2">
-            <span className="font-bold text-[10px] uppercase px-1.5 py-0.5 rounded bg-rose-500/20">Aviso</span>
+            <span className="font-bold text-[10px] uppercase px-1.5 py-0.5 rounded bg-rose-500/20 shrink-0">Aviso</span>
             <p>{codeError}</p>
           </div>
         )}
 
         {authenticatedSeller && (
-          <div className="mt-5 p-4 rounded-xl bg-gradient-to-r from-cyan-950/40 to-blue-950/40 border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="mt-4 sm:mt-5 p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-cyan-950/40 to-blue-950/40 border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 font-bold text-xs">
+              <div className="w-9 h-9 rounded-full bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 font-bold text-xs shrink-0">
                 OK
               </div>
-              <div>
-                <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider">Vendedor Identificado</p>
-                <p className="font-heading font-bold text-white text-base">{authenticatedSeller.fullName}</p>
-                <p className="text-xs text-slate-400 font-mono">
+              <div className="min-w-0">
+                <p className="text-[11px] sm:text-xs text-cyan-400 font-semibold uppercase tracking-wider">Vendedor Identificado</p>
+                <p className="font-heading font-bold text-white text-sm sm:text-base truncate">{authenticatedSeller.fullName}</p>
+                <p className="text-xs text-slate-300 font-mono whitespace-nowrap">
                   Cód. {authenticatedSeller.studentCode} | {authenticatedSeller.promoCode}
                 </p>
               </div>
             </div>
 
-            <div className="sm:text-right bg-black/20 p-2.5 rounded-lg border border-white/5">
-              <span className="text-[11px] text-slate-400 block">Tus rifas registradas:</span>
-              <span className="text-lg font-mono font-bold text-cyan-300">{sellerSalesCount}</span>
-              <span className="text-xs text-slate-400"> rifas</span>
+            <div className="flex items-center justify-between sm:justify-end sm:text-right bg-black/25 px-3 py-2 rounded-lg border border-white/5">
+              <span className="text-[11px] text-slate-400 mr-2 sm:mr-0 sm:block">Tus rifas registradas:</span>
+              <div>
+                <span className="text-base sm:text-lg font-mono font-bold text-cyan-300">{sellerSalesCount}</span>
+                <span className="text-xs text-slate-400"> rifas</span>
+              </div>
             </div>
           </div>
         )}
@@ -347,21 +349,21 @@ export const SellerRegistrationForm: React.FC = () => {
         </div>
       ) : (
         /* Step 2: Sale Registration Form */
-        <form onSubmit={handleSubmit} className="glass-panel rounded-2xl p-6 sm:p-8 border border-cyan-500/20 shadow-xl space-y-6">
+        <form onSubmit={handleSubmit} className="glass-panel rounded-2xl p-4 sm:p-8 border border-cyan-500/20 shadow-xl space-y-5 sm:space-y-6">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-sm">
+            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-sm shrink-0">
               2
             </div>
             <div>
-              <h2 className="font-heading font-bold text-lg text-white">Datos de la Venta</h2>
+              <h2 className="font-heading font-bold text-base sm:text-lg text-white">Datos de la Venta</h2>
               <p className="text-xs text-slate-400">Ingresa la información del comprador y adjunta el comprobante de pago</p>
             </div>
           </div>
 
           {/* Buyer Details */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
                 Nombres y Apellidos del Comprador: <span className="text-cyan-400">*</span>
               </label>
               <input
@@ -370,16 +372,16 @@ export const SellerRegistrationForm: React.FC = () => {
                 value={buyerName}
                 onChange={(e) => setBuyerName(e.target.value)}
                 placeholder="Ej. Enrique Valdivia"
-                className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600"
+                className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
                 Número de Celular (WhatsApp): <span className="text-cyan-400">*</span>
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-3 text-sm text-slate-500 font-mono">+51</span>
+                <span className="absolute left-3.5 top-3 text-sm text-slate-500 font-mono">+51</span>
                 <input
                   type="tel"
                   required
@@ -387,15 +389,15 @@ export const SellerRegistrationForm: React.FC = () => {
                   onChange={(e) => setBuyerPhone(e.target.value)}
                   placeholder="987654321"
                   maxLength={12}
-                  className="w-full pl-14 bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600 font-mono"
+                  className="w-full pl-12 bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600 font-mono"
                 />
               </div>
             </div>
           </div>
 
           {/* Ticket Quantity & Live Total Calculator */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-950/30 via-slate-900/40 to-indigo-950/30 border border-cyan-500/25">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-3.5 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-950/30 via-slate-900/40 to-indigo-950/30 border border-cyan-500/25">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
               <div>
                 <label className="block text-xs font-semibold text-cyan-300 uppercase tracking-wider mb-1">
                   Cantidad de Rifas a Asignar:
@@ -403,36 +405,36 @@ export const SellerRegistrationForm: React.FC = () => {
                 <p className="text-xs text-slate-400">Precio unitario: S/. {TICKET_PRICE.toFixed(2)} por rifa</p>
               </div>
 
-              {/* Counter and Quick Buttons */}
-              <div className="flex items-center gap-3">
-                <div className="flex items-center rounded-xl bg-[#030617] border border-cyan-500/40 p-1">
+              {/* Counter and Quick Buttons: tamaños compactos para que encajen perfecto en móvil */}
+              <div className="flex items-center gap-2">
+                <div className="flex items-center rounded-xl bg-[#030617] border border-cyan-500/40 p-0.5 sm:p-1">
                   <button
                     type="button"
                     onClick={() => setTicketsCount(Math.max(1, ticketsCount - 1))}
-                    className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white font-bold flex items-center justify-center transition-colors"
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white font-bold flex items-center justify-center transition-colors active:scale-95 text-xs sm:text-sm"
                   >
                     -
                   </button>
-                  <span className="w-12 text-center font-mono font-bold text-lg text-white">
+                  <span className="w-8 sm:w-12 text-center font-mono font-bold text-sm sm:text-base text-white">
                     {ticketsCount}
                   </span>
                   <button
                     type="button"
                     onClick={() => setTicketsCount(ticketsCount + 1)}
-                    className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white font-bold flex items-center justify-center transition-colors"
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white font-bold flex items-center justify-center transition-colors active:scale-95 text-xs sm:text-sm"
                   >
                     +
                   </button>
                 </div>
 
-                <div className="flex gap-1.5">
+                <div className="flex gap-1">
                   {[2, 3, 5].map((qty) => (
                     <button
                       key={qty}
                       type="button"
                       onClick={() => setTicketsCount(qty)}
-                      className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${ticketsCount === qty
-                        ? 'bg-cyan-500 text-[#000c18] font-bold'
+                      className={`w-7 h-7 sm:w-auto sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center transition-colors ${ticketsCount === qty
+                        ? 'bg-cyan-500 text-[#000c18] font-bold shadow-[0_0_10px_rgba(0,240,255,0.4)]'
                         : 'bg-white/5 hover:bg-white/10 text-slate-300'
                         }`}
                     >
@@ -443,10 +445,10 @@ export const SellerRegistrationForm: React.FC = () => {
               </div>
             </div>
 
-            {/* Total Display */}
-            <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+            {/* Total Display: S/. y el monto en una sola línea fija sin quebrarse */}
+            <div className="mt-3.5 pt-3 border-t border-white/10 flex items-center justify-between">
               <span className="text-xs text-slate-300">Total a verificar en voucher:</span>
-              <span className="text-xl font-heading font-extrabold text-cyan-300">
+              <span className="text-lg sm:text-xl font-heading font-extrabold text-cyan-300 whitespace-nowrap">
                 S/. {(ticketsCount * TICKET_PRICE).toFixed(2)}
               </span>
             </div>
@@ -470,7 +472,7 @@ export const SellerRegistrationForm: React.FC = () => {
                   SUBIR
                 </div>
                 <p className="text-sm font-semibold text-white group-hover:text-cyan-300 transition-colors">
-                  Toca aquí para seleccionar o tomar foto del comprobante Plin
+                  Seleccionar foto del comprobante de pago
                 </p>
                 <p className="text-xs text-slate-500 mt-1">Formatos permitidos: PNG, JPG, JPEG (máx. 8MB)</p>
               </label>
@@ -520,16 +522,16 @@ export const SellerRegistrationForm: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting || !authenticatedSeller}
-              className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-700 to-cyan-700 hover:from-blue-600 hover:via-indigo-600 hover:to-cyan-600 border border-cyan-500/30 text-white font-heading font-bold text-base tracking-wide shadow-[0_0_25px_rgba(0,240,255,0.25)] disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.99] flex items-center justify-center gap-2"
+              className="w-full py-3 sm:py-3.5 px-4 sm:px-6 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-700 to-cyan-700 hover:from-blue-600 hover:via-indigo-600 hover:to-cyan-600 border border-cyan-500/30 text-white font-heading font-bold text-xs sm:!text-[16px] tracking-wide shadow-[0_0_20px_rgba(0,240,255,0.25)] disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.99] flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   <span>Generando Boleto...</span>
                 </>
               ) : (
                 <>
-                  <span>Registrar Venta y Generar Boleto Digital (S/. {(ticketsCount * TICKET_PRICE).toFixed(2)})</span>
+                  <span>Registrar Venta (S/. {(ticketsCount * TICKET_PRICE).toFixed(2)})</span>
                 </>
               )}
             </button>
