@@ -32,17 +32,15 @@ export const PanelGateway: React.FC = () => {
   }
 
   return (
-    <div className="py-6 sm:py-10">
-      <LoginForm
-        targetPanel="panel"
-        onLoginSuccess={(user) => {
-          if (user.role === 'ceiis') {
-            window.location.href = '/admin';
-          } else if (user.role === 'delegado') {
-            window.location.href = '/delegados';
-          }
-        }}
-      />
-    </div>
+    <LoginForm
+      targetPanel="panel"
+      onLoginSuccess={(user) => {
+        if (user.role === 'ceiis') {
+          window.location.href = '/admin';
+        } else if (user.role === 'delegado') {
+          window.location.href = '/delegados';
+        }
+      }}
+    />
   );
 };

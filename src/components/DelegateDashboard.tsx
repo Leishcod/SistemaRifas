@@ -49,26 +49,28 @@ export const DelegateDashboard: React.FC = () => {
   // Si tiene rol ninguno
   if (authUser.role === 'ninguno') {
     return (
-      <div className="glass-panel p-8 rounded-2xl border border-rose-500/30 text-center space-y-4 max-w-md mx-auto">
-        <div className="w-14 h-14 mx-auto rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400">
-          <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-          </svg>
-        </div>
-        <h3 className="font-heading font-black text-2xl text-white">Acceso Denegado</h3>
-        <p className="text-xs text-slate-300">
-          Hola, <strong className="text-white">{authUser.fullName}</strong>. Tu código de estudiante no tiene permisos de delegado ni de administración.
-        </p>
-        <p className="text-[11px] text-slate-400">
-          Si eres delegado de tu código, comunícate con la directiva del CEIIS para que te asignen los accesos.
-        </p>
-        <div className="pt-2">
-          <button
-            onClick={handleLogout}
-            className="py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all"
-          >
-            Cerrar Sesión
-          </button>
+      <div className="py-6 sm:py-10 max-w-md mx-auto">
+        <div className="glass-panel p-8 rounded-2xl border border-rose-500/30 text-center space-y-4">
+          <div className="w-14 h-14 mx-auto rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400">
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+            </svg>
+          </div>
+          <h3 className="font-heading font-black text-2xl text-white">Acceso Denegado</h3>
+          <p className="text-xs text-slate-300">
+            Hola, <strong className="text-white">{authUser.fullName}</strong>. Tu código de estudiante no tiene permisos de delegado ni de administración.
+          </p>
+          <p className="text-[11px] text-slate-400">
+            Si eres delegado de tu código, comunícate con la directiva del CEIIS para que te asignen los accesos.
+          </p>
+          <div className="pt-2">
+            <button
+              onClick={handleLogout}
+              className="py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all"
+            >
+              Cerrar Sesión
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -124,7 +126,7 @@ export const DelegateDashboard: React.FC = () => {
             </span>
           </div>
           <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-white">
-            Panel de Delegado — {delegatePromo === 'CEIIS' ? 'CEIIS' : `Código ${delegatePromo}`}
+            Panel de Delegado {delegatePromo === 'CEIIS' ? 'CEIIS' : `${delegatePromo}`}
           </h1>
           <p className="text-xs text-slate-400 mt-1">
             Visualización y supervisión de boletos y comprobantes de tu base
@@ -316,19 +318,18 @@ export const DelegateDashboard: React.FC = () => {
                     {/* Status Badge */}
                     <td className="py-3 px-4">
                       <span
-                        className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                          sale.status === 'verified'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                            : sale.status === 'rejected'
+                        className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${sale.status === 'verified'
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                          : sale.status === 'rejected'
                             ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
                             : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                        }`}
+                          }`}
                       >
                         {sale.status === 'verified'
                           ? 'Verificado'
                           : sale.status === 'rejected'
-                          ? 'Rechazado'
-                          : 'Pendiente'}
+                            ? 'Rechazado'
+                            : 'Pendiente'}
                       </span>
                     </td>
 

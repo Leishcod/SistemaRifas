@@ -44,7 +44,7 @@ export const LoginForm: React.FC<Props> = ({ targetPanel = 'panel', onLoginSucce
   };
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="py-6 sm:py-10 max-w-md mx-auto">
       <div className="glass-panel p-8 sm:p-10 rounded-2xl border border-cyan-500/25 relative overflow-hidden shadow-2xl">
         {/* Glow de fondo */}
         <div className="absolute -top-16 -right-16 w-36 h-36 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>

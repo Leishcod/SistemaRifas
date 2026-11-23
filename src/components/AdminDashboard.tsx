@@ -59,31 +59,33 @@ export const AdminDashboard: React.FC = () => {
   // Si tiene rol delegado pero entró a /admin, mostrar aviso y redirigir
   if (authUser.role === 'delegado') {
     return (
-      <div className="glass-panel p-8 rounded-2xl border border-amber-500/30 text-center space-y-4 max-w-md mx-auto">
-        <div className="w-14 h-14 mx-auto rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-          <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        </div>
-        <h3 className="font-heading font-black text-2xl text-white">Acceso Restringido</h3>
-        <p className="text-xs text-slate-300">
-          Hola, <strong className="text-white">{authUser.fullName}</strong>. Tu cuenta tiene rol de{' '}
-          <strong>Delegado ({authUser.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${authUser.promoCode}`})</strong>.
-          La vista general está reservada exclusivamente para la directiva del CEIIS.
-        </p>
-        <div className="pt-2 flex flex-col gap-2">
-          <a
-            href="/delegados"
-            className="py-3 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-[#000c18] font-bold text-xs transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)] text-center"
-          >
-            Ir a mi Panel de Delegado (/delegados) →
-          </a>
-          <button
-            onClick={handleLogout}
-            className="py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all"
-          >
-            Cerrar Sesión
-          </button>
+      <div className="py-6 sm:py-10 max-w-md mx-auto">
+        <div className="glass-panel p-8 rounded-2xl border border-amber-500/30 text-center space-y-4">
+          <div className="w-14 h-14 mx-auto rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h3 className="font-heading font-black text-2xl text-white">Acceso Restringido</h3>
+          <p className="text-xs text-slate-300">
+            Hola, <strong className="text-white">{authUser.fullName}</strong>. Tu cuenta tiene rol de{' '}
+            <strong>Delegado ({authUser.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${authUser.promoCode}`})</strong>.
+            La vista general está reservada exclusivamente para la directiva del CEIIS.
+          </p>
+          <div className="pt-2 flex flex-col gap-2">
+            <a
+              href="/delegados"
+              className="py-3 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-[#000c18] font-bold text-xs transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)] text-center"
+            >
+              Ir a mi Panel de Delegado (/delegados) →
+            </a>
+            <button
+              onClick={handleLogout}
+              className="py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all"
+            >
+              Cerrar Sesión
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -92,23 +94,25 @@ export const AdminDashboard: React.FC = () => {
   // Si tiene rol ninguno
   if (authUser.role === 'ninguno') {
     return (
-      <div className="glass-panel p-8 rounded-2xl border border-rose-500/30 text-center space-y-4 max-w-md mx-auto">
-        <div className="w-14 h-14 mx-auto rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400">
-          <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-          </svg>
-        </div>
-        <h3 className="font-heading font-black text-2xl text-white">Acceso Denegado</h3>
-        <p className="text-xs text-slate-300">
-          Tu cuenta no cuenta con permisos de administración ni de delegado.
-        </p>
-        <div className="pt-2">
-          <button
-            onClick={handleLogout}
-            className="py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all"
-          >
-            Cerrar Sesión
-          </button>
+      <div className="py-6 sm:py-10 max-w-md mx-auto">
+        <div className="glass-panel p-8 rounded-2xl border border-rose-500/30 text-center space-y-4">
+          <div className="w-14 h-14 mx-auto rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400">
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+            </svg>
+          </div>
+          <h3 className="font-heading font-black text-2xl text-white">Acceso Denegado</h3>
+          <p className="text-xs text-slate-300">
+            Tu cuenta no cuenta con permisos de administración ni de delegado.
+          </p>
+          <div className="pt-2">
+            <button
+              onClick={handleLogout}
+              className="py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all"
+            >
+              Cerrar Sesión
+            </button>
+          </div>
         </div>
       </div>
     );
