@@ -50,8 +50,10 @@ export const DelegateDashboard: React.FC = () => {
   if (authUser.role === 'ninguno') {
     return (
       <div className="glass-panel p-8 rounded-2xl border border-rose-500/30 text-center space-y-4 max-w-md mx-auto">
-        <div className="w-14 h-14 mx-auto rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-2xl font-bold">
-          ⛔
+        <div className="w-14 h-14 mx-auto rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400">
+          <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+          </svg>
         </div>
         <h3 className="font-heading font-black text-2xl text-white">Acceso Denegado</h3>
         <p className="text-xs text-slate-300">
@@ -194,7 +196,7 @@ export const DelegateDashboard: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           {/* El código se mantiene FIJO */}
           <div className="px-3 py-2 rounded-xl bg-blue-950/60 border border-blue-500/40 text-blue-200 text-xs font-bold font-mono">
-            📌 {delegatePromo === 'CEIIS' ? 'CEIIS' : `Código ${delegatePromo}`} (Fijo)
+            {delegatePromo === 'CEIIS' ? 'CEIIS' : `Código ${delegatePromo}`} (Fijo)
           </div>
 
           {/* Status Filter */}
