@@ -481,15 +481,18 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Voucher Inspection Modal with Approval Actions for CEIIS */}
       {selectedVoucherSale && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="glass-panel w-full max-w-2xl rounded-2xl border border-cyan-500/30 overflow-hidden shadow-2xl">
-            {/* Modal Header */}
-            <div className="p-4 px-6 border-b border-cyan-500/20 flex items-center justify-between bg-[#060621]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
+          {/* Backdrop click to close */}
+          <div className="fixed inset-0 -z-10" onClick={() => setSelectedVoucherSale(null)}></div>
+
+          <div className="glass-panel w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl border border-cyan-500/30 overflow-hidden shadow-2xl my-auto">
+            {/* Modal Header: Fijo arriba */}
+            <div className="p-3.5 sm:p-4 px-4 sm:px-6 border-b border-cyan-500/20 flex items-center justify-between bg-[#060621] shrink-0">
               <div>
-                <h3 className="font-heading font-bold text-lg text-white">
+                <h3 className="font-heading font-bold text-base sm:text-lg text-white">
                   Inspección de Comprobante de Pago
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-[11px] sm:text-xs text-slate-400">
                   ID: {selectedVoucherSale.id} •{' '}
                   {selectedVoucherSale.promoCode === 'CEIIS'
                     ? 'CEIIS'
@@ -498,25 +501,25 @@ export const AdminDashboard: React.FC = () => {
               </div>
               <button
                 onClick={() => setSelectedVoucherSale(null)}
-                className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center text-sm"
               >
                 ✕
               </button>
             </div>
 
-            {/* Modal Body */}
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-              {/* Voucher Image */}
-              <div className="rounded-xl overflow-hidden border border-cyan-500/30 bg-[#030617] max-h-96 flex items-center justify-center p-2">
+            {/* Modal Body: Scrollable y táctil en móviles */}
+            <div className="p-4 sm:p-6 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 items-start md:items-center">
+              {/* Voucher Image: contenedor responsive que no se desborda */}
+              <div className="md:col-span-7 rounded-xl overflow-hidden border border-cyan-500/30 bg-[#030617] h-[220px] sm:h-[340px] md:h-[400px] flex items-center justify-center p-2 shrink-0">
                 <img
                   src={selectedVoucherSale.voucherImage}
                   alt="Voucher Ampliado"
-                  className="max-h-80 w-auto object-contain rounded-lg shadow-lg"
+                  className="max-h-full max-w-full w-auto h-auto object-contain rounded-lg shadow-xl"
                 />
               </div>
 
               {/* Sale Info Summary */}
-              <div className="space-y-4 text-xs">
+              <div className="md:col-span-5 space-y-3 sm:space-y-4 text-xs">
                 <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                   <span className="text-[10px] uppercase font-bold text-slate-400 block">
                     Comprador
@@ -554,16 +557,16 @@ export const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Status action buttons for CEIIS */}
-                <div className="pt-2 flex gap-2">
+                <div className="pt-1 flex gap-2">
                   <button
                     onClick={() => handleStatusChange(selectedVoucherSale.id, 'verified')}
-                    className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                    className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] text-xs active:scale-95"
                   >
                     Aprobar Pago
                   </button>
                   <button
                     onClick={() => handleStatusChange(selectedVoucherSale.id, 'rejected')}
-                    className="flex-1 py-2.5 rounded-xl bg-rose-600/80 hover:bg-rose-500 text-white font-bold transition-all"
+                    className="flex-1 py-2.5 rounded-xl bg-rose-600/80 hover:bg-rose-500 text-white font-bold transition-all text-xs active:scale-95"
                   >
                     Rechazar
                   </button>
