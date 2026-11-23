@@ -200,9 +200,9 @@ export const SellerRegistrationForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
           {/* Promo selector */}
-          <div>
+          <div className="sm:col-span-4">
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
               Código
             </label>
@@ -224,7 +224,7 @@ export const SellerRegistrationForm: React.FC = () => {
           </div>
 
           {/* Student code input */}
-          <div>
+          <div className="sm:col-span-8">
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
               Tu Código UNI:
             </label>
