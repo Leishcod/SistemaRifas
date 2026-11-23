@@ -28,7 +28,16 @@ export const SellerRegistrationForm: React.FC = () => {
 
   // Initialize and check code on mount or when inputs change
   useEffect(() => {
-    handleVerifyStudent(studentCodeInput, selectedPromo, false);
+    let initialPromo = selectedPromo;
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramPromo = (urlParams.get('codigo') || urlParams.get('base')) as PromoCode;
+      if (paramPromo && PROMO_CODES.includes(paramPromo)) {
+        initialPromo = paramPromo;
+        setSelectedPromo(paramPromo);
+      }
+    }
+    handleVerifyStudent(studentCodeInput, initialPromo, false);
   }, []);
 
   const handleVerifyStudent = (code: string, promo: PromoCode, showError = true) => {
@@ -58,11 +67,11 @@ export const SellerRegistrationForm: React.FC = () => {
       return;
     }
 
-    // Check if code matches the selected promo base
+    // Check if code matches the selected promo
     if (student.promoCode !== promo) {
       setAuthenticatedSeller(null);
       setCodeError(
-        `El código ${cleanCode} pertenece a la Base ${student.promoCode}, pero tienes seleccionada la Base ${promo}. Por favor selecciona tu base correcta.`
+        `El código ${cleanCode} pertenece al Código ${student.promoCode}, pero tienes seleccionado el Código ${promo}. Por favor selecciona tu código correcto.`
       );
       return;
     }
@@ -184,15 +193,15 @@ export const SellerRegistrationForm: React.FC = () => {
           </div>
           <div>
             <h2 className="font-heading font-bold text-lg text-white">Identificación del Vendedor</h2>
-            <p className="text-xs text-slate-400">Selecciona tu código de base e ingresa tu código de estudiante UNI</p>
+            <p className="text-xs text-slate-400">Selecciona tu código de ingreso e ingresa tu código de estudiante UNI</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Base selector */}
+          {/* Promo selector */}
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-              Base / Código de Ingreso:
+              Código de Ingreso:
             </label>
             <select
               value={selectedPromo}
@@ -205,7 +214,7 @@ export const SellerRegistrationForm: React.FC = () => {
             >
               {PROMO_CODES.map((code) => (
                 <option key={code} value={code} className="bg-[#060621] text-white">
-                  Base {code} (Meta: {TARGET_PER_PROMO} rifas)
+                  Código {code} (Meta: {TARGET_PER_PROMO} rifas)
                 </option>
               ))}
             </select>
@@ -258,7 +267,7 @@ export const SellerRegistrationForm: React.FC = () => {
                 <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider">Vendedor Identificado</p>
                 <p className="font-heading font-bold text-white text-base">{authenticatedSeller.fullName}</p>
                 <p className="text-xs text-slate-400 font-mono">
-                  Cód: {authenticatedSeller.studentCode} • Base {authenticatedSeller.promoCode}
+                  Cód: {authenticatedSeller.studentCode} • Código {authenticatedSeller.promoCode}
                 </p>
               </div>
             </div>

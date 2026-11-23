@@ -1,91 +1,11 @@
 import type { PromoCode, Sale, Student, PromoStats, SaleStatus } from '../types';
 import { INITIAL_STUDENTS, PROMO_CODES, TARGET_PER_PROMO, TICKET_PRICE } from '../data/students';
 
-const STUDENTS_STORAGE_KEY = 'ceiis_rifas_students';
-const SALES_STORAGE_KEY = 'ceiis_rifas_sales';
+const STUDENTS_STORAGE_KEY = 'ceiis_rifas_students_v2';
+const SALES_STORAGE_KEY = 'ceiis_rifas_sales_v2';
 
-// Ventas iniciales de muestra para que el sistema tenga métricas en vivo inmediatamente
-const INITIAL_SALES: Sale[] = [
-  {
-    id: 'sale-001',
-    ticketNumbers: [1001, 1002],
-    buyerName: 'Carlos Mendoza Silva',
-    buyerPhone: '987654321',
-    sellerStudentCode: '20244517G',
-    sellerName: 'Leonel Cruzado Vega',
-    promoCode: '24-1',
-    ticketsCount: 2,
-    unitPrice: TICKET_PRICE,
-    totalAmount: 10.0,
-    voucherImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=400&q=80',
-    operationNumber: 'OP-492817',
-    status: 'verified',
-    createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
-  },
-  {
-    id: 'sale-002',
-    ticketNumbers: [1003],
-    buyerName: 'Fernanda Ríos Prado',
-    buyerPhone: '912345678',
-    sellerStudentCode: '20244517G',
-    sellerName: 'Leonel Cruzado Vega',
-    promoCode: '24-1',
-    ticketsCount: 1,
-    unitPrice: TICKET_PRICE,
-    totalAmount: 5.0,
-    voucherImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=400&q=80',
-    operationNumber: 'OP-492992',
-    status: 'pending',
-    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-  },
-  {
-    id: 'sale-003',
-    ticketNumbers: [1004, 1005, 1006],
-    buyerName: 'Jorge Castillo Vega',
-    buyerPhone: '955443322',
-    sellerStudentCode: '20231001J',
-    sellerName: 'Joaquín Herrera Solís',
-    promoCode: '23-1',
-    ticketsCount: 3,
-    unitPrice: TICKET_PRICE,
-    totalAmount: 15.0,
-    voucherImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=400&q=80',
-    operationNumber: 'OP-510023',
-    status: 'verified',
-    createdAt: new Date(Date.now() - 3600000 * 8).toISOString(),
-  },
-  {
-    id: 'sale-004',
-    ticketNumbers: [1007, 1008],
-    buyerName: 'Lucía Torres Benítez',
-    buyerPhone: '944887711',
-    sellerStudentCode: '20251001A',
-    sellerName: 'Alejandro Vargas Rey',
-    promoCode: '25-1',
-    ticketsCount: 2,
-    unitPrice: TICKET_PRICE,
-    totalAmount: 10.0,
-    voucherImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=400&q=80',
-    operationNumber: 'OP-619283',
-    status: 'verified',
-    createdAt: new Date(Date.now() - 3600000 * 12).toISOString(),
-  },
-  {
-    id: 'sale-005',
-    ticketNumbers: [1009],
-    buyerName: 'Raúl Medina Castro',
-    buyerPhone: '933221100',
-    sellerStudentCode: '20222001A',
-    sellerName: 'Diego Chávez Alva',
-    promoCode: '22-2',
-    ticketsCount: 1,
-    unitPrice: TICKET_PRICE,
-    totalAmount: 5.0,
-    voucherImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=400&q=80',
-    status: 'pending',
-    createdAt: new Date(Date.now() - 3600000 * 1).toISOString(),
-  }
-];
+// Ventas iniciales en 0 para inicio limpio de la campaña oficial
+const INITIAL_SALES: Sale[] = [];
 
 export function getStudents(): Student[] {
   if (typeof window === 'undefined') return INITIAL_STUDENTS;
@@ -233,8 +153,8 @@ export function generateWhatsAppLink(sale: Sale, originUrl?: string): string {
   const host = originUrl || (typeof window !== 'undefined' ? window.location.origin : '');
   const ticketViewUrl = `${host}/consultar?id=${sale.id}`;
 
-  const message = `🎉 *¡HOLA ${sale.buyerName.toUpperCase()}!* 🎉\n` +
-    `Muchas gracias por participar y apoyar a la base *${sale.promoCode}* en la Gran Rifa FIIS 2026 🏛️.\n\n` +
+  const message = `*¡HOLA ${sale.buyerName.toUpperCase()}!*\n` +
+    `Muchas gracias por participar y apoyar al código *${sale.promoCode}* en la Gran Rifa FIIS 2026.\n\n` +
     `📋 *Detalles de tu compra:*\n` +
     `• Vendedor(a): ${sale.sellerName} (${sale.sellerStudentCode})\n` +
     `• Cantidad: ${sale.ticketsCount} rifa(s)\n` +

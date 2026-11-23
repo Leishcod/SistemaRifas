@@ -42,7 +42,7 @@ export const Leaderboard: React.FC = () => {
               Ranking General de Ventas
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
-              11 bases compitiendo por liderar la recaudación. Meta: 150 rifas por código.
+              11 códigos compitiendo por liderar la recaudación. Meta: 150 rifas por código.
             </p>
           </div>
 
@@ -124,7 +124,7 @@ export const Leaderboard: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-heading font-extrabold text-xl text-white group-hover:text-cyan-300 transition-colors">
-                      Base {item.promoCode}
+                      Código {item.promoCode}
                     </h3>
                     <span className="text-[11px] font-semibold text-slate-400">
                       {isTop3 ? medal : `Posición #${index + 1}`}

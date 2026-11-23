@@ -26,7 +26,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
           <div className="flex items-center justify-between gap-2 mb-3">
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-1 text-xs font-bold uppercase rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
-                Base {sale.promoCode}
+                Código {sale.promoCode}
               </span>
               <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-white/5 text-slate-300 border border-white/10">
                 CEIIS - FIIS UNI
@@ -97,7 +97,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
             </span>
             <p className="font-bold text-sm text-cyan-200">{sale.sellerName}</p>
             <p className="text-slate-300 font-mono">
-              Cód. {sale.sellerStudentCode} • Base {sale.promoCode}
+              Cód. {sale.sellerStudentCode} • Código {sale.promoCode}
             </p>
           </div>
         </div>

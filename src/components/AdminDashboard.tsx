@@ -73,7 +73,7 @@ export const AdminDashboard: React.FC = () => {
     const headers = [
       'ID Venta',
       'Fecha',
-      'Base',
+      'Código',
       'Cod Vendedor',
       'Nombre Vendedor',
       'Nombre Comprador',
@@ -190,17 +190,17 @@ export const AdminDashboard: React.FC = () => {
       {/* Filter and Search Bar */}
       <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-cyan-500/20 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
         <div className="flex flex-wrap items-center gap-3 flex-1">
-          {/* Base selector */}
+          {/* Promo selector */}
           <div className="w-full sm:w-auto">
             <select
               value={selectedPromo}
               onChange={(e) => setSelectedPromo(e.target.value as any)}
               className="w-full sm:w-auto bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400"
             >
-              {activeRole === 'admin' && <option value="all">Todas las Bases (11)</option>}
+              {activeRole === 'admin' && <option value="all">Todos los Códigos (11)</option>}
               {PROMO_CODES.map((code) => (
                 <option key={code} value={code}>
-                  Base {code}
+                  Código {code}
                 </option>
               ))}
             </select>
@@ -253,7 +253,7 @@ export const AdminDashboard: React.FC = () => {
                 <th className="py-3.5 px-4">Boletos</th>
                 <th className="py-3.5 px-4">Comprador</th>
                 <th className="py-3.5 px-4">Vendedor (Estudiante)</th>
-                <th className="py-3.5 px-4">Base</th>
+                <th className="py-3.5 px-4">Código</th>
                 <th className="py-3.5 px-4">Monto</th>
                 <th className="py-3.5 px-4">Estado</th>
                 <th className="py-3.5 px-4 text-center">Acciones</th>
@@ -313,10 +313,10 @@ export const AdminDashboard: React.FC = () => {
                       <p className="text-slate-400 font-mono text-[11px]">{sale.sellerStudentCode}</p>
                     </td>
 
-                    {/* Promo Base */}
+                    {/* Promo Code */}
                     <td className="py-3 px-4">
                       <span className="px-2 py-1 rounded-md bg-blue-950/60 border border-blue-500/40 text-blue-300 font-bold text-[11px]">
-                        Base {sale.promoCode}
+                        Código {sale.promoCode}
                       </span>
                     </td>
 
@@ -385,7 +385,7 @@ export const AdminDashboard: React.FC = () => {
             <div className="p-4 px-6 border-b border-cyan-500/20 flex items-center justify-between bg-[#060621]">
               <div>
                 <h3 className="font-heading font-bold text-lg text-white">Inspección de Comprobante de Pago</h3>
-                <p className="text-xs text-slate-400">ID: {selectedVoucherSale.id} • Base {selectedVoucherSale.promoCode}</p>
+                <p className="text-xs text-slate-400">ID: {selectedVoucherSale.id} • Código {selectedVoucherSale.promoCode}</p>
               </div>
               <button
                 onClick={() => setSelectedVoucherSale(null)}
@@ -411,14 +411,14 @@ export const AdminDashboard: React.FC = () => {
                 <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                   <span className="text-[10px] uppercase font-bold text-slate-400 block">Comprador</span>
                   <p className="text-sm font-bold text-white">{selectedVoucherSale.buyerName}</p>
-                  <p className="font-mono text-slate-300">📱 +51 {selectedVoucherSale.buyerPhone}</p>
+                  <p className="font-mono text-slate-300">+51 {selectedVoucherSale.buyerPhone}</p>
                 </div>
 
                 <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                   <span className="text-[10px] uppercase font-bold text-slate-400 block">Vendedor UNI</span>
                   <p className="text-sm font-bold text-cyan-300">{selectedVoucherSale.sellerName}</p>
                   <p className="font-mono text-slate-300">
-                    Cód: {selectedVoucherSale.sellerStudentCode} (Base {selectedVoucherSale.promoCode})
+                    Cód: {selectedVoucherSale.sellerStudentCode} (Código {selectedVoucherSale.promoCode})
                   </p>
                 </div>
 

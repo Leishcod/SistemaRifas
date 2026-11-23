@@ -78,14 +78,14 @@ import { PROMO_CODES, TARGET_PER_PROMO } from '../data/students';
           11 Códigos Participantes
         </h2>
         <p class="text-xs sm:text-sm text-slate-400 mt-1">
-          Cada base tiene una meta asignada de {TARGET_PER_PROMO} rifas. Elige tu código para registrar tus ventas.
+          Cada código tiene una meta asignada de {TARGET_PER_PROMO} rifas. Elige tu código para registrar tus ventas.
         </p>
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
         {PROMO_CODES.map((promo) => (
           <a
-            href={`/vender?base=${promo}`}
+            href={`/vender?codigo=${promo}`}
             class="tech-card group p-4 text-center block"
           >
             <span class="text-xs uppercase tracking-wider text-slate-500 font-semibold block group-hover:text-cyan-400 transition-colors">
@@ -118,7 +118,7 @@ import { PROMO_CODES, TARGET_PER_PROMO } from '../data/students';
         <div class="space-y-2 p-4 rounded-xl bg-white/[0.02] border border-white/5">
           <span class="font-heading font-bold text-cyan-400 text-sm block">Paso 2: Registro en la Web</span>
           <p>
-            Ingresas a la plataforma con tu código UNI (ej. <strong class="text-white">20244517G</strong>) y tu base. Registras el nombre del comprador, su teléfono, cantidad de rifas y subes la captura del voucher.
+            Ingresas a la plataforma con tu código UNI (ej. <strong class="text-white">20244517G</strong>) y tu código de ingreso. Registras el nombre del comprador, su teléfono, cantidad de rifas y subes la captura del voucher.
           </p>
         </div>
 
