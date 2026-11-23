@@ -47,9 +47,10 @@ const pathname = Astro.url.pathname;
     <!-- Header Navigation -->
     <header class="sticky top-0 z-50 glass-panel border-b border-cyan-500/20 bg-[#060621]/90">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
-        <!-- Brand Link: Solo texto RIFAS FIIS 2026 que lleva al inicio -->
-        <a href="/" class="font-heading font-extrabold text-lg sm:text-xl tracking-tight text-white hover:text-cyan-300 transition-colors">
-          RIFAS FIIS 2026
+        <!-- Brand Link: "RF" en celulares y "RIFAS FIIS 2026" en PC, ambos llevan al inicio -->
+        <a href="/" class="font-heading font-extrabold text-xl sm:text-xl tracking-tight text-white hover:text-cyan-300 transition-colors flex items-center gap-2">
+          <span class="sm:hidden font-black text-2xl text-cyan-400 drop-shadow-[0_0_10px_rgba(0,240,255,0.5)]">RF</span>
+          <span class="hidden sm:inline">RIFAS FIIS 2026</span>
         </a>
 
         <!-- Desktop Navigation: Se ilumina con brillo neón la sección activa -->
@@ -96,49 +97,68 @@ const pathname = Astro.url.pathname;
           </a>
         </nav>
 
-        <!-- Mobile Quick Navigation -->
-        <div class="md:hidden flex items-center gap-3 text-xs">
-          <a
-            href="/vender"
-            class={`transition-all ${
-              pathname.startsWith('/vender')
-                ? 'text-cyan-300 font-bold drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]'
-                : 'text-slate-300 hover:text-cyan-300 font-medium'
-            }`}
+        <!-- Mobile Menu Button (Ícono de lista / cuadro) -->
+        <div class="md:hidden">
+          <button
+            id="mobile-menu-btn"
+            type="button"
+            aria-label="Abrir menú"
+            class="p-2.5 rounded-xl bg-slate-900/80 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10 hover:border-cyan-400 focus:outline-none transition-all shadow-[0_0_12px_rgba(0,240,255,0.15)]"
           >
-            Vender
-          </a>
-          <a
-            href="/ranking"
-            class={`transition-all ${
-              pathname.startsWith('/ranking')
-                ? 'text-cyan-300 font-bold drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]'
-                : 'text-slate-300 hover:text-cyan-300 font-medium'
-            }`}
-          >
-            Ranking
-          </a>
-          <a
-            href="/consultar"
-            class={`transition-all ${
-              pathname.startsWith('/consultar') || pathname.startsWith('/ticket')
-                ? 'text-cyan-300 font-bold drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]'
-                : 'text-slate-300 hover:text-cyan-300 font-medium'
-            }`}
-          >
-            Consultar
-          </a>
-          <a
-            href="/panel"
-            class={`transition-all ${
-              pathname.startsWith('/panel') || pathname.startsWith('/admin') || pathname.startsWith('/delegados')
-                ? 'text-cyan-300 font-bold drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]'
-                : 'text-slate-300 hover:text-cyan-300 font-medium'
-            }`}
-          >
-            Panel
-          </a>
+            <!-- Icono de lista / hamburguesa -->
+            <svg id="menu-icon-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <!-- Icono de cerrar (X) -->
+            <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-menu" class="hidden md:hidden border-t border-cyan-500/20 bg-[#060621]/95 backdrop-blur-xl px-4 py-4 space-y-2">
+        <a
+          href="/vender"
+          class={`block px-4 py-3 rounded-xl text-sm transition-all ${
+            pathname.startsWith('/vender')
+              ? 'bg-cyan-500/15 text-cyan-300 font-bold border border-cyan-500/30 drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]'
+              : 'text-slate-300 hover:bg-white/5 hover:text-cyan-300 font-medium'
+          }`}
+        >
+          Registrar Venta
+        </a>
+        <a
+          href="/ranking"
+          class={`block px-4 py-3 rounded-xl text-sm transition-all ${
+            pathname.startsWith('/ranking')
+              ? 'bg-cyan-500/15 text-cyan-300 font-bold border border-cyan-500/30 drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]'
+              : 'text-slate-300 hover:bg-white/5 hover:text-cyan-300 font-medium'
+          }`}
+        >
+          Ranking Códigos
+        </a>
+        <a
+          href="/consultar"
+          class={`block px-4 py-3 rounded-xl text-sm transition-all ${
+            pathname.startsWith('/consultar') || pathname.startsWith('/ticket')
+              ? 'bg-cyan-500/15 text-cyan-300 font-bold border border-cyan-500/30 drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]'
+              : 'text-slate-300 hover:bg-white/5 hover:text-cyan-300 font-medium'
+          }`}
+        >
+          Consultar Boleto
+        </a>
+        <a
+          href="/panel"
+          class={`block px-4 py-3 rounded-xl text-sm transition-all ${
+            pathname.startsWith('/panel') || pathname.startsWith('/admin') || pathname.startsWith('/delegados')
+              ? 'bg-cyan-500/15 text-cyan-300 font-bold border border-cyan-500/30 drop-shadow-[0_0_10px_rgba(0,240,255,0.4)]'
+              : 'text-slate-300 hover:bg-white/5 hover:text-cyan-300 font-medium'
+          }`}
+        >
+          Panel
+        </a>
       </div>
     </header>
 
@@ -155,5 +175,28 @@ const pathname = Astro.url.pathname;
         </p>
       </div>
     </footer>
+
+    <!-- Script para abrir/cerrar el menú en celulares -->
+    <script>
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const iconOpen = document.getElementById('menu-icon-open');
+      const iconClose = document.getElementById('menu-icon-close');
+
+      if (menuBtn && mobileMenu && iconOpen && iconClose) {
+        menuBtn.addEventListener('click', () => {
+          const isHidden = mobileMenu.classList.contains('hidden');
+          if (isHidden) {
+            mobileMenu.classList.remove('hidden');
+            iconOpen.classList.add('hidden');
+            iconClose.classList.remove('hidden');
+          } else {
+            mobileMenu.classList.add('hidden');
+            iconOpen.classList.remove('hidden');
+            iconClose.classList.add('hidden');
+          }
+        });
+      }
+    </script>
   </body>
 </html>
