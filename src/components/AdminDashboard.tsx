@@ -211,7 +211,7 @@ export const AdminDashboard: React.FC = () => {
             </span>
           </div>
           <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-white">
-            Panel de Control General CEIIS - FIIS
+            Panel de Control General
           </h1>
           <p className="text-xs text-slate-400 mt-1">
             Revisión de comprobantes Plin, control de códigos y validación de boletos
@@ -222,13 +222,13 @@ export const AdminDashboard: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="text-right">
             <p className="text-sm font-bold text-white">{authUser.fullName}</p>
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 uppercase">
-              Directiva CEIIS
-            </span>
+            <p className="text-[11px] font-bold text-cyan-300 tracking-wider">
+              CEIIS
+            </p>
           </div>
           <button
             onClick={handleLogout}
-            className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-semibold transition-all active:scale-95"
+            className="px-3.5 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900 border border-rose-500/30 text-rose-300 text-xs font-bold transition-all active:scale-95"
           >
             Cerrar Sesión
           </button>
@@ -419,19 +419,18 @@ export const AdminDashboard: React.FC = () => {
                     {/* Status Badge */}
                     <td className="py-3 px-4">
                       <span
-                        className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                          sale.status === 'verified'
+                        className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${sale.status === 'verified'
                             ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                             : sale.status === 'rejected'
-                            ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                            : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                        }`}
+                              ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                              : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                          }`}
                       >
                         {sale.status === 'verified'
                           ? 'Verificado'
                           : sale.status === 'rejected'
-                          ? 'Rechazado'
-                          : 'Pendiente'}
+                            ? 'Rechazado'
+                            : 'Pendiente'}
                       </span>
                     </td>
 
