@@ -332,7 +332,7 @@ export const SellerRegistrationForm: React.FC = () => {
                 required
                 value={buyerName}
                 onChange={(e) => setBuyerName(e.target.value)}
-                placeholder="Ej. Juan Pérez García"
+                placeholder="Ej. Enrique Valdivia"
                 className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600"
               />
             </div>
