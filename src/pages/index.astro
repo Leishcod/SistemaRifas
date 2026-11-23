@@ -1,13 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Leaderboard } from '../components/Leaderboard';
-import { PROMO_CODES, TARGET_PER_PROMO } from '../data/students';
+import { PROMO_CODES } from '../data/students';
 ---
 
 <Layout title="Gran Rifa FIIS 2026 — CEIIS UNI">
-  <div class="space-y-20 sm:space-y-28">
+  <div class="space-y-16 sm:space-y-24">
     <!-- Hero Section: Centrada más abajo con espaciado vertical generoso -->
-    <section class="relative pt-16 pb-16 sm:pt-28 sm:pb-24 lg:pt-36 lg:pb-32 text-center space-y-8">
+    <section class="relative pt-12 pb-8 sm:pt-20 sm:pb-16 lg:pt-28 lg:pb-20 text-center space-y-8">
       <!-- Main Headline: Solo un título llamado RIFA FIIS con el degradado celeste exacto -->
       <div class="space-y-4 max-w-4xl mx-auto">
         <h1 class="font-heading font-black text-6xl sm:text-7xl md:text-8xl tracking-tight">
@@ -64,11 +63,6 @@ import { PROMO_CODES, TARGET_PER_PROMO } from '../data/students';
           </h4>
         </div>
       </div>
-    </section>
-
-    <!-- Leaderboard / Ranking Section -->
-    <section id="ranking" class="scroll-mt-24">
-      <Leaderboard client:load />
     </section>
 
     <!-- Códigos Participantes List -->
