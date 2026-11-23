@@ -54,7 +54,7 @@ export const Leaderboard: React.FC = () => {
               Ranking General de Ventas
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
-              Códigos y CEIIS participando en la recaudación. Meta referencial: 150 rifas por código. Estimado general: ~2,000 rifas.
+              Códigos y CEIIS participando en la recaudación. Meta referencial: 150 rifas por código.
             </p>
           </div>
 
@@ -167,15 +167,14 @@ export const Leaderboard: React.FC = () => {
                   </div>
                   <div className="w-full h-2 rounded-full bg-[#030617] overflow-hidden border border-white/5">
                     <div
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        percent >= 100
+                      className={`h-full rounded-full transition-all duration-500 ${percent >= 100
                           ? 'bg-gradient-to-r from-emerald-400 to-teal-300 shadow-[0_0_10px_rgba(52,211,153,0.5)]'
                           : percent >= 80
                             ? 'bg-emerald-400'
                             : percent >= 40
                               ? 'bg-cyan-400'
                               : 'bg-blue-500'
-                      }`}
+                        }`}
                       style={{ width: `${Math.min(100, Math.max(4, percent))}%` }}
                     ></div>
                   </div>
