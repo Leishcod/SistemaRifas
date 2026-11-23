@@ -320,7 +320,7 @@ export const AdminDashboard: React.FC = () => {
 
           <button
             onClick={exportToCSV}
-            className="px-3.5 py-2 rounded-xl bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition-all shrink-0 flex items-center gap-1.5"
+            className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)] border border-emerald-500/40"
           >
             Exportar a Excel (CSV)
           </button>
