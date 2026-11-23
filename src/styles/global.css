@@ -57,6 +57,16 @@
   box-shadow: 0 0 25px rgba(37, 99, 235, 0.25), inset 0 0 15px rgba(59, 130, 246, 0.08);
 }
 
+.rifa-hero-gradient {
+  display: inline-block;
+  background: linear-gradient(90deg, #50b0fc 0%, #4bdbff 35%, #50ecfc 55%, #85cefc 85%, #9bc7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 25px rgba(34, 211, 238, 0.45));
+}
+
 .glow-text-cyan {
   text-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
 }
