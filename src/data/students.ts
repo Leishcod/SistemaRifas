@@ -2,7 +2,6 @@ import type { PromoCode, Student } from '../types';
 
 export const PROMO_CODES: PromoCode[] = [
   '21',
-  '22-1',
   '22-2',
   '23-1',
   '23-2',
