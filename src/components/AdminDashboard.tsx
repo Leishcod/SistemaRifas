@@ -53,7 +53,18 @@ export const AdminDashboard: React.FC = () => {
 
   // Si no ha iniciado sesión, mostrar login
   if (!authUser) {
-    return <LoginForm targetPanel="admin" onLoginSuccess={(user) => setAuthUser(user)} />;
+    return (
+      <LoginForm
+        targetPanel="admin"
+        onLoginSuccess={(user) => {
+          if (user.role === 'delegado') {
+            window.location.href = '/delegados';
+          } else {
+            setAuthUser(user);
+          }
+        }}
+      />
+    );
   }
 
   // Si tiene rol delegado pero entró a /admin, mostrar aviso y redirigir
@@ -67,17 +78,17 @@ export const AdminDashboard: React.FC = () => {
             </svg>
           </div>
           <h3 className="font-heading font-black text-2xl text-white">Acceso Restringido</h3>
-          <p className="text-xs text-slate-300">
+          <p className="text-[16px] text-slate-300">
             Hola, <strong className="text-white">{authUser.fullName}</strong>. Tu cuenta tiene rol de{' '}
             <strong>Delegado ({authUser.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${authUser.promoCode}`})</strong>.
-            La vista general está reservada exclusivamente para la directiva del CEIIS.
+            La vista general está reservada exclusivamente para el CEIIS.
           </p>
           <div className="pt-2 flex flex-col gap-2">
             <a
               href="/delegados"
               className="py-3 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-[#000c18] font-bold text-xs transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)] text-center"
             >
-              Ir a mi Panel de Delegado (/delegados) →
+              Ir a mi Panel de Delegado
             </a>
             <button
               onClick={handleLogout}
@@ -424,10 +435,10 @@ export const AdminDashboard: React.FC = () => {
                     <td className="py-3 px-4">
                       <span
                         className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${sale.status === 'verified'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                            : sale.status === 'rejected'
-                              ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                              : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                          : sale.status === 'rejected'
+                            ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                            : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
                           }`}
                       >
                         {sale.status === 'verified'
