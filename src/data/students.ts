@@ -12,6 +12,7 @@ export const PROMO_CODES: PromoCode[] = [
   '25-2',
   '26-1',
   '26-2',
+  'CEIIS',
 ];
 
 export const TICKET_PRICE = 3.0; // S/. 3.00 por rifa

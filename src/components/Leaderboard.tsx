@@ -42,7 +42,7 @@ export const Leaderboard: React.FC = () => {
               Ranking General de Ventas
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
-              11 códigos compitiendo por liderar la recaudación. Meta: 150 rifas por código.
+              Códigos y CEIIS compitiendo por liderar la recaudación. Meta: 150 rifas por código.
             </p>
           </div>
 

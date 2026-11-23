@@ -9,7 +9,8 @@ export type PromoCode =
   | '25-1' 
   | '25-2' 
   | '26-1' 
-  | '26-2';
+  | '26-2'
+  | 'CEIIS';
 
 export interface Student {
   studentCode: string; // e.g. "20244517G"

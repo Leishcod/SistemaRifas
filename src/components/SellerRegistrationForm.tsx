@@ -214,7 +214,7 @@ export const SellerRegistrationForm: React.FC = () => {
             >
               {PROMO_CODES.map((code) => (
                 <option key={code} value={code} className="bg-[#060621] text-white">
-                  Código {code}
+                  {code === 'CEIIS' ? 'CEIIS' : `Código ${code}`}
                 </option>
               ))}
             </select>

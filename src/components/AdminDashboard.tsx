@@ -197,10 +197,10 @@ export const AdminDashboard: React.FC = () => {
               onChange={(e) => setSelectedPromo(e.target.value as any)}
               className="w-full sm:w-auto bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400"
             >
-              {activeRole === 'admin' && <option value="all">Todos los Códigos (11)</option>}
+              {activeRole === 'admin' && <option value="all">Todos los Códigos ({PROMO_CODES.length})</option>}
               {PROMO_CODES.map((code) => (
                 <option key={code} value={code}>
-                  Código {code}
+                  {code === 'CEIIS' ? 'CEIIS' : `Código ${code}`}
                 </option>
               ))}
             </select>
