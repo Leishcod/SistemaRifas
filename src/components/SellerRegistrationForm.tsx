@@ -44,7 +44,7 @@ export const SellerRegistrationForm: React.FC = () => {
     });
   }, []);
 
-  const handleVerifyStudent = (code: string, promo: PromoCode, showError = true) => {
+  const handleVerifyStudent = (code: string, promo: PromoCode, showError = true, autoSelect = false) => {
     setCodeError(null);
     const cleanCode = code.trim().toUpperCase();
 
@@ -72,16 +72,40 @@ export const SellerRegistrationForm: React.FC = () => {
       return;
     }
 
-    // Check if code matches the selected promo
-    if (student.promoCode !== promo) {
+    // Regla de Código Efectivo:
+    // Si rol es 'ceiis' -> Su código oficial es 'CEIIS'.
+    // Si rol es 'delegado' o 'ninguno' -> Su código oficial es su base de ingreso (student.promoCode).
+    const effectivePromo: PromoCode = student.role === 'ceiis' ? 'CEIIS' : student.promoCode;
+
+    // Si viene de auto-selección o detección automática al escribir:
+    let currentPromo = promo;
+    if (autoSelect && promo !== effectivePromo) {
+      setSelectedPromo(effectivePromo);
+      currentPromo = effectivePromo;
+    }
+
+    // Check si coincide con el código efectivo
+    if (currentPromo !== effectivePromo) {
       setAuthenticatedSeller(null);
-      setCodeError(
-        `El código ${cleanCode} pertenece al Código ${student.promoCode}, pero tienes seleccionado el Código ${promo}. Por favor selecciona tu código correcto.`
-      );
+      if (student.role === 'ceiis') {
+        setCodeError(
+          `Tu cuenta (${student.fullName}) pertenece a la directiva CEIIS. Por favor selecciona el Código CEIIS.`
+        );
+      } else {
+        setCodeError(
+          `El código ${cleanCode} pertenece al Código ${student.promoCode}. El Código CEIIS está reservado para la directiva.`
+        );
+      }
       return;
     }
 
-    setAuthenticatedSeller(student);
+    // Autenticar al vendedor con el código de recaudación oficial
+    const effectiveStudent: Student = {
+      ...student,
+      promoCode: effectivePromo,
+    };
+
+    setAuthenticatedSeller(effectiveStudent);
     updateSellerProgress(cleanCode);
   };
 
@@ -211,7 +235,9 @@ export const SellerRegistrationForm: React.FC = () => {
               onChange={(e) => {
                 const newPromo = e.target.value as PromoCode;
                 setSelectedPromo(newPromo);
-                handleVerifyStudent(studentCodeInput, newPromo, true);
+                if (studentCodeInput.trim()) {
+                  handleVerifyStudent(studentCodeInput, newPromo, true, false);
+                }
               }}
               className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
             >
@@ -235,15 +261,25 @@ export const SellerRegistrationForm: React.FC = () => {
                 onChange={(e) => {
                   const val = e.target.value.toUpperCase();
                   setStudentCodeInput(val);
+                  if (val.length >= 8) {
+                    handleVerifyStudent(val, selectedPromo, false, true);
+                  } else {
+                    setAuthenticatedSeller(null);
+                    setCodeError(null);
+                  }
                 }}
-                onBlur={() => handleVerifyStudent(studentCodeInput, selectedPromo, true)}
+                onBlur={() => {
+                  if (studentCodeInput.trim()) {
+                    handleVerifyStudent(studentCodeInput, selectedPromo, true, true);
+                  }
+                }}
                 placeholder="Ej. 20244517G"
                 maxLength={10}
                 className="w-full uppercase font-mono tracking-wider bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600"
               />
               <button
                 type="button"
-                onClick={() => handleVerifyStudent(studentCodeInput, selectedPromo, true)}
+                onClick={() => handleVerifyStudent(studentCodeInput, selectedPromo, true, true)}
                 className="px-4 py-3 bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 border border-cyan-500/30 text-white rounded-xl text-xs font-bold transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
               >
                 Verificar
