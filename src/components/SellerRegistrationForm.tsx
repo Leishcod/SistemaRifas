@@ -61,6 +61,7 @@ export const SellerRegistrationForm: React.FC = () => {
           studentCode: cleanCode,
           fullName: `Estudiante ${cleanCode}`,
           promoCode: promo,
+          role: 'ninguno',
         };
         setAuthenticatedSeller(dynamicStudent);
         updateSellerProgress(cleanCode);

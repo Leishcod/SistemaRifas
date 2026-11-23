@@ -18,7 +18,7 @@ export interface Student {
   fullName: string;
   promoCode: PromoCode;
   email?: string;
-  role: UserRole;
+  role?: UserRole;
   password?: string;
 }
 

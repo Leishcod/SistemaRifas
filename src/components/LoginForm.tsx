@@ -65,12 +65,9 @@ export const LoginForm: React.FC<Props> = ({ targetPanel = 'panel', onLoginSucce
             {targetPanel === 'admin'
               ? 'Acceso Administrador CEIIS'
               : targetPanel === 'delegados'
-              ? 'Acceso Delegados FIIS'
-              : 'Acceso al Panel Oficial'}
+                ? 'Acceso Delegados FIIS'
+                : 'Acceso al Panel Oficial'}
           </h2>
-          <p className="text-xs text-slate-300 mt-1">
-            Ingresa tu código de estudiante o usuario y contraseña autorizada
-          </p>
         </div>
 
         {errorMessage && (
@@ -122,7 +119,7 @@ export const LoginForm: React.FC<Props> = ({ targetPanel = 'panel', onLoginSucce
           <p>
             ¿Eres delegado o directivo y no tienes contraseña?{' '}
             <span className="text-cyan-400 block sm:inline font-medium">
-              Comunícate con la directiva del CEIIS.
+              Comunícate con el CEIIS.
             </span>
           </p>
         </div>
