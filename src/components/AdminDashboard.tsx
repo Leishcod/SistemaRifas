@@ -485,11 +485,11 @@ export const AdminDashboard: React.FC = () => {
           {/* Backdrop click to close */}
           <div className="fixed inset-0 -z-10" onClick={() => setSelectedVoucherSale(null)}></div>
 
-          <div className="glass-panel w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl border border-cyan-500/30 overflow-hidden shadow-2xl my-auto">
+          <div className="glass-panel w-full max-w-6xl xl:max-w-7xl max-h-[95vh] flex flex-col rounded-2xl border border-cyan-500/30 overflow-hidden shadow-2xl my-auto">
             {/* Modal Header: Fijo arriba */}
-            <div className="p-3.5 sm:p-4 px-4 sm:px-6 border-b border-cyan-500/20 flex items-center justify-between bg-[#060621] shrink-0">
+            <div className="p-3.5 sm:p-5 px-4 sm:px-8 border-b border-cyan-500/20 flex items-center justify-between bg-[#060621] shrink-0">
               <div>
-                <h3 className="font-heading font-bold text-base sm:text-lg text-white">
+                <h3 className="font-heading font-bold text-base sm:text-xl text-white">
                   Inspección de Comprobante de Pago
                 </h3>
                 <p className="text-[11px] sm:text-xs text-slate-400">
@@ -501,41 +501,41 @@ export const AdminDashboard: React.FC = () => {
               </div>
               <button
                 onClick={() => setSelectedVoucherSale(null)}
-                className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center text-sm"
+                className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center text-sm transition-colors"
               >
                 ✕
               </button>
             </div>
 
-            {/* Modal Body: Scrollable y táctil en móviles */}
-            <div className="p-4 sm:p-6 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 items-start md:items-center">
-              {/* Voucher Image: contenedor responsive que no se desborda */}
-              <div className="md:col-span-7 rounded-xl overflow-hidden border border-cyan-500/30 bg-[#030617] h-[220px] sm:h-[340px] md:h-[400px] flex items-center justify-center p-2 shrink-0">
+            {/* Modal Body: Proporción 7 a 5 en PC para imagen ultra espaciosa */}
+            <div className="p-4 sm:p-8 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-8 items-start md:items-center">
+              {/* Voucher Image: contenedor adaptable sin altura forzada en móvil para evitar recortes o cajas vacías gigantes */}
+              <div className="md:col-span-7 lg:col-span-8 rounded-2xl overflow-hidden border border-cyan-500/30 bg-[#030617] h-auto max-h-[50vh] md:max-h-none md:h-[620px] lg:h-[700px] flex items-center justify-center p-2 sm:p-4 shrink-0">
                 <img
                   src={selectedVoucherSale.voucherImage}
                   alt="Voucher Ampliado"
-                  className="max-h-full max-w-full w-auto h-auto object-contain rounded-lg shadow-xl"
+                  className="max-h-[48vh] md:max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl"
                 />
               </div>
 
               {/* Sale Info Summary */}
-              <div className="md:col-span-5 space-y-3 sm:space-y-4 text-xs">
-                <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
+              <div className="md:col-span-5 lg:col-span-4 space-y-4 text-xs sm:text-sm">
+                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                  <span className="text-[10px] sm:text-[11px] uppercase font-bold text-slate-400 block tracking-wider">
                     Comprador
                   </span>
-                  <p className="text-sm font-bold text-white">{selectedVoucherSale.buyerName}</p>
-                  <p className="font-mono text-slate-300">+51 {selectedVoucherSale.buyerPhone}</p>
+                  <p className="text-base sm:text-lg font-bold text-white">{selectedVoucherSale.buyerName}</p>
+                  <p className="font-mono text-slate-300 text-xs sm:text-sm">+51 {selectedVoucherSale.buyerPhone}</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                  <span className="text-[10px] sm:text-[11px] uppercase font-bold text-slate-400 block tracking-wider">
                     Vendedor(a) Autorizado(a)
                   </span>
-                  <p className="text-sm font-bold text-cyan-300">
+                  <p className="text-base sm:text-lg font-bold text-cyan-300">
                     {selectedVoucherSale.sellerName}
                   </p>
-                  <p className="font-mono text-slate-300">
+                  <p className="font-mono text-slate-300 text-xs sm:text-sm">
                     Cód: {selectedVoucherSale.sellerStudentCode} (
                     {selectedVoucherSale.promoCode === 'CEIIS'
                       ? 'CEIIS'
@@ -544,29 +544,29 @@ export const AdminDashboard: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-gradient-to-r from-blue-950/40 to-cyan-950/40 border border-cyan-500/20 space-y-1">
+                <div className="p-4 rounded-xl bg-gradient-to-r from-blue-950/40 to-cyan-950/40 border border-cyan-500/20 space-y-1.5">
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-300 font-semibold">Total a verificar:</span>
-                    <span className="text-lg font-heading font-extrabold text-cyan-300">
+                    <span className="text-slate-300 font-semibold text-xs sm:text-sm">Total a verificar:</span>
+                    <span className="text-xl sm:text-2xl font-heading font-extrabold text-cyan-300">
                       S/. {selectedVoucherSale.totalAmount.toFixed(2)}
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-xs text-slate-400">
                     Boletos: {selectedVoucherSale.ticketNumbers.map((n) => `N°${n}`).join(', ')}
                   </p>
                 </div>
 
                 {/* Status action buttons for CEIIS */}
-                <div className="pt-1 flex gap-2">
+                <div className="pt-2 flex gap-3">
                   <button
                     onClick={() => handleStatusChange(selectedVoucherSale.id, 'verified')}
-                    className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] text-xs active:scale-95"
+                    className="flex-1 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] text-xs sm:text-sm active:scale-95"
                   >
                     Aprobar Pago
                   </button>
                   <button
                     onClick={() => handleStatusChange(selectedVoucherSale.id, 'rejected')}
-                    className="flex-1 py-2.5 rounded-xl bg-rose-600/80 hover:bg-rose-500 text-white font-bold transition-all text-xs active:scale-95"
+                    className="flex-1 py-3 rounded-xl bg-rose-600/80 hover:bg-rose-500 text-white font-bold transition-all text-xs sm:text-sm active:scale-95"
                   >
                     Rechazar
                   </button>
