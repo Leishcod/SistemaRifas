@@ -64,7 +64,7 @@ export const SellerRegistrationForm: React.FC = () => {
         const dynamicStudent: Student = {
           studentCode: cleanCode,
           fullName: `Estudiante ${cleanCode}`,
-          promoCode: promo,
+          promoCode: (promo || '24-2') as PromoCode,
           role: 'ninguno',
         };
         setAuthenticatedSeller(dynamicStudent);
