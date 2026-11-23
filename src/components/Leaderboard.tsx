@@ -21,8 +21,8 @@ export const Leaderboard: React.FC = () => {
     setStats(data);
   };
 
-  const filteredStats = selectedPromoFilter === 'all' 
-    ? stats 
+  const filteredStats = selectedPromoFilter === 'all'
+    ? stats
     : stats.filter((s) => s.promoCode === selectedPromoFilter);
 
   const totalSoldAll = stats.reduce((acc, s) => acc + s.soldTickets, 0);
@@ -38,12 +38,6 @@ export const Leaderboard: React.FC = () => {
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-              <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-                Guerra de Códigos FIIS 2026
-              </span>
-            </div>
             <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-white">
               Ranking General de Ventas
             </h2>
@@ -90,11 +84,10 @@ export const Leaderboard: React.FC = () => {
         <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#030617] border border-cyan-500/20 text-xs">
           <button
             onClick={() => setSelectedPromoFilter('all')}
-            className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
-              selectedPromoFilter === 'all'
-                ? 'bg-cyan-500 text-[#000c18] shadow-[0_0_10px_rgba(0,240,255,0.4)]'
-                : 'text-slate-300 hover:text-white'
-            }`}
+            className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${selectedPromoFilter === 'all'
+              ? 'bg-cyan-500 text-[#000c18] shadow-[0_0_10px_rgba(0,240,255,0.4)]'
+              : 'text-slate-300 hover:text-white'
+              }`}
           >
             Todos los Códigos ({stats.length})
           </button>
@@ -111,24 +104,22 @@ export const Leaderboard: React.FC = () => {
           return (
             <div
               key={item.promoCode}
-              className={`glass-panel rounded-2xl p-5 border transition-all relative overflow-hidden group ${
-                index === 0 && selectedPromoFilter === 'all'
-                  ? 'border-yellow-400/40 bg-gradient-to-b from-yellow-950/20 to-[#080f26]'
-                  : 'border-cyan-500/20 hover:border-cyan-400/40'
-              }`}
+              className={`glass-panel rounded-2xl p-5 border transition-all relative overflow-hidden group ${index === 0 && selectedPromoFilter === 'all'
+                ? 'border-yellow-400/40 bg-gradient-to-b from-yellow-950/20 to-[#080f26]'
+                : 'border-cyan-500/20 hover:border-cyan-400/40'
+                }`}
             >
               {/* Header */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-heading font-black text-lg ${
-                    index === 0
-                      ? 'bg-gradient-to-tr from-yellow-500 to-amber-300 text-[#060621] shadow-[0_0_15px_rgba(250,204,21,0.4)]'
-                      : index === 1
+                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-heading font-black text-lg ${index === 0
+                    ? 'bg-gradient-to-tr from-yellow-500 to-amber-300 text-[#060621] shadow-[0_0_15px_rgba(250,204,21,0.4)]'
+                    : index === 1
                       ? 'bg-gradient-to-tr from-slate-300 to-slate-100 text-[#060621]'
                       : index === 2
-                      ? 'bg-gradient-to-tr from-amber-700 to-amber-500 text-white'
-                      : 'bg-[#030617] border border-cyan-500/30 text-cyan-300'
-                  }`}>
+                        ? 'bg-gradient-to-tr from-amber-700 to-amber-500 text-white'
+                        : 'bg-[#030617] border border-cyan-500/30 text-cyan-300'
+                    }`}>
                     {index + 1}
                   </div>
                   <div>
@@ -157,13 +148,12 @@ export const Leaderboard: React.FC = () => {
                 </div>
                 <div className="w-full h-2 rounded-full bg-[#030617] overflow-hidden border border-white/5">
                   <div
-                    className={`h-full rounded-full transition-all duration-500 ${
-                      percent >= 80
-                        ? 'bg-emerald-400'
-                        : percent >= 40
+                    className={`h-full rounded-full transition-all duration-500 ${percent >= 80
+                      ? 'bg-emerald-400'
+                      : percent >= 40
                         ? 'bg-cyan-400'
                         : 'bg-blue-500'
-                    }`}
+                      }`}
                     style={{ width: `${Math.max(4, percent)}%` }}
                   ></div>
                 </div>
