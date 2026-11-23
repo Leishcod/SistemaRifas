@@ -87,15 +87,11 @@ export const SellerRegistrationForm: React.FC = () => {
     // Check si coincide con el código efectivo
     if (currentPromo !== effectivePromo) {
       setAuthenticatedSeller(null);
-      if (student.role === 'ceiis') {
-        setCodeError(
-          `Tu cuenta (${student.fullName}) pertenece a la directiva CEIIS. Por favor selecciona el Código CEIIS.`
-        );
-      } else {
-        setCodeError(
-          `El código ${cleanCode} pertenece al Código ${student.promoCode}. El Código CEIIS está reservado para la directiva.`
-        );
-      }
+      const expectedText = effectivePromo === 'CEIIS' ? 'Código CEIIS' : `Código ${effectivePromo}`;
+      const selectedText = currentPromo === 'CEIIS' ? 'Código CEIIS' : `Código ${currentPromo}`;
+      setCodeError(
+        `El código ${cleanCode} pertenece al ${expectedText}, pero tienes seleccionado el ${selectedText}. Por favor selecciona tu código correcto.`
+      );
       return;
     }
 
