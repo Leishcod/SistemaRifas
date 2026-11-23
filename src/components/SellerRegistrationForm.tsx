@@ -244,7 +244,7 @@ export const SellerRegistrationForm: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleVerifyStudent(studentCodeInput, selectedPromo, true)}
-                className="px-4 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold transition-all shadow-[0_0_15px_rgba(0,240,255,0.25)]"
+                className="px-4 py-3 bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 border border-cyan-500/30 text-white rounded-xl text-xs font-bold transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
               >
                 Verificar
               </button>
@@ -303,7 +303,7 @@ export const SellerRegistrationForm: React.FC = () => {
           <div className="text-center pt-4">
             <button
               onClick={handleResetForNewSale}
-              className="py-3 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-sm shadow-[0_0_20px_rgba(0,240,255,0.25)] transition-all"
+              className="py-3 px-6 rounded-xl bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 border border-cyan-500/30 text-white font-bold text-sm shadow-[0_0_20px_rgba(0,240,255,0.2)] transition-all"
             >
               Registrar Otra Venta
             </button>
@@ -484,7 +484,7 @@ export const SellerRegistrationForm: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting || !authenticatedSeller}
-              className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-heading font-bold text-base tracking-wide shadow-[0_0_25px_rgba(0,240,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.99] flex items-center justify-center gap-2"
+              className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-700 to-cyan-700 hover:from-blue-600 hover:via-indigo-600 hover:to-cyan-600 border border-cyan-500/30 text-white font-heading font-bold text-base tracking-wide shadow-[0_0_25px_rgba(0,240,255,0.25)] disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.99] flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>

@@ -111,7 +111,7 @@ export const LoginForm: React.FC<Props> = ({ targetPanel = 'panel', onLoginSucce
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-sm tracking-wide shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all active:scale-[0.98] disabled:opacity-50 mt-2"
+            className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-blue-700 via-indigo-700 to-cyan-700 hover:from-blue-600 hover:via-indigo-600 hover:to-cyan-600 border border-cyan-500/30 text-white font-bold text-sm tracking-wide shadow-[0_0_20px_rgba(0,240,255,0.25)] transition-all active:scale-[0.98] disabled:opacity-50 mt-2"
           >
             {isLoading ? 'Comprobando credenciales...' : 'Acceder'}
           </button>

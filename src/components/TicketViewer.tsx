@@ -120,7 +120,7 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
           />
           <button
             type="submit"
-            className="px-5 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all"
+            className="px-5 py-3 bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 border border-cyan-500/30 text-white font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(0,240,255,0.2)] transition-all"
           >
             Buscar
           </button>
