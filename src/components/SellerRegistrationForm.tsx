@@ -393,8 +393,8 @@ export const SellerRegistrationForm: React.FC = () => {
                       type="button"
                       onClick={() => setTicketsCount(qty)}
                       className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${ticketsCount === qty
-                          ? 'bg-cyan-500 text-[#000c18] font-bold'
-                          : 'bg-white/5 hover:bg-white/10 text-slate-300'
+                        ? 'bg-cyan-500 text-[#000c18] font-bold'
+                        : 'bg-white/5 hover:bg-white/10 text-slate-300'
                         }`}
                     >
                       {qty}
