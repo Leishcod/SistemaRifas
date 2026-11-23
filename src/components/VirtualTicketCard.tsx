@@ -8,10 +8,6 @@ interface Props {
 }
 
 export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = true }) => {
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(
-    typeof window !== 'undefined' ? `${window.location.origin}/ticket/${sale.id}` : `https://rifa-fiis.ceiis.uni.edu.pe/ticket/${sale.id}`
-  )}&bgcolor=060621&color=00f0ff`;
-
   const waLink = generateWhatsAppLink(sale);
 
   return (
@@ -22,97 +18,112 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
         <div className="h-2 w-full bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500"></div>
 
         {/* Header Section */}
-        <div className="p-6 pb-4 border-b border-cyan-500/20 bg-blue-950/20">
-          <div className="flex items-center justify-between gap-2 mb-3">
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 text-xs font-bold uppercase rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
-                Código {sale.promoCode}
-              </span>
-              <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-white/5 text-slate-300 border border-white/10">
-                CEIIS - FIIS UNI
-              </span>
-            </div>
-            <div className="text-right">
-              <span className="text-[11px] font-mono text-slate-400 block">ID #{sale.id.slice(-6)}</span>
-              <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full inline-block mt-0.5 ${
+        <div className="p-5 sm:p-6 pb-4 border-b border-cyan-500/20 bg-blue-950/20">
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="font-heading font-extrabold text-xl text-white tracking-wide">
+              GRAN RIFA FIIS 2026
+            </h3>
+            <span
+              className={`text-xs font-bold px-3 py-1 rounded-full border shadow-sm shrink-0 ${
                 sale.status === 'verified'
-                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                   : sale.status === 'rejected'
-                  ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                  : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-              }`}>
-                {sale.status === 'verified' ? 'Pago Verificado' : sale.status === 'rejected' ? 'Rechazado' : 'Pago Pendiente'}
-              </span>
-            </div>
+                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                    : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+              }`}
+            >
+              {sale.status === 'verified'
+                ? 'Pago Verificado'
+                : sale.status === 'rejected'
+                  ? 'Rechazado'
+                  : 'Pago Pendiente'}
+            </span>
           </div>
+        </div>
 
-          <h3 className="font-heading font-extrabold text-xl text-white tracking-wide">
-            GRAN RIFA PRO-FONDOS FIIS 2026
-          </h3>
-          <p className="text-xs text-slate-300 mt-0.5">
-            Participa por grandes premios tecnológicos y sorpresas exclusivas.
-          </p>
+        {/* Espacio para la Imagen del Boleto de la Rifa */}
+        <div className="p-4 sm:p-5 bg-[#030617]/60">
+          <div className="relative w-full aspect-[2/1] sm:aspect-[21/9] rounded-xl border-2 border-dashed border-cyan-500/30 bg-gradient-to-r from-blue-950/40 via-cyan-950/30 to-indigo-950/40 flex flex-col items-center justify-center p-6 text-center overflow-hidden">
+            <div className="w-12 h-12 mb-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-300">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <p className="text-base sm:text-lg font-bold text-cyan-200 tracking-wide font-heading">
+              (imagen del boleto genérico)
+            </p>
+            <p className="text-xs text-slate-400 mt-1">
+              Diseño oficial de la Gran Rifa FIIS 2026
+            </p>
+          </div>
         </div>
 
         {/* Perforated Divider with Side Notches */}
-        <div className="relative py-2 flex items-center justify-between overflow-hidden">
+        <div className="relative py-1 flex items-center justify-between overflow-hidden">
           <div className="w-5 h-5 rounded-full bg-[#000c18] -ml-2.5 border-r border-cyan-500/30"></div>
           <div className="flex-1 border-b-2 border-dashed border-cyan-500/25 mx-2"></div>
           <div className="w-5 h-5 rounded-full bg-[#000c18] -mr-2.5 border-l border-cyan-500/30"></div>
         </div>
 
-        {/* Middle Numbers Section */}
-        <div className="px-6 py-4 bg-gradient-to-r from-cyan-950/20 via-blue-950/30 to-indigo-950/20 text-center">
-          <span className="text-xs uppercase tracking-widest text-cyan-400 font-semibold block mb-1">
-            {sale.ticketsCount > 1 ? 'Números Oficiales Asignados' : 'Número Oficial Asignado'}
-          </span>
-          <div className="flex flex-wrap items-center justify-center gap-2 my-2">
-            {sale.ticketNumbers.map((num) => (
-              <div
-                key={num}
-                className="px-4 py-2 rounded-xl bg-[#060621] border border-cyan-400/40 shadow-[0_0_15px_rgba(0,240,255,0.2)] text-2xl font-mono font-black text-cyan-300 tracking-wider"
-              >
-                N° {String(num).padStart(4, '0')}
-              </div>
-            ))}
+        {/* Numbers, Total, Buyer & Seller Information */}
+        <div className="p-5 sm:p-6 pt-3 space-y-4">
+          {/* Números de Rifa Vendidos, Total y Precio */}
+          <div className="p-4 rounded-xl bg-gradient-to-r from-cyan-950/25 via-blue-950/35 to-indigo-950/25 border border-cyan-500/25 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-white/10 pb-2.5">
+              <span className="text-xs uppercase tracking-wider font-bold text-cyan-400">
+                {sale.ticketsCount > 1 ? 'Números de Rifa Vendidos' : 'Número de Rifa Vendido'}
+              </span>
+              <span className="text-xs text-slate-300 font-semibold">
+                Total: <span className="text-cyan-300 font-bold">{sale.ticketsCount} {sale.ticketsCount > 1 ? 'boletos' : 'boleto'}</span> — <span className="text-emerald-400 font-bold">S/. {sale.totalAmount.toFixed(2)}</span>
+              </span>
+            </div>
+
+            {/* Badges de números de rifa vendidos (1 al n) */}
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              {sale.ticketNumbers.map((num) => (
+                <span
+                  key={num}
+                  className="px-3.5 py-1.5 rounded-lg bg-[#060621] border border-cyan-400/50 shadow-[0_0_12px_rgba(0,240,255,0.2)] text-cyan-300 font-mono font-black text-lg tracking-wider"
+                >
+                  N° {num}
+                </span>
+              ))}
+            </div>
           </div>
-          <span className="text-[11px] text-slate-400">
-            Total: {sale.ticketsCount} boleto(s) — S/. {sale.totalAmount.toFixed(2)}
-          </span>
+
+          {/* Comprador y Vendedor */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div className="space-y-1.5 p-3.5 rounded-xl bg-white/[0.03] border border-white/10">
+              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">
+                Comprador(a)
+              </span>
+              <p className="font-bold text-sm text-white">{sale.buyerName}</p>
+              <p className="text-slate-300 font-mono">+51 {sale.buyerPhone}</p>
+            </div>
+
+            <div className="space-y-1.5 p-3.5 rounded-xl bg-white/[0.03] border border-white/10">
+              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">
+                Vendedor(a) Autorizado(a)
+              </span>
+              <p className="font-bold text-sm text-cyan-200">{sale.sellerName}</p>
+              <p className="text-slate-300 font-mono">
+                Cód. {sale.sellerStudentCode} • {sale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${sale.promoCode}`}
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Buyer & Seller Info Body */}
-        <div className="p-6 pt-3 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-          <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-            <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">
-              Comprador(a)
-            </span>
-            <p className="font-bold text-sm text-white">{sale.buyerName}</p>
-            <p className="text-slate-300 font-mono">+51 {sale.buyerPhone}</p>
-          </div>
-
-          <div className="space-y-1.5 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-            <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">
-              Vendedor(a) Autorizado(a)
-            </span>
-            <p className="font-bold text-sm text-cyan-200">{sale.sellerName}</p>
-            <p className="text-slate-300 font-mono">
-              Cód. {sale.sellerStudentCode} • Código {sale.promoCode}
-            </p>
-          </div>
-        </div>
-
-        {/* Footer with QR Code and Validity note */}
-        <div className="px-6 py-4 bg-[#05081c] border-t border-cyan-500/20 flex items-center justify-between gap-4">
-          <div className="space-y-1">
-            <p className="text-[11px] text-slate-300 font-medium">Boleto Digital Autenticado</p>
-            <p className="text-[10px] text-slate-500">
-              Emitido: {new Date(sale.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-            </p>
-          </div>
-          <div className="p-1 rounded-lg bg-[#060621] border border-cyan-500/40 shadow-sm shrink-0">
-            <img src={qrUrl} alt="QR Verificación" className="w-14 h-14 rounded" />
-          </div>
+        {/* Footer with Validity note */}
+        <div className="px-6 py-3.5 bg-[#05081c] border-t border-cyan-500/20 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+          <p className="text-[11px] text-slate-300 font-medium">Boleto Digital Autenticado</p>
+          <p className="text-[10px] text-slate-500">
+            Emitido: {new Date(sale.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+          </p>
         </div>
       </div>
 

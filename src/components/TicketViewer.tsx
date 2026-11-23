@@ -80,7 +80,7 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Ej. 987654321 o N° de boleto (1001)"
+            placeholder="Ej. 987654321 o N° de boleto (ej. 1)"
             className="flex-1 bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 placeholder:text-slate-600 font-mono"
           />
           <button

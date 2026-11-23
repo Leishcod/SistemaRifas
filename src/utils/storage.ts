@@ -147,7 +147,7 @@ export function getNextTicketNumbers(count: number): number[] {
   const allAssigned = new Set(sales.flatMap((s) => s.ticketNumbers));
   const newNumbers: number[] = [];
 
-  let candidate = 1001; // Empezamos en 1001
+  let candidate = 1; // Numeración oficial del 1 al n
   while (newNumbers.length < count) {
     if (!allAssigned.has(candidate)) {
       newNumbers.push(candidate);
@@ -286,7 +286,7 @@ export function getPromoStats(): PromoStats[] {
 // ---------------------------------------------------------------------------
 export function generateWhatsAppLink(sale: Sale, originUrl?: string): string {
   const phone = sale.buyerPhone.startsWith('51') ? sale.buyerPhone : `51${sale.buyerPhone}`;
-  const ticketsList = sale.ticketNumbers.map((n) => `🎟️ *N° ${String(n).padStart(4, '0')}*`).join(', ');
+  const ticketsList = sale.ticketNumbers.map((n) => `🎟️ *N° ${n}*`).join(', ');
   const host = originUrl || (typeof window !== 'undefined' ? window.location.origin : '');
   const ticketViewUrl = `${host}/consultar?id=${sale.id}`;
 
@@ -297,7 +297,7 @@ export function generateWhatsAppLink(sale: Sale, originUrl?: string): string {
     `👤 *Comprador(a):* ${sale.buyerName}\n` +
     `🎓 *Vendedor(a):* ${sale.sellerName} (${sale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${sale.promoCode}`})\n` +
     `💰 *Monto abonado:* S/. ${sale.totalAmount.toFixed(2)} (Plin)\n\n` +
-    `Puedes visualizar y validar tu boleto oficial con código QR en cualquier momento aquí:\n` +
+    `Puedes visualizar y validar tu boleto oficial en cualquier momento aquí:\n` +
     `👉 ${ticketViewUrl}\n\n` +
     `¡Mucha suerte en el sorteo! 🎉`;
 

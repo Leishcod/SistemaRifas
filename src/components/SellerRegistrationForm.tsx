@@ -449,7 +449,6 @@ export const SellerRegistrationForm: React.FC = () => {
                     <span>Comprobante cargado correctamente</span>
                   </div>
                   <p className="text-xs text-slate-300 truncate max-w-xs">{voucherFileName || 'comprobante-pago.jpg'}</p>
-                  <p className="text-[11px] text-slate-500">Listo para ser verificado por los delegados</p>
                 </div>
                 <button
                   type="button"
