@@ -46,6 +46,40 @@ export const DelegateDashboard: React.FC = () => {
     return <LoginForm targetPanel="delegados" onLoginSuccess={(user) => setAuthUser(user)} />;
   }
 
+  // Si tiene rol CEIIS pero entró a /delegados, mostrar aviso y redirigir a /admin
+  if (authUser.role === 'ceiis') {
+    return (
+      <div className="py-6 sm:py-10 max-w-md mx-auto">
+        <div className="glass-panel p-8 rounded-2xl border border-cyan-500/30 text-center space-y-4">
+          <div className="w-14 h-14 mx-auto rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 className="font-heading font-black text-2xl text-white">Acceso de Administrador</h3>
+          <p className="text-[16px] text-slate-300">
+            Hola, <strong className="text-white">{authUser.fullName}</strong>. Tu cuenta tiene rol de{' '}
+            <strong className="text-cyan-400">Directiva CEIIS</strong>. Este módulo está diseñado exclusivamente para delegados de código.
+          </p>
+          <div className="pt-2 flex flex-col gap-2">
+            <a
+              href="/admin"
+              className="py-3 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-[#000c18] font-bold text-xs transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)] text-center"
+            >
+              Ir al Panel General de Administrador
+            </a>
+            <button
+              onClick={handleLogout}
+              className="py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all"
+            >
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Si tiene rol ninguno
   if (authUser.role === 'ninguno') {
     return (
@@ -198,7 +232,7 @@ export const DelegateDashboard: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           {/* El código se mantiene FIJO */}
           <div className="px-3 py-2 rounded-xl bg-blue-950/60 border border-blue-500/40 text-blue-200 text-xs font-bold font-mono">
-            {delegatePromo === 'CEIIS' ? 'CEIIS' : `Código ${delegatePromo}`} (Fijo)
+            {delegatePromo === 'CEIIS' ? 'CEIIS' : `Código ${delegatePromo}`}
           </div>
 
           {/* Status Filter */}
