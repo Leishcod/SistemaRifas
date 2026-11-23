@@ -289,17 +289,17 @@ export const AdminDashboard: React.FC = () => {
 
                     {/* Ticket numbers */}
                     <td className="py-3 px-4">
-                      <div className="flex flex-wrap gap-1 max-w-[140px]">
+                      <div className="flex flex-wrap gap-1.5 max-w-[150px]">
                         {sale.ticketNumbers.map((num) => (
                           <span
                             key={num}
-                            className="px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-mono font-bold text-[10px]"
+                            className="px-2.5 py-1 rounded-lg bg-cyan-600 text-white font-mono font-bold text-xs shadow-sm inline-block"
                           >
                             N°{num}
                           </span>
                         ))}
                       </div>
-                      <span className="text-[10px] text-slate-400 block mt-0.5">{sale.ticketsCount} boleto(s)</span>
+                      <span className="text-[11px] text-slate-300 block mt-1 font-medium">{sale.ticketsCount} boleto(s)</span>
                     </td>
 
                     {/* Buyer */}
@@ -316,7 +316,7 @@ export const AdminDashboard: React.FC = () => {
 
                     {/* Promo Code */}
                     <td className="py-3 px-4">
-                      <span className="px-2 py-1 rounded-md bg-blue-950/60 border border-blue-500/40 text-blue-300 font-bold text-[11px]">
+                      <span className="px-3 py-1.5 rounded-lg bg-blue-600 text-white font-bold text-xs shadow-sm inline-block">
                         {sale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${sale.promoCode}`}
                       </span>
                     </td>
@@ -329,12 +329,12 @@ export const AdminDashboard: React.FC = () => {
                     {/* Status Badge */}
                     <td className="py-3 px-4">
                       <span
-                        className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-bold text-white shadow-sm ${
                           sale.status === 'verified'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                            ? 'bg-emerald-600'
                             : sale.status === 'rejected'
-                            ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                            : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                            ? 'bg-rose-600'
+                            : 'bg-amber-600'
                         }`}
                       >
                         {sale.status === 'verified' ? 'Verificado' : sale.status === 'rejected' ? 'Rechazado' : 'Pendiente'}
@@ -347,21 +347,21 @@ export const AdminDashboard: React.FC = () => {
                         <button
                           onClick={() => handleStatusChange(sale.id, 'verified')}
                           title="Aprobar Pago"
-                          className="px-2 py-1 rounded-lg bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold transition-colors"
+                          className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm transition-all active:scale-95"
                         >
                           Aprobar
                         </button>
                         <button
                           onClick={() => handleStatusChange(sale.id, 'rejected')}
                           title="Rechazar Comprobante"
-                          className="px-2 py-1 rounded-lg bg-rose-950/60 hover:bg-rose-900 border border-rose-500/30 text-rose-300 text-[11px] font-bold transition-colors"
+                          className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold shadow-sm transition-all active:scale-95"
                         >
                           Rechazar
                         </button>
                         <button
                           onClick={() => setSelectedVoucherSale(sale)}
                           title="Detalles y Voucher"
-                          className="px-2 py-1 rounded-lg bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/30 text-cyan-300 text-[11px] font-bold transition-colors"
+                          className="px-3 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold shadow-sm transition-all active:scale-95"
                         >
                           Ver
                         </button>

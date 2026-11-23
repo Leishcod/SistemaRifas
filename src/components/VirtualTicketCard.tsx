@@ -24,12 +24,12 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
               GRAN RIFA FIIS 2026
             </h3>
             <span
-              className={`text-[13px] font-bold px-3 py-1 rounded-full border shadow-sm shrink-0 ${
+              className={`text-xs font-bold px-3.5 py-1 rounded-full text-white shadow-md shrink-0 ${
                 sale.status === 'verified'
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                  ? 'bg-emerald-600'
                   : sale.status === 'rejected'
-                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                    : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                    ? 'bg-rose-600'
+                    : 'bg-amber-600'
               }`}
             >
               {sale.status === 'verified'
@@ -88,7 +88,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
               {sale.ticketNumbers.map((num) => (
                 <span
                   key={num}
-                  className="px-3.5 py-1.5 rounded-lg bg-[#060621] border border-cyan-400/50 shadow-[0_0_12px_rgba(0,240,255,0.2)] text-cyan-300 font-mono font-black text-lg tracking-wider"
+                  className="px-4 py-2 rounded-xl bg-cyan-600 text-white font-mono font-black text-lg tracking-wider shadow-md inline-flex items-center justify-center"
                 >
                   N°{num}
                 </span>
