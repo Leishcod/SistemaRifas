@@ -1,6 +1,6 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { PROMO_CODES } from '../data/students';
+import Layout from "../layouts/Layout.astro";
+import { PROMO_CODES } from "../data/students";
 ---
 
 <Layout title="Gran Rifa FIIS 2026 — CEIIS UNI">
@@ -10,13 +10,12 @@ import { PROMO_CODES } from '../data/students';
       <!-- Main Headline: Solo un título llamado RIFA FIIS con el degradado celeste exacto -->
       <div class="space-y-4 max-w-4xl mx-auto">
         <h1 class="font-heading font-black text-6xl sm:text-7xl md:text-8xl tracking-tight">
-          <span class="rifa-hero-gradient">
-            RIFA FIIS
-          </span>
+          <span class="rifa-hero-gradient">RIFAS FIIS</span>
         </h1>
         <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-normal">
-          Plataforma oficial de venta, asignación y seguimiento de rifas por códigos de ingreso.
-          Boletos virtuales automáticos y envío instantáneo por WhatsApp.
+          Plataforma oficial de venta, asignación y seguimiento de rifas por
+          códigos de ingreso. Boletos virtuales automáticos y envío instantáneo
+          por WhatsApp.
         </p>
       </div>
 
@@ -83,7 +82,7 @@ import { PROMO_CODES } from '../data/students';
             class="tech-card group p-5 text-center block"
           >
             <span class="text-xs uppercase tracking-wider text-slate-500 font-semibold block group-hover:text-cyan-400 transition-colors">
-              {promo === 'CEIIS' ? 'Centro' : 'Código'}
+              {promo === "CEIIS" ? "Centro" : "Código"}
             </span>
             <span class="font-heading font-black text-2xl text-white group-hover:text-cyan-300 transition-colors">
               {promo}
