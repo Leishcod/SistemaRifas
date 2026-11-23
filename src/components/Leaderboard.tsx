@@ -98,8 +98,7 @@ export const Leaderboard: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredStats.map((item, index) => {
           const percent = Math.min(100, Math.round((item.soldTickets / item.targetTickets) * 100));
-          const isTop3 = index < 3 && selectedPromoFilter === 'all';
-          const medal = index === 0 ? '1er Lugar' : index === 1 ? '2do Lugar' : index === 2 ? '3er Lugar' : `#${index + 1}`;
+          const positionLabel = `#${index + 1}`;
 
           return (
             <div
@@ -126,8 +125,8 @@ export const Leaderboard: React.FC = () => {
                     <h3 className="font-heading font-extrabold text-xl text-white group-hover:text-cyan-300 transition-colors">
                       Código {item.promoCode}
                     </h3>
-                    <span className="text-[11px] font-semibold text-slate-400">
-                      {isTop3 ? medal : `Posición #${index + 1}`}
+                    <span className="text-xs font-semibold text-slate-400">
+                      Puesto #{index + 1}
                     </span>
                   </div>
                 </div>

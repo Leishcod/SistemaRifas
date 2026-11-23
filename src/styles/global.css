@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 @layer base {
+  html {
+    font-size: 17px; /* Sube exactamente 1px el tamaño de letra general (de 16px a 17px) */
+  }
+
   :root {
     --bg-dark-cosmic: #060621;
     --bg-dark-midnight: #000c18;
