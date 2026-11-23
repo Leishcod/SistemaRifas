@@ -10,6 +10,8 @@ const {
   title = "Sistema de Rifas FIIS - CEIIS UNI", 
   description = "Plataforma oficial de venta, asignación y seguimiento de rifas por códigos de la Facultad de Ingeniería Industrial y de Sistemas - UNI" 
 } = Astro.props;
+
+const pathname = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -50,32 +52,91 @@ const {
           RIFAS FIIS 2026
         </a>
 
-        <!-- Desktop Navigation: Sin botón Inicio, botones iguales sin recuadros -->
+        <!-- Desktop Navigation: Se ilumina con brillo neón la sección activa -->
         <nav class="hidden md:flex items-center gap-6 sm:gap-8">
-          <a href="/vender" class="text-sm font-medium text-slate-300 hover:text-cyan-300 transition-colors">
+          <a
+            href="/vender"
+            class={`text-sm transition-all ${
+              pathname.startsWith('/vender')
+                ? 'text-cyan-300 font-bold drop-shadow-[0_0_12px_rgba(0,240,255,0.8)]'
+                : 'text-slate-300 hover:text-cyan-300 font-medium'
+            }`}
+          >
             Registrar Venta
           </a>
-          <a href="/ranking" class="text-sm font-medium text-slate-300 hover:text-cyan-300 transition-colors">
+          <a
+            href="/ranking"
+            class={`text-sm transition-all ${
+              pathname.startsWith('/ranking')
+                ? 'text-cyan-300 font-bold drop-shadow-[0_0_12px_rgba(0,240,255,0.8)]'
+                : 'text-slate-300 hover:text-cyan-300 font-medium'
+            }`}
+          >
             Ranking Códigos
           </a>
-          <a href="/consultar" class="text-sm font-medium text-slate-300 hover:text-cyan-300 transition-colors">
+          <a
+            href="/consultar"
+            class={`text-sm transition-all ${
+              pathname.startsWith('/consultar') || pathname.startsWith('/ticket')
+                ? 'text-cyan-300 font-bold drop-shadow-[0_0_12px_rgba(0,240,255,0.8)]'
+                : 'text-slate-300 hover:text-cyan-300 font-medium'
+            }`}
+          >
             Consultar Boleto
           </a>
-          <a href="/admin" class="text-sm font-medium text-slate-300 hover:text-cyan-300 transition-colors">
-            Panel Admin / Deles
+          <a
+            href="/panel"
+            class={`text-sm transition-all ${
+              pathname.startsWith('/panel') || pathname.startsWith('/admin') || pathname.startsWith('/delegados')
+                ? 'text-cyan-300 font-bold drop-shadow-[0_0_12px_rgba(0,240,255,0.8)]'
+                : 'text-slate-300 hover:text-cyan-300 font-medium'
+            }`}
+          >
+            Panel
           </a>
         </nav>
 
         <!-- Mobile Quick Navigation -->
-        <div class="md:hidden flex items-center gap-4 text-xs font-medium text-slate-300">
-          <a href="/ranking" class="hover:text-cyan-300 transition-colors">
-            Ranking
-          </a>
-          <a href="/vender" class="hover:text-cyan-300 transition-colors">
+        <div class="md:hidden flex items-center gap-3 text-xs">
+          <a
+            href="/vender"
+            class={`transition-all ${
+              pathname.startsWith('/vender')
+                ? 'text-cyan-300 font-bold drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]'
+                : 'text-slate-300 hover:text-cyan-300 font-medium'
+            }`}
+          >
             Vender
           </a>
-          <a href="/admin" class="hover:text-cyan-300 transition-colors">
-            Admin
+          <a
+            href="/ranking"
+            class={`transition-all ${
+              pathname.startsWith('/ranking')
+                ? 'text-cyan-300 font-bold drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]'
+                : 'text-slate-300 hover:text-cyan-300 font-medium'
+            }`}
+          >
+            Ranking
+          </a>
+          <a
+            href="/consultar"
+            class={`transition-all ${
+              pathname.startsWith('/consultar') || pathname.startsWith('/ticket')
+                ? 'text-cyan-300 font-bold drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]'
+                : 'text-slate-300 hover:text-cyan-300 font-medium'
+            }`}
+          >
+            Consultar
+          </a>
+          <a
+            href="/panel"
+            class={`transition-all ${
+              pathname.startsWith('/panel') || pathname.startsWith('/admin') || pathname.startsWith('/delegados')
+                ? 'text-cyan-300 font-bold drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]'
+                : 'text-slate-300 hover:text-cyan-300 font-medium'
+            }`}
+          >
+            Panel
           </a>
         </div>
       </div>
@@ -93,6 +154,9 @@ const {
           Impulsado por el CEIIS - Diseñado por Leonel Cruzado
         </p>
       </div>
+    </footer>
+  </body>
+</html>
     </footer>
   </body>
 </html>

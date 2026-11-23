@@ -85,7 +85,8 @@ export async function fetchStudentsFromSupabase(): Promise<Student[]> {
         studentCode: d.student_code,
         fullName: d.full_name,
         promoCode: d.promo_code as PromoCode,
-        isDelegate: d.is_delegate,
+        role: d.role ? (d.role.toLowerCase() as any) : (d.is_delegate ? 'delegado' : 'ninguno'),
+        password: d.password || undefined,
       }));
       if (typeof window !== 'undefined') {
         localStorage.setItem(STUDENTS_STORAGE_KEY, JSON.stringify(list));

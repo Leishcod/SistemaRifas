@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import type { PromoCode, Sale, SaleStatus } from '../types';
+import type { PromoCode, Sale, SaleStatus, SessionUser } from '../types';
 import { PROMO_CODES } from '../data/students';
 import { getSales, updateSaleStatusAsync, fetchSalesFromSupabase } from '../utils/storage';
+import { getAuthSession, clearAuthSession } from '../utils/auth';
+import { LoginForm } from './LoginForm';
 
 export const AdminDashboard: React.FC = () => {
+  const [authUser, setAuthUser] = useState<SessionUser | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [sales, setSales] = useState<Sale[]>([]);
-  const [activeRole, setActiveRole] = useState<'admin' | 'delegate'>('admin');
   const [selectedPromo, setSelectedPromo] = useState<PromoCode | 'all'>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | SaleStatus>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedVoucherSale, setSelectedVoucherSale] = useState<Sale | null>(null);
 
   useEffect(() => {
+    const session = getAuthSession();
+    setAuthUser(session);
+    setIsCheckingAuth(false);
+
     loadSales();
     fetchSalesFromSupabase().then((data) => {
       setSales(data);
@@ -22,6 +29,11 @@ export const AdminDashboard: React.FC = () => {
     setSales(getSales());
   };
 
+  const handleLogout = () => {
+    clearAuthSession();
+    setAuthUser(null);
+  };
+
   const handleStatusChange = async (saleId: string, newStatus: SaleStatus) => {
     await updateSaleStatusAsync(saleId, newStatus);
     loadSales();
@@ -30,13 +42,79 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
+  if (isCheckingAuth) {
+    return (
+      <div className="py-20 text-center">
+        <div className="w-8 h-8 mx-auto border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-xs text-slate-400 mt-3">Verificando credenciales...</p>
+      </div>
+    );
+  }
+
+  // Si no ha iniciado sesión, mostrar login
+  if (!authUser) {
+    return <LoginForm targetPanel="admin" onLoginSuccess={(user) => setAuthUser(user)} />;
+  }
+
+  // Si tiene rol delegado pero entró a /admin, mostrar aviso y redirigir
+  if (authUser.role === 'delegado') {
+    return (
+      <div className="glass-panel p-8 rounded-2xl border border-amber-500/30 text-center space-y-4 max-w-md mx-auto">
+        <div className="w-14 h-14 mx-auto rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 text-2xl font-bold">
+          ⚠️
+        </div>
+        <h3 className="font-heading font-black text-2xl text-white">Acceso Restringido</h3>
+        <p className="text-xs text-slate-300">
+          Hola, <strong className="text-white">{authUser.fullName}</strong>. Tu cuenta tiene rol de{' '}
+          <strong>Delegado ({authUser.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${authUser.promoCode}`})</strong>.
+          La vista general está reservada exclusivamente para la directiva del CEIIS.
+        </p>
+        <div className="pt-2 flex flex-col gap-2">
+          <a
+            href="/delegados"
+            className="py-3 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-[#000c18] font-bold text-xs transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)] text-center"
+          >
+            Ir a mi Panel de Delegado (/delegados) →
+          </a>
+          <button
+            onClick={handleLogout}
+            className="py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all"
+          >
+            Cerrar Sesión
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Si tiene rol ninguno
+  if (authUser.role === 'ninguno') {
+    return (
+      <div className="glass-panel p-8 rounded-2xl border border-rose-500/30 text-center space-y-4 max-w-md mx-auto">
+        <div className="w-14 h-14 mx-auto rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-2xl font-bold">
+          ⛔
+        </div>
+        <h3 className="font-heading font-black text-2xl text-white">Acceso Denegado</h3>
+        <p className="text-xs text-slate-300">
+          Tu cuenta no cuenta con permisos de administración ni de delegado.
+        </p>
+        <div className="pt-2">
+          <button
+            onClick={handleLogout}
+            className="py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-all"
+          >
+            Cerrar Sesión
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Rol CEIIS: Acceso total
   // Filter sales
   const filteredSales = sales.filter((sale) => {
-    // Role & Promo Filter
-    if (activeRole === 'delegate' && selectedPromo !== 'all' && sale.promoCode !== selectedPromo) {
-      return false;
-    }
-    if (activeRole === 'admin' && selectedPromo !== 'all' && sale.promoCode !== selectedPromo) {
+    // Promo Filter
+    if (selectedPromo !== 'all' && sale.promoCode !== selectedPromo) {
       return false;
     }
 
@@ -49,7 +127,9 @@ export const AdminDashboard: React.FC = () => {
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase();
       const matchBuyer = sale.buyerName.toLowerCase().includes(term);
-      const matchSeller = sale.sellerName.toLowerCase().includes(term) || sale.sellerStudentCode.toLowerCase().includes(term);
+      const matchSeller =
+        sale.sellerName.toLowerCase().includes(term) ||
+        sale.sellerStudentCode.toLowerCase().includes(term);
       const matchTickets = sale.ticketNumbers.some((n) => String(n).includes(term));
       const matchPhone = sale.buyerPhone.includes(term);
       if (!matchBuyer && !matchSeller && !matchTickets && !matchPhone) {
@@ -84,7 +164,6 @@ export const AdminDashboard: React.FC = () => {
       'Boletos Asignados',
       'Total S/.',
       'Estado',
-      'Nro Operacion'
     ];
 
     const rows = filteredSales.map((s) => [
@@ -98,14 +177,19 @@ export const AdminDashboard: React.FC = () => {
       s.ticketsCount,
       `"${s.ticketNumbers.join(', ')}"`,
       s.totalAmount.toFixed(2),
-      s.status
+      s.status,
     ]);
 
-    const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+    const csvContent =
+      'data:text/csv;charset=utf-8,\uFEFF' +
+      [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `reporte_rifas_fiis_${selectedPromo}_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute(
+      'download',
+      `reporte_rifas_fiis_${selectedPromo}_${new Date().toISOString().slice(0, 10)}.csv`
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -113,50 +197,36 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Top Header & Role Selector */}
+      {/* Top Header & CEIIS User Info */}
       <div className="glass-panel p-6 rounded-2xl border border-cyan-500/25 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
             <span className="text-xs uppercase font-bold tracking-widest text-cyan-400">
-              Módulo de Supervisión & Vouchers
+              Módulo de Supervisión & Vouchers (CEIIS)
             </span>
           </div>
           <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-white">
-            Panel de Control CEIIS - FIIS
+            Panel de Control General CEIIS - FIIS
           </h1>
           <p className="text-xs text-slate-400 mt-1">
             Revisión de comprobantes Plin, control de códigos y validación de boletos
           </p>
         </div>
 
-        {/* Role toggle */}
-        <div className="flex items-center gap-2 p-1 bg-[#030617] rounded-xl border border-cyan-500/30 text-xs">
+        {/* User Card & Logout */}
+        <div className="flex items-center gap-3">
+          <div className="text-right">
+            <p className="text-sm font-bold text-white">{authUser.fullName}</p>
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 uppercase">
+              Directiva CEIIS
+            </span>
+          </div>
           <button
-            onClick={() => {
-              setActiveRole('admin');
-              setSelectedPromo('all');
-            }}
-            className={`px-3 py-2 rounded-lg font-semibold transition-all ${
-              activeRole === 'admin'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_0_12px_rgba(0,195,255,0.3)]'
-                : 'text-slate-400 hover:text-white'
-            }`}
+            onClick={handleLogout}
+            className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-semibold transition-all active:scale-95"
           >
-            Vista General (Admin)
-          </button>
-          <button
-            onClick={() => {
-              setActiveRole('delegate');
-              if (selectedPromo === 'all') setSelectedPromo('24-1');
-            }}
-            className={`px-3 py-2 rounded-lg font-semibold transition-all ${
-              activeRole === 'delegate'
-                ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-[0_0_12px_rgba(0,240,255,0.3)]'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            Vista por Delegado
+            Cerrar Sesión
           </button>
         </div>
       </div>
@@ -164,124 +234,134 @@ export const AdminDashboard: React.FC = () => {
       {/* Metrics Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-cyan-500/20">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Rifas Vendidas</span>
-          <p className="text-2xl sm:text-3xl font-heading font-black text-white mt-1">{totalTickets}</p>
+          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+            Rifas Vendidas
+          </span>
+          <p className="text-2xl sm:text-3xl font-heading font-black text-white mt-1">
+            {totalTickets}
+          </p>
           <span className="text-[11px] text-cyan-300">en {filteredSales.length} transacciones</span>
         </div>
 
         <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-cyan-500/20">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Total Recaudado</span>
-          <p className="text-2xl sm:text-3xl font-heading font-black text-cyan-400 mt-1">S/. {totalAmount.toFixed(2)}</p>
+          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+            Total Recaudado
+          </span>
+          <p className="text-2xl sm:text-3xl font-heading font-black text-cyan-400 mt-1">
+            S/. {totalAmount.toFixed(2)}
+          </p>
           <span className="text-[11px] text-slate-400">monto total registrado</span>
         </div>
 
-        <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-amber-500/30 bg-amber-950/10">
-          <span className="text-[11px] font-semibold text-amber-300 uppercase tracking-wider block">Vouchers Pendientes</span>
-          <p className="text-2xl sm:text-3xl font-heading font-black text-amber-400 mt-1">{pendingCount}</p>
-          <span className="text-[11px] text-amber-300/80">requieren verificación</span>
+        <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-cyan-500/20">
+          <span className="text-[11px] font-semibold text-amber-300 uppercase tracking-wider block">
+            Vouchers Pendientes
+          </span>
+          <p className="text-2xl sm:text-3xl font-heading font-black text-amber-300 mt-1">
+            {pendingCount}
+          </p>
+          <span className="text-[11px] text-slate-400">requieren verificación</span>
         </div>
 
-        <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-emerald-500/30 bg-emerald-950/10">
-          <span className="text-[11px] font-semibold text-emerald-300 uppercase tracking-wider block">Vouchers Verificados</span>
-          <p className="text-2xl sm:text-3xl font-heading font-black text-emerald-400 mt-1">{verifiedCount}</p>
-          <span className="text-[11px] text-emerald-300/80">pagos comprobados</span>
+        <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-cyan-500/20">
+          <span className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block">
+            Vouchers Verificados
+          </span>
+          <p className="text-2xl sm:text-3xl font-heading font-black text-emerald-400 mt-1">
+            {verifiedCount}
+          </p>
+          <span className="text-[11px] text-slate-400">pagos comprobados</span>
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
-      <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-cyan-500/20 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
-        <div className="flex flex-wrap items-center gap-3 flex-1">
-          {/* Promo selector */}
-          <div className="w-full sm:w-auto">
-            <select
-              value={selectedPromo}
-              onChange={(e) => setSelectedPromo(e.target.value as any)}
-              className="w-full sm:w-auto bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400"
-            >
-              {activeRole === 'admin' && <option value="all">Todos los Códigos ({PROMO_CODES.length})</option>}
-              {PROMO_CODES.map((code) => (
-                <option key={code} value={code}>
-                  {code === 'CEIIS' ? 'CEIIS' : `Código ${code}`}
-                </option>
-              ))}
-            </select>
-          </div>
+      {/* Filter and Action Bar */}
+      <div className="glass-panel p-4 rounded-2xl border border-cyan-500/20 flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* CEIIS puede alternar libremente entre todos los códigos */}
+          <select
+            value={selectedPromo}
+            onChange={(e) => setSelectedPromo(e.target.value as any)}
+            className="bg-[#030617] border border-cyan-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"
+          >
+            <option value="all">Todos los Códigos ({PROMO_CODES.length})</option>
+            {PROMO_CODES.map((code) => (
+              <option key={code} value={code}>
+                {code === 'CEIIS' ? 'CEIIS' : `Código ${code}`}
+              </option>
+            ))}
+          </select>
 
-          {/* Status selector */}
-          <div className="w-full sm:w-auto">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="w-full sm:w-auto bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400"
-            >
-              <option value="all">Todos los Estados</option>
-              <option value="pending">Solo Pendientes</option>
-              <option value="verified">Solo Verificados</option>
-              <option value="rejected">Solo Rechazados</option>
-            </select>
-          </div>
-
-          {/* Search box */}
-          <div className="w-full sm:w-64">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Buscar comprador, vendedor o boleto..."
-              className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-400"
-            />
-          </div>
+          {/* Status Filter */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as any)}
+            className="bg-[#030617] border border-cyan-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"
+          >
+            <option value="all">Todos los Estados</option>
+            <option value="pending">Pendientes</option>
+            <option value="verified">Verificados</option>
+            <option value="rejected">Rechazados</option>
+          </select>
         </div>
 
-        {/* Export Button */}
+        {/* Search & Export Buttons */}
         <div className="flex items-center gap-2">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Buscar comprador, vendedor o boleto..."
+            className="w-full md:w-64 bg-[#030617] border border-cyan-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400 placeholder:text-slate-600"
+          />
+
           <button
             onClick={exportToCSV}
-            className="w-full sm:w-auto px-4 py-2.5 bg-emerald-700/60 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold border border-emerald-500/30 transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+            className="px-3.5 py-2 rounded-xl bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition-all shrink-0 flex items-center gap-1.5"
           >
             Exportar a Excel (CSV)
           </button>
         </div>
       </div>
 
-      {/* Vouchers & Sales Table */}
-      <div className="glass-panel rounded-2xl border border-cyan-500/20 overflow-hidden shadow-xl">
+      {/* Sales Table with Verification Actions */}
+      <div className="glass-panel rounded-2xl border border-cyan-500/20 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[#030617]/90 text-slate-400 uppercase tracking-wider text-[11px] border-b border-cyan-500/20">
+          <table className="w-full text-left text-xs text-slate-300">
+            <thead className="bg-[#030617] text-slate-400 text-[11px] uppercase font-bold tracking-wider border-b border-cyan-500/20">
               <tr>
-                <th className="py-3.5 px-4">Voucher</th>
-                <th className="py-3.5 px-4">Boletos</th>
-                <th className="py-3.5 px-4">Comprador</th>
-                <th className="py-3.5 px-4">Vendedor (Estudiante)</th>
-                <th className="py-3.5 px-4">Código</th>
-                <th className="py-3.5 px-4">Monto</th>
-                <th className="py-3.5 px-4">Estado</th>
-                <th className="py-3.5 px-4 text-center">Acciones</th>
+                <th className="py-3 px-4">Voucher</th>
+                <th className="py-3 px-4">Boletos</th>
+                <th className="py-3 px-4">Comprador</th>
+                <th className="py-3 px-4">Vendedor (Estudiante)</th>
+                <th className="py-3 px-4">Código</th>
+                <th className="py-3 px-4">Monto</th>
+                <th className="py-3 px-4">Estado</th>
+                <th className="py-3 px-4 text-center">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5 text-slate-200">
+            <tbody className="divide-y divide-white/5 font-normal">
               {filteredSales.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="text-center py-12 text-slate-400">
-                    No se encontraron registros con los filtros seleccionados.
+                  <td colSpan={8} className="py-12 text-center text-slate-500 text-xs">
+                    No se encontraron registros de ventas con los filtros seleccionados.
                   </td>
                 </tr>
               ) : (
                 filteredSales.map((sale) => (
                   <tr key={sale.id} className="hover:bg-white/[0.02] transition-colors">
-                    {/* Voucher Thumbnail */}
+                    {/* Voucher preview */}
                     <td className="py-3 px-4">
                       <button
                         onClick={() => setSelectedVoucherSale(sale)}
-                        className="relative group rounded-lg overflow-hidden border border-cyan-500/30 w-14 h-14 bg-[#030617] flex items-center justify-center"
+                        className="w-10 h-10 rounded-lg overflow-hidden border border-cyan-500/30 hover:border-cyan-400 transition-colors relative group block bg-[#030617]"
+                        title="Ver comprobante"
                       >
                         <img
                           src={sale.voucherImage}
                           alt="Voucher"
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                          className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[10px] font-bold transition-opacity">
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-[10px] text-white font-bold transition-opacity">
                           Ver
                         </div>
                       </button>
@@ -299,7 +379,9 @@ export const AdminDashboard: React.FC = () => {
                           </span>
                         ))}
                       </div>
-                      <span className="text-[10px] text-slate-400 block mt-0.5">{sale.ticketsCount} boleto(s)</span>
+                      <span className="text-[10px] text-slate-400 block mt-0.5">
+                        {sale.ticketsCount} boleto(s)
+                      </span>
                     </td>
 
                     {/* Buyer */}
@@ -311,7 +393,9 @@ export const AdminDashboard: React.FC = () => {
                     {/* Seller */}
                     <td className="py-3 px-4">
                       <p className="font-semibold text-cyan-200">{sale.sellerName}</p>
-                      <p className="text-slate-400 font-mono text-[11px]">{sale.sellerStudentCode}</p>
+                      <p className="text-slate-400 font-mono text-[11px]">
+                        {sale.sellerStudentCode}
+                      </p>
                     </td>
 
                     {/* Promo Code */}
@@ -323,7 +407,9 @@ export const AdminDashboard: React.FC = () => {
 
                     {/* Amount */}
                     <td className="py-3 px-4">
-                      <p className="font-heading font-bold text-white text-sm">S/. {sale.totalAmount.toFixed(2)}</p>
+                      <p className="font-heading font-bold text-white text-sm">
+                        S/. {sale.totalAmount.toFixed(2)}
+                      </p>
                     </td>
 
                     {/* Status Badge */}
@@ -337,11 +423,15 @@ export const AdminDashboard: React.FC = () => {
                             : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
                         }`}
                       >
-                        {sale.status === 'verified' ? 'Verificado' : sale.status === 'rejected' ? 'Rechazado' : 'Pendiente'}
+                        {sale.status === 'verified'
+                          ? 'Verificado'
+                          : sale.status === 'rejected'
+                          ? 'Rechazado'
+                          : 'Pendiente'}
                       </span>
                     </td>
 
-                    {/* Actions */}
+                    {/* Actions: CEIIS tiene Aprobar, Rechazar y Ver */}
                     <td className="py-3 px-4 text-center">
                       <div className="flex items-center justify-center gap-1.5">
                         <button
@@ -375,15 +465,22 @@ export const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Voucher Inspection Modal */}
+      {/* Voucher Inspection Modal with Approval Actions for CEIIS */}
       {selectedVoucherSale && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
           <div className="glass-panel w-full max-w-2xl rounded-2xl border border-cyan-500/30 overflow-hidden shadow-2xl">
             {/* Modal Header */}
             <div className="p-4 px-6 border-b border-cyan-500/20 flex items-center justify-between bg-[#060621]">
               <div>
-                <h3 className="font-heading font-bold text-lg text-white">Inspección de Comprobante de Pago</h3>
-                <p className="text-xs text-slate-400">ID: {selectedVoucherSale.id} • {selectedVoucherSale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${selectedVoucherSale.promoCode}`}</p>
+                <h3 className="font-heading font-bold text-lg text-white">
+                  Inspección de Comprobante de Pago
+                </h3>
+                <p className="text-xs text-slate-400">
+                  ID: {selectedVoucherSale.id} •{' '}
+                  {selectedVoucherSale.promoCode === 'CEIIS'
+                    ? 'CEIIS'
+                    : `Código ${selectedVoucherSale.promoCode}`}
+                </p>
               </div>
               <button
                 onClick={() => setSelectedVoucherSale(null)}
@@ -407,16 +504,26 @@ export const AdminDashboard: React.FC = () => {
               {/* Sale Info Summary */}
               <div className="space-y-4 text-xs">
                 <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Comprador</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                    Comprador
+                  </span>
                   <p className="text-sm font-bold text-white">{selectedVoucherSale.buyerName}</p>
                   <p className="font-mono text-slate-300">+51 {selectedVoucherSale.buyerPhone}</p>
                 </div>
 
                 <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Vendedor UNI</span>
-                  <p className="text-sm font-bold text-cyan-300">{selectedVoucherSale.sellerName}</p>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                    Vendedor(a) Autorizado(a)
+                  </span>
+                  <p className="text-sm font-bold text-cyan-300">
+                    {selectedVoucherSale.sellerName}
+                  </p>
                   <p className="font-mono text-slate-300">
-                    Cód: {selectedVoucherSale.sellerStudentCode} ({selectedVoucherSale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${selectedVoucherSale.promoCode}`})
+                    Cód: {selectedVoucherSale.sellerStudentCode} (
+                    {selectedVoucherSale.promoCode === 'CEIIS'
+                      ? 'CEIIS'
+                      : `Código ${selectedVoucherSale.promoCode}`}
+                    )
                   </p>
                 </div>
 
@@ -428,11 +535,11 @@ export const AdminDashboard: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-[11px] text-slate-400">
-                    Boletos: {selectedVoucherSale.ticketNumbers.map((n) => `N° ${n}`).join(', ')}
+                    Boletos: {selectedVoucherSale.ticketNumbers.map((n) => `N°${n}`).join(', ')}
                   </p>
                 </div>
 
-                {/* Status action buttons */}
+                {/* Status action buttons for CEIIS */}
                 <div className="pt-2 flex gap-2">
                   <button
                     onClick={() => handleStatusChange(selectedVoucherSale.id, 'verified')}

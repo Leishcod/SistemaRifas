@@ -11,12 +11,22 @@ export type PromoCode =
   | '26-2'
   | 'CEIIS';
 
+export type UserRole = 'ninguno' | 'delegado' | 'ceiis';
+
 export interface Student {
   studentCode: string; // e.g. "20244517G"
   fullName: string;
   promoCode: PromoCode;
   email?: string;
-  isDelegate?: boolean;
+  role: UserRole;
+  password?: string;
+}
+
+export interface SessionUser {
+  studentCode: string;
+  fullName: string;
+  promoCode: PromoCode;
+  role: UserRole;
 }
 
 export type SaleStatus = 'pending' | 'verified' | 'rejected';
