@@ -18,7 +18,6 @@ export const SellerRegistrationForm: React.FC = () => {
   const [ticketsCount, setTicketsCount] = useState<number>(1);
   const [voucherImage, setVoucherImage] = useState<string>('');
   const [voucherFileName, setVoucherFileName] = useState<string>('');
-  const [operationNumber, setOperationNumber] = useState('');
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -155,7 +154,6 @@ export const SellerRegistrationForm: React.FC = () => {
         ticketsCount,
         voucherImage,
         voucherFileName,
-        operationNumber,
         notes,
       });
 
@@ -184,7 +182,6 @@ export const SellerRegistrationForm: React.FC = () => {
     setTicketsCount(1);
     setVoucherImage('');
     setVoucherFileName('');
-    setOperationNumber('');
     setNotes('');
   };
 

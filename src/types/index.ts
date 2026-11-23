@@ -35,7 +35,6 @@ export interface Sale {
   totalAmount: number;
   voucherImage: string; // Base64 data URL or remote URL
   voucherFileName?: string;
-  operationNumber?: string;
   notes?: string;
   status: SaleStatus;
   createdAt: string;

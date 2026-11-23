@@ -21,7 +21,6 @@ function mapDbToSale(row: any): Sale {
     unitPrice: Number(row.total_amount) / (row.tickets_count || 1),
     totalAmount: Number(row.total_amount),
     voucherImage: row.voucher_url,
-    operationNumber: row.operation_number || undefined,
     notes: row.notes || undefined,
     status: (row.status || 'pending') as SaleStatus,
     createdAt: row.created_at,
@@ -168,7 +167,6 @@ export async function createSaleAsync(data: {
   ticketsCount: number;
   voucherImage: string;
   voucherFileName?: string;
-  operationNumber?: string;
   notes?: string;
 }): Promise<Sale> {
   // Asegurar que tengamos las ventas más recientes para no colisionar con números de boletos
@@ -194,7 +192,6 @@ export async function createSaleAsync(data: {
     totalAmount,
     voucherImage: finalVoucherUrl,
     voucherFileName: data.voucherFileName,
-    operationNumber: data.operationNumber?.trim() || undefined,
     notes: data.notes?.trim() || undefined,
     status: 'pending',
     createdAt: new Date().toISOString(),
@@ -213,7 +210,6 @@ export async function createSaleAsync(data: {
       ticket_numbers: newSale.ticketNumbers,
       total_amount: newSale.totalAmount,
       voucher_url: finalVoucherUrl,
-      operation_number: newSale.operationNumber || null,
       notes: newSale.notes || null,
       status: 'pending',
       created_at: newSale.createdAt,

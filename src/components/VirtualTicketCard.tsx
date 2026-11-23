@@ -109,9 +109,6 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
             <p className="text-[10px] text-slate-500">
               Emitido: {new Date(sale.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
             </p>
-            {sale.operationNumber && (
-              <p className="text-[10px] font-mono text-cyan-400/90">Operación: {sale.operationNumber}</p>
-            )}
           </div>
           <div className="p-1 rounded-lg bg-[#060621] border border-cyan-500/40 shadow-sm shrink-0">
             <img src={qrUrl} alt="QR Verificación" className="w-14 h-14 rounded" />

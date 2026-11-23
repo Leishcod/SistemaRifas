@@ -52,8 +52,7 @@ export const AdminDashboard: React.FC = () => {
       const matchSeller = sale.sellerName.toLowerCase().includes(term) || sale.sellerStudentCode.toLowerCase().includes(term);
       const matchTickets = sale.ticketNumbers.some((n) => String(n).includes(term));
       const matchPhone = sale.buyerPhone.includes(term);
-      const matchOp = sale.operationNumber?.toLowerCase().includes(term);
-      if (!matchBuyer && !matchSeller && !matchTickets && !matchPhone && !matchOp) {
+      if (!matchBuyer && !matchSeller && !matchTickets && !matchPhone) {
         return false;
       }
     }
@@ -99,8 +98,7 @@ export const AdminDashboard: React.FC = () => {
       s.ticketsCount,
       `"${s.ticketNumbers.join(', ')}"`,
       s.totalAmount.toFixed(2),
-      s.status,
-      s.operationNumber || ''
+      s.status
     ]);
 
     const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
@@ -326,9 +324,6 @@ export const AdminDashboard: React.FC = () => {
                     {/* Amount */}
                     <td className="py-3 px-4">
                       <p className="font-heading font-bold text-white text-sm">S/. {sale.totalAmount.toFixed(2)}</p>
-                      {sale.operationNumber && (
-                        <p className="text-[10px] text-slate-500 font-mono">Op: {sale.operationNumber}</p>
-                      )}
                     </td>
 
                     {/* Status Badge */}
@@ -435,11 +430,6 @@ export const AdminDashboard: React.FC = () => {
                   <p className="text-[11px] text-slate-400">
                     Boletos: {selectedVoucherSale.ticketNumbers.map((n) => `N° ${n}`).join(', ')}
                   </p>
-                  {selectedVoucherSale.operationNumber && (
-                    <p className="text-[11px] text-slate-300 font-mono">
-                      N° Operación: {selectedVoucherSale.operationNumber}
-                    </p>
-                  )}
                 </div>
 
                 {/* Status action buttons */}
