@@ -53,18 +53,7 @@ export const AdminDashboard: React.FC = () => {
 
   // Si no ha iniciado sesión, mostrar login
   if (!authUser) {
-    return (
-      <LoginForm
-        targetPanel="admin"
-        onLoginSuccess={(user) => {
-          if (user.role === 'delegado') {
-            window.location.href = '/delegados';
-          } else {
-            setAuthUser(user);
-          }
-        }}
-      />
-    );
+    return <LoginForm targetPanel="admin" onLoginSuccess={(user) => setAuthUser(user)} />;
   }
 
   // Si tiene rol delegado pero entró a /admin, mostrar aviso y redirigir

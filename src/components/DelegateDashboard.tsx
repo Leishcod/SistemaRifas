@@ -43,18 +43,7 @@ export const DelegateDashboard: React.FC = () => {
 
   // Si no ha iniciado sesión, mostrar login
   if (!authUser) {
-    return (
-      <LoginForm
-        targetPanel="delegados"
-        onLoginSuccess={(user) => {
-          if (user.role === 'ceiis') {
-            window.location.href = '/admin';
-          } else {
-            setAuthUser(user);
-          }
-        }}
-      />
-    );
+    return <LoginForm targetPanel="delegados" onLoginSuccess={(user) => setAuthUser(user)} />;
   }
 
   // Si tiene rol ninguno
