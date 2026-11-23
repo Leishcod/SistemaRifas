@@ -7,7 +7,7 @@ import { VirtualTicketCard } from './VirtualTicketCard';
 
 export const SellerRegistrationForm: React.FC = () => {
   // Step 1: Seller Authentication & Verification
-  const [selectedPromo, setSelectedPromo] = useState<PromoCode>('24-1');
+  const [selectedPromo, setSelectedPromo] = useState<PromoCode>('24-2');
   const [studentCodeInput, setStudentCodeInput] = useState<string>('20244517G');
   const [authenticatedSeller, setAuthenticatedSeller] = useState<Student | null>(null);
   const [codeError, setCodeError] = useState<string | null>(null);

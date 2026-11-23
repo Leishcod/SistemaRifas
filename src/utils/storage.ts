@@ -1,7 +1,7 @@
 import type { PromoCode, Sale, Student, PromoStats, SaleStatus } from '../types';
 import { INITIAL_STUDENTS, PROMO_CODES, TARGET_PER_PROMO, TICKET_PRICE } from '../data/students';
 
-const STUDENTS_STORAGE_KEY = 'ceiis_rifas_students_v2';
+const STUDENTS_STORAGE_KEY = 'ceiis_rifas_students_v3';
 const SALES_STORAGE_KEY = 'ceiis_rifas_sales_v2';
 
 // Ventas iniciales en 0 para inicio limpio de la campaña oficial

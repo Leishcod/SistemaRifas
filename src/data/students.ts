@@ -19,8 +19,7 @@ export const TARGET_PER_PROMO = 150; // 150 rifas por código
 
 // Base de datos inicial de estudiantes (incluyendo códigos de ejemplo para cada base)
 export const INITIAL_STUDENTS: Student[] = [
-  // Base 24-1
-  { studentCode: '20244517G', fullName: 'Leonel Cruzado Vega', promoCode: '24-1' },
+  // Código 24-1
   { studentCode: '20241001A', fullName: 'Renato Silva Torres', promoCode: '24-1', isDelegate: true },
   { studentCode: '20241002B', fullName: 'Camila Morales Rivas', promoCode: '24-1' },
   { studentCode: '20241003C', fullName: 'Mateo Quispe Flores', promoCode: '24-1' },
@@ -45,7 +44,8 @@ export const INITIAL_STUDENTS: Student[] = [
   { studentCode: '20232001M', fullName: 'Sebastián Romero Díaz', promoCode: '23-2', isDelegate: true },
   { studentCode: '20232002N', fullName: 'Daniela Núñez Prado', promoCode: '23-2' },
 
-  // Base 24-2
+  // Código 24-2
+  { studentCode: '20244517G', fullName: 'Leonel Cruzado Vega', promoCode: '24-2' },
   { studentCode: '20242001T', fullName: 'Gabriel Ortiz Luna', promoCode: '24-2', isDelegate: true },
   { studentCode: '20242002U', fullName: 'Fiorella Beltrán Soto', promoCode: '24-2' },
 
