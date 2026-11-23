@@ -90,7 +90,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
                   key={num}
                   className="px-3.5 py-1.5 rounded-lg bg-[#060621] border border-cyan-400/50 shadow-[0_0_12px_rgba(0,240,255,0.2)] text-cyan-300 font-mono font-black text-lg tracking-wider"
                 >
-                  N° {num}
+                  N°{num}
                 </span>
               ))}
             </div>

@@ -295,7 +295,7 @@ export const AdminDashboard: React.FC = () => {
                             key={num}
                             className="px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-mono font-bold text-[10px]"
                           >
-                            N° {num}
+                            N°{num}
                           </span>
                         ))}
                       </div>
