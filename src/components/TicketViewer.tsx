@@ -135,16 +135,16 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
         </div>
       ) : hasSearched ? (
         unassignedTicketNumber !== null ? (
-          <div className="glass-panel p-8 rounded-2xl border border-amber-500/30 text-center space-y-3 animate-fade-in">
-            <div className="w-14 h-14 mx-auto rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 font-mono font-black text-xl shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+          <div className="glass-panel p-8 rounded-2xl border border-amber-500/30 text-center space-y-2 animate-fade-in">
+            <p className="text-amber-400 font-mono font-black text-3xl sm:text-4xl tracking-wider">
               N° {unassignedTicketNumber}
-            </div>
+            </p>
             <div>
-              <h3 className="font-heading font-extrabold text-2xl text-amber-300 tracking-wide">
+              <h3 className="font-heading font-extrabold text-2xl text-white tracking-wide">
                 Rifa aún no vendida
               </h3>
-              <p className="text-xs text-slate-300 mt-1.5 max-w-md mx-auto">
-                El boleto oficial <strong className="text-white font-mono">N° {unassignedTicketNumber}</strong> todavía no ha sido vendido ni registrado en el sistema.
+              <p className="text-[13px] text-slate-300 mt-1.5 max-w-md mx-auto">
+                El boleto oficial <strong className="text-amber-300 font-mono">N° {unassignedTicketNumber}</strong> todavía no ha sido vendido ni registrado en el sistema.
               </p>
             </div>
           </div>

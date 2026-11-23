@@ -24,7 +24,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
               GRAN RIFA FIIS 2026
             </h3>
             <span
-              className={`text-xs font-bold px-3 py-1 rounded-full border shadow-sm shrink-0 ${
+              className={`text-[13px] font-bold px-3 py-1 rounded-full border shadow-sm shrink-0 ${
                 sale.status === 'verified'
                   ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                   : sale.status === 'rejected'
@@ -33,10 +33,10 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
               }`}
             >
               {sale.status === 'verified'
-                ? 'Pago Verificado'
+                ? 'Verificado'
                 : sale.status === 'rejected'
                   ? 'Rechazado'
-                  : 'Pago Pendiente'}
+                  : 'Pendiente'}
             </span>
           </div>
         </div>
