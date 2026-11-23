@@ -15,7 +15,18 @@ export function getStudents(): Student[] {
     return INITIAL_STUDENTS;
   }
   try {
-    return JSON.parse(stored);
+    const list: Student[] = JSON.parse(stored);
+    // Garantizar que la lista de estudiantes contemple siempre los datos actualizados de INITIAL_STUDENTS
+    const mergedMap = new Map<string, Student>();
+    INITIAL_STUDENTS.forEach((s) => mergedMap.set(s.studentCode.toUpperCase(), s));
+    list.forEach((s) => {
+      if (!mergedMap.has(s.studentCode.toUpperCase())) {
+        mergedMap.set(s.studentCode.toUpperCase(), s);
+      }
+    });
+    const result = Array.from(mergedMap.values());
+    localStorage.setItem(STUDENTS_STORAGE_KEY, JSON.stringify(result));
+    return result;
   } catch {
     return INITIAL_STUDENTS;
   }
