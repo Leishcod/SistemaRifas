@@ -421,9 +421,9 @@ export const DelegateDashboard: React.FC = () => {
             </div>
 
             {/* Modal Body: flex en móvil (scroll natural vertical) y grid en PC */}
-            <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1 flex flex-col md:grid md:grid-cols-12 gap-5 sm:gap-8">
-              {/* Voucher Image Container: en móvil altura fija contenida (280px - 350px) y en PC altura amplia */}
-              <div className="w-full md:col-span-7 lg:col-span-8 rounded-2xl border border-cyan-500/30 bg-[#030617] h-[280px] sm:h-[350px] md:h-[600px] lg:h-[680px] flex items-center justify-center p-2.5 sm:p-4 shrink-0">
+            <div className="p-3 sm:p-6 md:p-8 overflow-y-auto flex-1 flex flex-col md:grid md:grid-cols-12 gap-4 sm:gap-8">
+              {/* Voucher Image Container: en móvil altura generosa (400px - 460px) con poco padding para que la imagen ocupe todo el ancho disponible */}
+              <div className="w-full md:col-span-7 lg:col-span-8 rounded-2xl border border-cyan-500/30 bg-[#030617] h-[400px] sm:h-[460px] md:h-[600px] lg:h-[680px] flex items-center justify-center p-1 sm:p-4 shrink-0">
                 <img
                   src={selectedVoucherSale.voucherImage}
                   alt="Voucher Ampliado"
@@ -432,7 +432,7 @@ export const DelegateDashboard: React.FC = () => {
               </div>
 
               {/* Sale Info Summary */}
-              <div className="w-full md:col-span-5 lg:col-span-4 space-y-4 text-xs sm:text-sm flex flex-col justify-between">
+              <div className="w-full md:col-span-5 lg:col-span-4 space-y-3 sm:space-y-4 text-xs sm:text-sm flex flex-col justify-between">
                 <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                   <span className="text-[10px] sm:text-[11px] uppercase font-bold text-slate-400 block tracking-wider">
                     Comprador
