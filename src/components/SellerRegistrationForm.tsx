@@ -397,7 +397,7 @@ export const SellerRegistrationForm: React.FC = () => {
                           : 'bg-white/5 hover:bg-white/10 text-slate-300'
                         }`}
                     >
-                      +{qty}
+                      {qty}
                     </button>
                   ))}
                 </div>
