@@ -35,7 +35,7 @@ export async function loginUser(
   const cleanPass = rawPassword.trim();
 
   if (!cleanId || !cleanPass) {
-    return { success: false, error: 'Por favor ingresa tu código/usuario y contraseña.' };
+    return { success: false, error: 'Por favor ingresa tu código UNI y contraseña.' };
   }
 
   // Cargar estudiantes actualizados de Supabase
@@ -44,21 +44,7 @@ export async function loginUser(
     students = getStudents();
   }
 
-  // 1. Acceso especial CEIIS si se escribe 'CEIIS' o 'ADMIN'
-  if (cleanId === 'CEIIS' || cleanId === 'ADMIN') {
-    if (cleanPass === 'ceiis2026' || cleanPass === 'admin2026') {
-      const user: SessionUser = {
-        studentCode: 'CEIIS',
-        fullName: 'Directiva CEIIS - FIIS',
-        promoCode: 'CEIIS',
-        role: 'ceiis',
-      };
-      setAuthSession(user);
-      return { success: true, user };
-    }
-  }
-
-  // 2. Buscar por código de estudiante
+  // Buscar estrictamente por código de estudiante UNI
   const found = students.find((s) => s.studentCode.toUpperCase() === cleanId);
 
   // Si no se encuentra en Supabase, verificar con INITIAL_STUDENTS por si acaso
@@ -68,7 +54,7 @@ export async function loginUser(
   if (!student) {
     return {
       success: false,
-      error: 'Código o usuario no encontrado en el padrón de la facultad.',
+      error: 'Código UNI no encontrado en el padrón.',
     };
   }
 
@@ -82,11 +68,10 @@ export async function loginUser(
   }
 
   // Verificar contraseña
-  // Contraseña por defecto si aún no tiene una en BD: 'ceiis2026' para CEIIS, 'dele2026' o 'ceiis2026'
   const expectedPassword =
-    student.password || (student.role === 'ceiis' ? 'ceiis2026' : 'ceiis2026');
+    student.password || (student.role === 'ceiis' ? 'ceiis2026' : 'dele2026');
 
-  if (cleanPass !== expectedPassword && cleanPass !== 'ceiis2026' && cleanPass !== 'admin2026') {
+  if (cleanPass !== expectedPassword) {
     return {
       success: false,
       error: 'Contraseña incorrecta. Verifica tu clave o solicita un reseteo al CEIIS.',

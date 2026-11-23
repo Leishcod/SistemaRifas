@@ -80,15 +80,15 @@ export const LoginForm: React.FC<Props> = ({ targetPanel = 'panel', onLoginSucce
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-              Código UNI / Usuario
+              Código UNI
             </label>
             <input
               type="text"
               required
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              placeholder="Ej. 20244517G o CEIIS"
-              className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 placeholder:text-slate-600 font-mono transition-all"
+              placeholder="Ej. 20244517G"
+              className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 placeholder:text-slate-600 font-mono transition-all uppercase"
             />
           </div>
 
@@ -111,7 +111,7 @@ export const LoginForm: React.FC<Props> = ({ targetPanel = 'panel', onLoginSucce
             disabled={isLoading}
             className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-sm tracking-wide shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all active:scale-[0.98] disabled:opacity-50 mt-2"
           >
-            {isLoading ? 'Comprobando credenciales...' : 'Ingresar al Panel'}
+            {isLoading ? 'Comprobando credenciales...' : 'Acceder'}
           </button>
         </form>
 
