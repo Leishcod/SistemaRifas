@@ -41,31 +41,64 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
           </div>
         </div>
 
-        {/* Espacio para la Imagen del Boleto de la Rifa */}
-        <div className="p-3 sm:p-5 pb-3 bg-[#030617]/70 space-y-2.5">
-          <div className="relative w-full rounded-xl overflow-hidden border border-cyan-500/30 bg-[#020617] flex items-center justify-center shadow-inner">
-            <img
-              src={typeof boletoTemplate === 'string' ? boletoTemplate : (boletoTemplate as any).src}
-              alt="Boleto Oficial Gran Rifa FIIS 2026"
-              className="w-full h-auto max-h-[300px] object-contain rounded-lg"
-            />
-          </div>
+        {/* Espacio para la Imagen de los Boletos Oficiales de la Rifa */}
+        <div className="p-3 sm:p-5 pb-3 bg-[#030617]/70 space-y-3">
+          {sale.ticketNumbers && sale.ticketNumbers.length > 0 ? (
+            <div className="space-y-3">
+              {sale.ticketNumbers.map((num) => {
+                const formattedNum = String(num).padStart(4, '0');
+                const boletoUrl = `https://hazmgfjnevtdtssthnso.supabase.co/storage/v1/object/public/boletos/rifa_${formattedNum}.png`;
+
+                return (
+                  <div key={num} className="relative w-full rounded-xl overflow-hidden border border-cyan-500/30 bg-[#020617] p-2 space-y-2 shadow-inner">
+                    <img
+                      src={boletoUrl}
+                      alt={`Boleto Oficial N°${num} Gran Rifa FIIS 2026`}
+                      className="w-full h-auto max-h-[300px] object-contain rounded-lg mx-auto"
+                      loading="lazy"
+                    />
+                    <div className="flex justify-between items-center px-1">
+                      <span className="font-mono font-bold text-xs text-cyan-300">
+                        Boleto Oficial N°{num}
+                      </span>
+                      <a
+                        href={boletoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download={`rifa_${formattedNum}.png`}
+                        className="px-3 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-[11px] font-bold text-cyan-200 transition-colors inline-flex items-center gap-1.5"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Descargar Imagen
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="relative w-full rounded-xl overflow-hidden border border-cyan-500/30 bg-[#020617] flex items-center justify-center shadow-inner">
+              <img
+                src={typeof boletoTemplate === 'string' ? boletoTemplate : (boletoTemplate as any).src}
+                alt="Boleto Oficial Gran Rifa FIIS 2026"
+                className="w-full h-auto max-h-[300px] object-contain rounded-lg"
+              />
+            </div>
+          )}
 
           {/* Textos informativos condicionales según el estado del registro */}
           <div className="text-center space-y-1.5 pt-1">
-            <p className="text-[11px] sm:text-xs text-slate-400 font-medium tracking-wide">
-              (Imagen Referencial)
-            </p>
-
             {sale.status === 'verified' && (
               <p className="text-sm sm:text-base font-bold text-emerald-300 leading-snug">
-                ¡Compra Verificada! Los boletos oficiales serán entregados al número indicado en las 24 hrs siguientes verificada el pago.
+                ¡Compra Verificada! Aquí tienes tus boletos oficiales para el sorteo.
               </p>
             )}
 
             {sale.status === 'pending' && (
               <p className="text-sm sm:text-base font-bold text-cyan-200 leading-snug">
-                ¡Gracias! El pago está en revisión. Los boletos oficiales serán entregados al número indicado en las 24 hrs siguientes cuando se verifique el pago.
+                ¡Gracias! El pago está en revisión por el CEIIS. Una vez aprobado, tus boletos quedarán activos para el sorteo.
               </p>
             )}
 

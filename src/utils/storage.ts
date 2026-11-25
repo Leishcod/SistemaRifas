@@ -79,11 +79,12 @@ export function getStudents(): Student[] {
 
 export async function fetchStudentsFromSupabase(): Promise<Student[]> {
   try {
-    // Intentar leer desde la vista pública o seleccionar solo columnas seguras (sin password)
+    // Supabase limita por defecto a 1,000 registros si no se especifica range
     const { data, error } = await supabase
       .from('students')
-      .select('student_code, full_name, promo_code, role');
-    
+      .select('student_code, full_name, promo_code, role')
+      .range(0, 4999);
+
     if (!error && data && data.length > 0) {
       const list: Student[] = data.map((d: any) => ({
         studentCode: d.student_code,
@@ -100,6 +101,46 @@ export async function fetchStudentsFromSupabase(): Promise<Student[]> {
     console.warn('No se pudo conectar a Supabase students, usando cache:', err);
   }
   return getStudents();
+}
+
+export async function findStudentByCodeAsync(studentCode: string): Promise<Student | undefined> {
+  const code = studentCode.trim().toUpperCase();
+  if (!code) return undefined;
+
+  // 1. Buscar en cache local
+  const cached = findStudentByCode(code);
+  if (cached) return cached;
+
+  // 2. Si no está en cache (o aún no cargó), consultar directamente a Supabase
+  try {
+    const { data, error } = await supabase
+      .from('students')
+      .select('student_code, full_name, promo_code, role')
+      .eq('student_code', code)
+      .maybeSingle();
+
+    if (!error && data) {
+      const student: Student = {
+        studentCode: data.student_code,
+        fullName: data.full_name,
+        promoCode: data.promo_code as PromoCode,
+        role: data.role ? (data.role.toLowerCase() as any) : 'ninguno',
+      };
+      // Guardar en cache local
+      const current = getStudents();
+      if (!current.some((s) => s.studentCode.toUpperCase() === code)) {
+        current.push(student);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(STUDENTS_STORAGE_KEY, JSON.stringify(current));
+        }
+      }
+      return student;
+    }
+  } catch (err) {
+    console.error('Error buscando estudiante en Supabase:', err);
+  }
+
+  return undefined;
 }
 
 export function findStudentByCode(studentCode: string): Student | undefined {
@@ -301,15 +342,14 @@ export function generateWhatsAppLink(sale: Sale, originUrl?: string): string {
   const ticketViewUrl = `${host}/consultar?id=${sale.id}`;
 
   const message = `*¡HOLA ${sale.buyerName.toUpperCase()}!*\n` +
-    `Muchas gracias por colaborar con la *GRAN RIFA FIIS 2026* organizada por el *CEIIS - UNI* 💙🚀\n\n` +
-    `Tus boletos virtuales han sido registrados oficialmente:\n` +
+    `Muchas gracias por colaborar con la *GRAN RIFA FIIS 2026* organizada por el *CEIIS*\n\n` +
+    `Tus boletos son:\n` +
     `${ticketsList}\n\n` +
-    `👤 *Comprador(a):* ${sale.buyerName}\n` +
-    `🎓 *Vendedor(a):* ${sale.sellerName} (${sale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${sale.promoCode}`})\n` +
-    `💰 *Monto abonado:* S/. ${sale.totalAmount.toFixed(2)} (Plin)\n\n` +
-    `Puedes visualizar y validar tu boleto oficial en cualquier momento aquí:\n` +
-    `👉 ${ticketViewUrl}\n\n` +
-    `¡Mucha suerte en el sorteo! 🎉`;
+    `*Comprador(a):* ${sale.buyerName}\n` +
+    `*Vendedor(a):* ${sale.sellerName} (${sale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${sale.promoCode}`})\n` +
+    `Puedes visualizar tu(s) boleto(s) aquí:\n` +
+    `${ticketViewUrl}\n\n` +
+    `¡Mucha suerte en el sorteo!`;
 
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }

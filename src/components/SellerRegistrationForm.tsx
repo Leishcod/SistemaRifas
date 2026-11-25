@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import type { PromoCode, Sale, Student } from '../types';
 import { PROMO_CODES, TICKET_PRICE, TARGET_PER_PROMO } from '../data/students';
-import { findStudentByCode, createSaleAsync, getSales, fetchStudentsFromSupabase, fetchSalesFromSupabase } from '../utils/storage';
+import { findStudentByCode, findStudentByCodeAsync, createSaleAsync, getSales, fetchStudentsFromSupabase, fetchSalesFromSupabase } from '../utils/storage';
 import { VirtualTicketCard } from './VirtualTicketCard';
 
 export const SellerRegistrationForm: React.FC = () => {
@@ -50,7 +50,7 @@ export const SellerRegistrationForm: React.FC = () => {
     });
   }, []);
 
-  const handleVerifyStudent = (code: string, promo: PromoCode | '', showError = true, autoSelect = false) => {
+  const handleVerifyStudent = async (code: string, promo: PromoCode | '', showError = true, autoSelect = false) => {
     setCodeError(null);
     const cleanCode = code.trim().toUpperCase();
 
@@ -60,7 +60,12 @@ export const SellerRegistrationForm: React.FC = () => {
       return;
     }
 
-    const student = findStudentByCode(cleanCode);
+    // Buscar en cache y si no está, consultar directamente a Supabase
+    let student = findStudentByCode(cleanCode);
+    if (!student) {
+      student = await findStudentByCodeAsync(cleanCode);
+    }
+
     if (!student) {
       setAuthenticatedSeller(null);
       if (cleanCode.length >= 8) {
