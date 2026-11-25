@@ -24,13 +24,12 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
               GRAN RIFA FIIS 2026
             </h3>
             <span
-              className={`text-[13px] font-bold px-3 py-1 rounded-full border shadow-sm shrink-0 ${
-                sale.status === 'verified'
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                  : sale.status === 'rejected'
-                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                    : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-              }`}
+              className={`text-[13px] font-bold px-3 py-1 rounded-full border shadow-sm shrink-0 ${sale.status === 'verified'
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                : sale.status === 'rejected'
+                  ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                  : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                }`}
             >
               {sale.status === 'verified'
                 ? 'Verificado'
@@ -42,23 +41,22 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
         </div>
 
         {/* Espacio para la Imagen del Boleto de la Rifa */}
-        <div className="p-4 sm:p-5 bg-[#030617]/60">
-          <div className="relative w-full aspect-[2/1] sm:aspect-[21/9] rounded-xl border-2 border-dashed border-cyan-500/30 bg-gradient-to-r from-blue-950/40 via-cyan-950/30 to-indigo-950/40 flex flex-col items-center justify-center p-6 text-center overflow-hidden">
-            <div className="w-12 h-12 mb-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-300">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-            </div>
-            <p className="text-base sm:text-lg font-bold text-cyan-200 tracking-wide font-heading">
-              (imagen del boleto genérico)
+        <div className="p-3 sm:p-5 pb-3 bg-[#030617]/70 space-y-2.5">
+          <div className="relative w-full rounded-xl overflow-hidden border border-cyan-500/30 bg-[#020617] flex items-center justify-center shadow-inner">
+            <img
+              src="/assets/Boleto_Template.webp"
+              alt="Boleto Oficial Gran Rifa FIIS 2026"
+              className="w-full h-auto max-h-[300px] object-contain rounded-lg"
+            />
+          </div>
+
+          {/* Textos informativos debajo del boleto */}
+          <div className="text-center space-y-1 pt-1">
+            <p className="text-[11px] sm:text-xs text-slate-400 font-medium tracking-wide">
+              (Imagen Referencial)
             </p>
-            <p className="text-xs text-slate-400 mt-1">
-              Diseño oficial de la Gran Rifa FIIS 2026
+            <p className="text-sm sm:text-base font-bold text-cyan-200 leading-snug">
+              ¡Gracias!, los boletos serán entregados al número indicado dentro de las 24 hrs siguientes cuando se verifique la venta.
             </p>
           </div>
         </div>

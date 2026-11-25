@@ -61,11 +61,7 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
         if (byTicket) return byTicket;
       }
 
-      // 2. Por ID exacto o coincidencia de ID
-      const byId = salesList.find((s) => s.id.toLowerCase() === q);
-      if (byId) return byId;
-
-      // 3. Por teléfono (requiere al menos 7 dígitos para evitar coincidencias erróneas de dígitos sueltos)
+      // 2. Por teléfono (requiere al menos 7 dígitos para evitar coincidencias erróneas de dígitos sueltos)
       if (isPhoneNumber) {
         const cleanPhone = cleanNum;
         const byPhone = salesList.find((s) => {
@@ -75,7 +71,7 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
         if (byPhone) return byPhone;
       }
 
-      // 4. Fallback si es número y no es teléfono
+      // 3. Fallback si es número y no es teléfono
       if (searchTicketNum !== null) {
         return salesList.find((s) => s.ticketNumbers.includes(searchTicketNum));
       }
@@ -107,7 +103,7 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
           Consulta tu Boleto
         </h2>
         <p className="text-xs text-slate-400 mb-5">
-          Ingresa tu número de celular (9 dígitos), número de boleto o ID de compra
+          Ingresa tu número de celular (9 dígitos) o número de boleto
         </p>
 
         <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2.5 sm:gap-2 max-w-md mx-auto">
@@ -151,7 +147,7 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
         ) : (
           <div className="glass-panel p-8 rounded-2xl border border-rose-500/30 text-center text-xs text-slate-400 space-y-2 animate-fade-in">
             <p className="text-white font-semibold text-sm">No se encontró ningún boleto con los datos ingresados.</p>
-            <p>Verifica que el número de teléfono (9 dígitos), número de boleto o ID de compra esté correcto.</p>
+            <p>Verifica que el número de teléfono (9 dígitos) o número de boleto esté correcto.</p>
           </div>
         )
       ) : null}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import type { PromoStats } from '../types';
-import { getPromoStats, computePromoStats, fetchSalesFromSupabase } from '../utils/storage';
+import type { PromoStats, Sale } from '../types';
+import { getPromoStats, computePromoStats, fetchSalesFromSupabase, getSales } from '../utils/storage';
 import { TARGET_PER_PROMO, TOTAL_EXPECTED_TICKETS } from '../data/students';
 
 // Importación automática de imágenes .webp dentro de src/assets/Codigos/
@@ -24,9 +24,53 @@ function getCodigoImageUrl(promoCode: string): string | null {
   return null;
 }
 
+interface TopSellerInfo {
+  sellerStudentCode: string;
+  sellerName: string;
+  promoCode: string;
+  totalTickets: number;
+  ticketNumbers: number[];
+}
+
 export const Leaderboard: React.FC = () => {
   const [stats, setStats] = useState<PromoStats[]>([]);
   const [selectedPromoFilter, setSelectedPromoFilter] = useState<string>('all');
+  const [topSeller, setTopSeller] = useState<TopSellerInfo | null>(null);
+
+  const calculateTopSeller = (sales: Sale[]) => {
+    // Filtrar solo ventas no rechazadas
+    const activeSales = sales.filter((s) => s.status !== 'rejected');
+    const sellerMap = new Map<string, TopSellerInfo>();
+
+    for (const s of activeSales) {
+      const code = s.sellerStudentCode.toUpperCase();
+      const existing = sellerMap.get(code);
+      if (existing) {
+        existing.totalTickets += s.ticketsCount;
+        existing.ticketNumbers.push(...s.ticketNumbers);
+      } else {
+        sellerMap.set(code, {
+          sellerStudentCode: code,
+          sellerName: s.sellerName,
+          promoCode: s.promoCode,
+          totalTickets: s.ticketsCount,
+          ticketNumbers: [...s.ticketNumbers],
+        });
+      }
+    }
+
+    const sortedSellers = Array.from(sellerMap.values()).sort(
+      (a, b) => b.totalTickets - a.totalTickets
+    );
+
+    if (sortedSellers.length > 0 && sortedSellers[0].totalTickets > 0) {
+      // Ordenar números de boletos de menor a mayor
+      sortedSellers[0].ticketNumbers.sort((a, b) => a - b);
+      setTopSeller(sortedSellers[0]);
+    } else {
+      setTopSeller(null);
+    }
+  };
 
   useEffect(() => {
     loadStats();
@@ -35,6 +79,7 @@ export const Leaderboard: React.FC = () => {
       const liveStats = computePromoStats(sales);
       liveStats.sort((a, b) => b.soldTickets - a.soldTickets);
       setStats(liveStats);
+      calculateTopSeller(sales);
     });
 
     // Refresh continuo cada 5s para sincronizar en tiempo real
@@ -43,6 +88,7 @@ export const Leaderboard: React.FC = () => {
         const liveStats = computePromoStats(sales);
         liveStats.sort((a, b) => b.soldTickets - a.soldTickets);
         setStats(liveStats);
+        calculateTopSeller(sales);
       });
     }, 5000);
     return () => clearInterval(interval);
@@ -53,6 +99,7 @@ export const Leaderboard: React.FC = () => {
     // Sort descending by soldTickets
     data.sort((a, b) => b.soldTickets - a.soldTickets);
     setStats(data);
+    calculateTopSeller(getSales());
   };
 
   const filteredStats = selectedPromoFilter === 'all'
@@ -65,6 +112,72 @@ export const Leaderboard: React.FC = () => {
 
   return (
     <div className="w-full space-y-6">
+      {/* Sección Vendedor Número 1 */}
+      {topSeller && (
+        <div className="glass-panel p-5 sm:p-7 rounded-2xl border border-yellow-400/40 bg-gradient-to-r from-yellow-950/20 via-[#0a1128] to-cyan-950/20 relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 relative z-10">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-yellow-400 text-black flex items-center justify-center text-xs font-black shadow-[0_0_12px_rgba(250,204,21,0.6)]">
+                  1
+                </span>
+                <span className="text-xs uppercase tracking-widest font-black text-yellow-300">
+                  Vendedor Número 1
+                </span>
+              </div>
+              <div>
+                <h3 className="font-heading font-black text-xl sm:text-2xl text-white">
+                  {topSeller.sellerName}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 font-mono mt-0.5">
+                  Cód. {topSeller.sellerStudentCode} •{' '}
+                  <span className="text-cyan-300 font-bold">
+                    {topSeller.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${topSeller.promoCode}`}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {/* Total Rifas Vendidas por el Top Seller */}
+            <div className="flex items-center gap-4 bg-[#030617]/80 p-3.5 sm:p-4 rounded-xl border border-yellow-500/20 w-fit shrink-0">
+              <div>
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">
+                  Rifas Vendidas
+                </span>
+                <div className="text-2xl sm:text-3xl font-heading font-black text-yellow-300 font-mono">
+                  {topSeller.totalTickets}{' '}
+                  <span className="text-xs font-normal text-slate-400">boletos</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Números de boletos vendidos por el Vendedor N°1 */}
+          <div className="mt-4 pt-3.5 border-t border-white/10 space-y-2 relative z-10">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
+                Boletos registrados:
+              </span>
+              <span className="text-cyan-400 font-mono text-[11px]">
+                {topSeller.ticketNumbers.length} número(s)
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
+              {topSeller.ticketNumbers.map((num) => (
+                <span
+                  key={num}
+                  className="px-2 py-0.5 rounded-md bg-[#030617] border border-cyan-500/30 text-cyan-300 font-mono text-xs font-bold shadow-sm"
+                >
+                  N°{num}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Global Progress Banner */}
       <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-cyan-500/25 relative overflow-hidden">
         <div className="absolute -top-12 -right-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>

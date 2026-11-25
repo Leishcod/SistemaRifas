@@ -76,37 +76,56 @@ export const SellerRegistrationForm: React.FC = () => {
       return;
     }
 
-    // Regla de Código Efectivo:
-    // Si rol es 'ceiis' -> Su código oficial es 'CEIIS'.
-    // Si rol es 'delegado' o 'ninguno' -> Su código oficial es su base de ingreso (student.promoCode).
-    const effectivePromo: PromoCode = student.role === 'ceiis' ? 'CEIIS' : student.promoCode;
+    // Regla de Código para Vendedores:
+    // 1. Si es miembro CEIIS:
+    //    Puede registrar venta a nombre de 'CEIIS' O a nombre de su código de ingreso (student.promoCode).
+    //    Si selecciona un código distinto a ambos, se le notifica que seleccione CEIIS o su código de ingreso.
+    // 2. Si no es CEIIS (estudiante regular o delegado):
+    //    Debe seleccionar obligatoriamente su código de ingreso (student.promoCode).
+    const isCeiisMember = student.role === 'ceiis';
+    const naturalPromo = student.promoCode; // Su base de ingreso (ej: 23-1, 24-1, 25-2, etc.)
 
-    // Si viene de auto-selección o detección automática al escribir:
     let currentPromo = promo;
-    if (autoSelect && promo !== effectivePromo) {
-      setSelectedPromo(effectivePromo);
-      currentPromo = effectivePromo;
-    }
-
-    // Check si coincide con el código efectivo
-    if (currentPromo !== effectivePromo) {
-      setAuthenticatedSeller(null);
-      if (effectivePromo === 'CEIIS') {
-        setCodeError(
-          `El código ${cleanCode} pertenece al CEIIS. Por favor, selecciona CEIIS.`
-        );
+    if (autoSelect) {
+      // Si el código actual seleccionado no es válido para este estudiante:
+      if (isCeiisMember) {
+        if (currentPromo !== 'CEIIS' && currentPromo !== naturalPromo) {
+          setSelectedPromo('CEIIS');
+          currentPromo = 'CEIIS';
+        }
       } else {
-        setCodeError(
-          `El código ${cleanCode} pertenece al Código ${effectivePromo}. Por favor, selecciona tu código correcto.`
-        );
+        if (currentPromo !== naturalPromo) {
+          setSelectedPromo(naturalPromo);
+          currentPromo = naturalPromo;
+        }
       }
-      return;
     }
 
-    // Autenticar al vendedor con el código de recaudación oficial
+    // Validación de coincidencia:
+    if (isCeiisMember) {
+      if (currentPromo !== 'CEIIS' && currentPromo !== naturalPromo) {
+        setAuthenticatedSeller(null);
+        setCodeError(
+          naturalPromo !== 'CEIIS'
+            ? `Como miembro CEIIS, puedes seleccionar CEIIS o tu Código de ingreso ${naturalPromo}.`
+            : `El código ${cleanCode} pertenece al CEIIS. Por favor, selecciona CEIIS.`
+        );
+        return;
+      }
+    } else {
+      if (currentPromo !== naturalPromo) {
+        setAuthenticatedSeller(null);
+        setCodeError(
+          `El código ${cleanCode} pertenece al Código ${naturalPromo}. Por favor, selecciona tu código correcto.`
+        );
+        return;
+      }
+    }
+
+    // Autenticar al vendedor asignándole el código seleccionado (CEIIS o su código de ingreso)
     const effectiveStudent: Student = {
       ...student,
-      promoCode: effectivePromo,
+      promoCode: currentPromo,
     };
 
     setAuthenticatedSeller(effectiveStudent);
@@ -159,8 +178,8 @@ export const SellerRegistrationForm: React.FC = () => {
     }
 
     const cleanPhone = buyerPhone.trim().replace(/\D/g, '');
-    if (cleanPhone.length < 9) {
-      alert('Por favor ingresa un número de teléfono válido (9 dígitos).');
+    if (cleanPhone.length !== 9 || !cleanPhone.startsWith('9')) {
+      alert('Por favor ingresa un número de celular válido de 9 dígitos que empiece con 9.');
       return;
     }
 
@@ -321,11 +340,11 @@ export const SellerRegistrationForm: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between sm:justify-end sm:text-right bg-black/25 px-3 py-2 rounded-lg border border-white/5">
-              <span className="text-[11px] text-slate-400 mr-2 sm:mr-0 sm:block">Tus rifas registradas:</span>
-              <div>
-                <span className="text-base sm:text-lg font-mono font-bold text-cyan-300">{sellerSalesCount}</span>
-                <span className="text-xs text-slate-400"> rifas</span>
+            <div className="flex sm:flex-col items-center sm:items-end justify-between gap-1.5 sm:gap-0.5 bg-black/30 px-3.5 py-2 rounded-xl border border-white/5 shrink-0">
+              <span className="text-[11px] text-slate-400">Tus rifas registradas:</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-sm sm:text-base font-mono font-bold text-cyan-300">{sellerSalesCount}</span>
+                <span className="text-[11px] text-slate-400">rifas</span>
               </div>
             </div>
           </div>
@@ -342,11 +361,11 @@ export const SellerRegistrationForm: React.FC = () => {
             <h3 className="font-heading font-extrabold text-2xl text-white">Venta Registrada Exitosamente</h3>
             <p className="text-sm text-slate-300 max-w-md mx-auto">
               Se han asignado <strong className="text-cyan-300">{completedSale.ticketsCount} boleto(s)</strong> para{' '}
-              <strong className="text-white">{completedSale.buyerName}</strong>. Ahora puedes enviarle su ticket digital oficial por WhatsApp.
+              <strong className="text-white">{completedSale.buyerName}</strong>. El registro se encuentra en proceso de validación.
             </p>
           </div>
 
-          <VirtualTicketCard sale={completedSale} showShareActions={true} />
+          <VirtualTicketCard sale={completedSale} showShareActions={false} />
 
           <div className="text-center pt-4">
             <button
@@ -380,9 +399,9 @@ export const SellerRegistrationForm: React.FC = () => {
                 type="text"
                 required
                 value={buyerName}
-                onChange={(e) => setBuyerName(e.target.value)}
-                placeholder="Ej. Enrique Valdivia"
-                className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600"
+                onChange={(e) => setBuyerName(e.target.value.toUpperCase())}
+                placeholder="Ej. ENRIQUE VALDIVIA"
+                className="w-full bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600 uppercase"
               />
             </div>
 
@@ -396,9 +415,13 @@ export const SellerRegistrationForm: React.FC = () => {
                   type="tel"
                   required
                   value={buyerPhone}
-                  onChange={(e) => setBuyerPhone(e.target.value)}
+                  onChange={(e) => {
+                    // Permitir solo dígitos y limitar a exactamente 9 números
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 9);
+                    setBuyerPhone(val);
+                  }}
                   placeholder="987654321"
-                  maxLength={12}
+                  maxLength={9}
                   className="w-full pl-12 bg-[#030617] border border-cyan-500/30 rounded-xl px-3.5 py-3 text-white text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors placeholder:text-slate-600 font-mono"
                 />
               </div>

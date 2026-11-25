@@ -186,10 +186,10 @@ export async function createSaleAsync(data: {
   const newSale: Sale = {
     id: saleId,
     ticketNumbers,
-    buyerName: data.buyerName.trim(),
+    buyerName: data.buyerName.trim().toUpperCase(),
     buyerPhone: data.buyerPhone.trim().replace(/\D/g, ''),
     sellerStudentCode: data.sellerStudentCode.trim().toUpperCase(),
-    sellerName: data.sellerName.trim(),
+    sellerName: data.sellerName.trim().toUpperCase(),
     promoCode: data.promoCode,
     ticketsCount: data.ticketsCount,
     unitPrice: TICKET_PRICE,
