@@ -3,6 +3,27 @@ import type { PromoStats } from '../types';
 import { getPromoStats, computePromoStats, fetchSalesFromSupabase } from '../utils/storage';
 import { TARGET_PER_PROMO, TOTAL_EXPECTED_TICKETS } from '../data/students';
 
+// Importación automática de imágenes .webp dentro de src/assets/Codigos/
+const codigoImages = import.meta.glob<{ default: ImageMetadata | string }>(
+  '../assets/Codigos/*.webp',
+  { eager: true }
+);
+
+function getCodigoImageUrl(promoCode: string): string | null {
+  for (const path in codigoImages) {
+    // Normalizar nombre del archivo sin extensión (ej: "../assets/Codigos/CEIIS.png" -> "CEIIS")
+    const fileName = path.split('/').pop()?.replace(/\.[^/.]+$/, '');
+    if (fileName && fileName.toLowerCase() === promoCode.toLowerCase()) {
+      const mod = codigoImages[path];
+      if (typeof mod.default === 'string') return mod.default;
+      if (mod.default && typeof mod.default === 'object' && 'src' in mod.default) {
+        return (mod.default as any).src;
+      }
+    }
+  }
+  return null;
+}
+
 export const Leaderboard: React.FC = () => {
   const [stats, setStats] = useState<PromoStats[]>([]);
   const [selectedPromoFilter, setSelectedPromoFilter] = useState<string>('all');
@@ -91,21 +112,6 @@ export const Leaderboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="flex items-center justify-between gap-4 overflow-x-auto pb-2">
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#030617] border border-cyan-500/20 text-xs">
-          <button
-            onClick={() => setSelectedPromoFilter('all')}
-            className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${selectedPromoFilter === 'all'
-              ? 'bg-cyan-500 text-[#000c18] shadow-[0_0_10px_rgba(0,240,255,0.4)]'
-              : 'text-slate-300 hover:text-white'
-              }`}
-          >
-            Todos ({stats.length})
-          </button>
-        </div>
-      </div>
-
       {/* Leaderboard Table / Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredStats.map((item, index) => {
@@ -124,16 +130,39 @@ export const Leaderboard: React.FC = () => {
               {/* Header */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-heading font-black text-lg ${index === 0
-                    ? 'bg-gradient-to-tr from-yellow-500 to-amber-300 text-[#060621] shadow-[0_0_15px_rgba(250,204,21,0.4)]'
-                    : index === 1
-                      ? 'bg-gradient-to-tr from-slate-300 to-slate-100 text-[#060621]'
-                      : index === 2
-                        ? 'bg-gradient-to-tr from-amber-700 to-amber-500 text-white'
-                        : 'bg-[#030617] border border-cyan-500/30 text-cyan-300'
-                    }`}>
-                    {index + 1}
-                  </div>
+                  {/* Foto oficial del código desde src/assets/Codigos o medalla con número si aún no hay foto */}
+                  {getCodigoImageUrl(item.promoCode) ? (
+                    <div className="relative w-12 h-12 rounded-xl bg-[#030617] border border-cyan-500/30 p-1 flex items-center justify-center shrink-0 shadow-lg group-hover:border-cyan-400 transition-colors">
+                      <img
+                        src={getCodigoImageUrl(item.promoCode)!}
+                        alt={`Logo ${item.promoCode}`}
+                        className="w-full h-full object-contain drop-shadow"
+                      />
+                      {/* Puesto solo para el top 3 (1, 2, 3 sin numeral) */}
+                      {index < 3 && (
+                        <span className={`absolute -bottom-1 -right-1 text-[11px] font-black w-4 h-4 flex items-center justify-center rounded-full font-mono ${
+                          index === 0
+                            ? 'bg-yellow-400 text-black shadow-[0_0_8px_rgba(250,204,21,0.7)]'
+                            : index === 1
+                            ? 'bg-slate-300 text-black'
+                            : 'bg-amber-600 text-white'
+                        }`}>
+                          {index + 1}
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-heading font-black text-lg shrink-0 ${index === 0
+                      ? 'bg-gradient-to-tr from-yellow-500 to-amber-300 text-[#060621] shadow-[0_0_15px_rgba(250,204,21,0.4)]'
+                      : index === 1
+                        ? 'bg-gradient-to-tr from-slate-300 to-slate-100 text-[#060621]'
+                        : index === 2
+                          ? 'bg-gradient-to-tr from-amber-700 to-amber-500 text-white'
+                          : 'bg-[#030617] border border-cyan-500/30 text-cyan-300'
+                      }`}>
+                      {index + 1}
+                    </div>
+                  )}
                   <div>
                     <h3 className="font-heading font-extrabold text-xl text-white group-hover:text-cyan-300 transition-colors">
                       {isCeiis ? 'CEIIS' : `Código ${item.promoCode}`}

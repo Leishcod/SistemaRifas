@@ -19,7 +19,7 @@ const pathname = Astro.url.pathname;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/webp" href="/logo_ceiis_sin_fondo.webp" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -47,10 +47,18 @@ const pathname = Astro.url.pathname;
     <!-- Header Navigation: Se oculta al scrollear hacia abajo y reaparece al scrollear hacia arriba -->
     <header id="main-header" class="fixed top-0 inset-x-0 z-50 glass-panel border-b border-cyan-500/20 bg-[#060621]/90 transition-transform duration-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between">
-        <!-- Brand Link: "RF" en celulares y "RIFAS FIIS 2026" en PC, ambos llevan al inicio -->
-        <a href="/" class="font-heading font-extrabold text-xl sm:text-xl tracking-tight text-white hover:text-cyan-300 transition-colors flex items-center gap-2">
-          <span class="sm:hidden font-black text-2xl text-cyan-400 drop-shadow-[0_0_10px_rgba(0,240,255,0.5)]">RF</span>
-          <span class="hidden sm:inline">RIFAS FIIS 2026</span>
+        <!-- Brand Logos: logo-black y logo_ceiis_sin_fondo en formato .webp (ambos presionables que llevan al inicio) -->
+        <a href="/" class="flex items-center gap-2.5 sm:gap-4 group transition-transform active:scale-95 py-1" aria-label="Ir al inicio - Rifas FIIS 2026">
+          <img
+            src="/logo-black.webp"
+            alt="Logo Semana FIIS"
+            class="h-8 sm:h-10 w-auto object-contain transition-all duration-300 group-hover:brightness-125 group-hover:drop-shadow-[0_0_12px_rgba(59,130,246,0.8)]"
+          />
+          <img
+            src="/logo_ceiis_sin_fondo.webp"
+            alt="Logo CEIIS"
+            class="h-9 sm:h-11 w-auto object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-[0_0_14px_rgba(0,240,255,0.7)]"
+          />
         </a>
 
         <!-- Desktop Navigation: Se ilumina con brillo neón la sección activa -->
