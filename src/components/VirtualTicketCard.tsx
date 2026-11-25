@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Sale } from '../types';
 import { generateWhatsAppLink } from '../utils/storage';
+import boletoTemplate from '../assets/Boletos/Boleto_Template.webp';
 
 interface Props {
   sale: Sale;
@@ -44,7 +45,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
         <div className="p-3 sm:p-5 pb-3 bg-[#030617]/70 space-y-2.5">
           <div className="relative w-full rounded-xl overflow-hidden border border-cyan-500/30 bg-[#020617] flex items-center justify-center shadow-inner">
             <img
-              src="/assets/Boleto_Template.webp"
+              src={typeof boletoTemplate === 'string' ? boletoTemplate : (boletoTemplate as any).src}
               alt="Boleto Oficial Gran Rifa FIIS 2026"
               className="w-full h-auto max-h-[300px] object-contain rounded-lg"
             />
