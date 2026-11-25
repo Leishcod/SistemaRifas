@@ -404,7 +404,7 @@ export const DelegateDashboard: React.FC = () => {
             <div className="p-3.5 sm:p-5 px-4 sm:px-8 border-b border-cyan-500/20 flex items-center justify-between bg-[#060621] shrink-0">
               <div>
                 <h3 className="font-heading font-bold text-base sm:text-xl text-white">
-                  Inspección de Comprobante (Modo Auditoría)
+                  Inspección de Comprobante de Pago
                 </h3>
                 <p className="text-[11px] sm:text-xs text-slate-400">
                   ID: {selectedVoucherSale.id} •{' '}
