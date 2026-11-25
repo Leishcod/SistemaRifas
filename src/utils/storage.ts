@@ -145,7 +145,10 @@ export async function fetchSalesFromSupabase(): Promise<Sale[]> {
 
 export function getNextTicketNumbers(count: number): number[] {
   const sales = getSales();
-  const allAssigned = new Set(sales.flatMap((s) => s.ticketNumbers));
+  // Solo se consideran asignados los números de ventas activas (pendientes o verificadas)
+  // Las ventas rechazadas liberan sus números de boletos para que puedan reutilizarse
+  const activeSales = sales.filter((s) => s.status !== 'rejected');
+  const allAssigned = new Set(activeSales.flatMap((s) => s.ticketNumbers));
   const newNumbers: number[] = [];
 
   let candidate = 1; // Numeración oficial del 1 al n
@@ -253,8 +256,11 @@ export async function updateSaleStatusAsync(saleId: string, status: SaleStatus):
 // Estadísticas para Ranking / Leaderboard
 // ---------------------------------------------------------------------------
 export function computePromoStats(sales: Sale[]): PromoStats[] {
+  // Solo se computan ventas activas (no rechazadas) para metas, dinero y rifas vendidas
+  const activeSales = sales.filter((s) => s.status !== 'rejected');
+
   return PROMO_CODES.map((promo) => {
-    const promoSales = sales.filter((s) => s.promoCode === promo);
+    const promoSales = activeSales.filter((s) => s.promoCode === promo);
     const soldTickets = promoSales.reduce((acc, s) => acc + s.ticketsCount, 0);
     const totalAmount = promoSales.reduce((acc, s) => acc + s.totalAmount, 0);
     const verifiedTickets = promoSales

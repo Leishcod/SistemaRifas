@@ -6,7 +6,6 @@ export const PROMO_CODES: PromoCode[] = [
   '23-1',
   '23-2',
   '24-1',
-  '24-2',
   '25-1',
   '25-2',
   '26-1',
@@ -20,5 +19,5 @@ export const TOTAL_EXPECTED_TICKETS = 2000; // Estimado general de venta (~2,000
 
 // Base de datos de estudiantes iniciales (únicamente códigos UNI reales)
 export const INITIAL_STUDENTS: Student[] = [
-  { studentCode: '20244517G', fullName: 'Leonel Adriano Cruzado Vega', promoCode: '24-2', role: 'ceiis', password: 'ceiis2026' },
+  { studentCode: '20244517G', fullName: 'Leonel Adriano Cruzado Vega', promoCode: 'CEIIS', role: 'ceiis', password: 'ceiis2026' },
 ];

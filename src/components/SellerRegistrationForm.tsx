@@ -64,7 +64,7 @@ export const SellerRegistrationForm: React.FC = () => {
         const dynamicStudent: Student = {
           studentCode: cleanCode,
           fullName: `Estudiante ${cleanCode}`,
-          promoCode: (promo || '24-2') as PromoCode,
+          promoCode: (promo || '24-1') as PromoCode,
           role: 'ninguno',
         };
         setAuthenticatedSeller(dynamicStudent);
@@ -115,7 +115,10 @@ export const SellerRegistrationForm: React.FC = () => {
 
   const updateSellerProgress = (code: string) => {
     const sales = getSales();
-    const mySales = sales.filter((s) => s.sellerStudentCode.toUpperCase() === code.toUpperCase());
+    // Solo contar ventas no rechazadas para el avance del vendedor
+    const mySales = sales.filter(
+      (s) => s.sellerStudentCode.toUpperCase() === code.toUpperCase() && s.status !== 'rejected'
+    );
     const totalSold = mySales.reduce((acc, s) => acc + s.ticketsCount, 0);
     setSellerSalesCount(totalSold);
   };

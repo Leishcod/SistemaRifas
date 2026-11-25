@@ -148,9 +148,10 @@ export const AdminDashboard: React.FC = () => {
     return true;
   });
 
-  // Calculate Metrics
-  const totalTickets = filteredSales.reduce((acc, s) => acc + s.ticketsCount, 0);
-  const totalAmount = filteredSales.reduce((acc, s) => acc + s.totalAmount, 0);
+  // Calculate Metrics (solo ventas no rechazadas aportan dinero y boletos vendidos)
+  const activeFilteredSales = filteredSales.filter((s) => s.status !== 'rejected');
+  const totalTickets = activeFilteredSales.reduce((acc, s) => acc + s.ticketsCount, 0);
+  const totalAmount = activeFilteredSales.reduce((acc, s) => acc + s.totalAmount, 0);
   const pendingCount = filteredSales.filter((s) => s.status === 'pending').length;
   const verifiedCount = filteredSales.filter((s) => s.status === 'verified').length;
 
@@ -248,7 +249,7 @@ export const AdminDashboard: React.FC = () => {
           <p className="text-xl sm:text-3xl font-heading font-black text-white mt-1">
             {totalTickets}
           </p>
-          <span className="text-[10px] sm:text-[11px] text-cyan-300 block truncate">en {filteredSales.length} transacciones</span>
+          <span className="text-[10px] sm:text-[11px] text-cyan-300 block truncate">boletos emitidos</span>
         </div>
 
         <div className="glass-panel p-3.5 sm:p-5 rounded-2xl border border-cyan-500/20">
