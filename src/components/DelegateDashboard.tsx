@@ -473,7 +473,7 @@ export const DelegateDashboard: React.FC = () => {
                 {/* Nota para delegado */}
                 <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs">
                   <span>
-                    ℹ️ Como delegado puedes revisar el comprobante y validar la información. La aprobación final es gestionada por la directiva del CEIIS.
+                    Como delegado puedes revisar el comprobante y validar la información. La aprobación final es gestionada por el CEIIS.
                   </span>
                 </div>
 
