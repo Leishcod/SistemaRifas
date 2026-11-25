@@ -79,14 +79,17 @@ export function getStudents(): Student[] {
 
 export async function fetchStudentsFromSupabase(): Promise<Student[]> {
   try {
-    const { data, error } = await supabase.from('students').select('*');
+    // Intentar leer desde la vista pública o seleccionar solo columnas seguras (sin password)
+    const { data, error } = await supabase
+      .from('students')
+      .select('student_code, full_name, promo_code, role');
+    
     if (!error && data && data.length > 0) {
       const list: Student[] = data.map((d: any) => ({
         studentCode: d.student_code,
         fullName: d.full_name,
         promoCode: d.promo_code as PromoCode,
-        role: d.role ? (d.role.toLowerCase() as any) : (d.is_delegate ? 'delegado' : 'ninguno'),
-        password: d.password || undefined,
+        role: d.role ? (d.role.toLowerCase() as any) : 'ninguno',
       }));
       if (typeof window !== 'undefined') {
         localStorage.setItem(STUDENTS_STORAGE_KEY, JSON.stringify(list));

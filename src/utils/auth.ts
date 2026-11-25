@@ -1,5 +1,5 @@
 import type { SessionUser, Student } from '../types';
-import { fetchStudentsFromSupabase, getStudents } from './storage';
+import { supabase } from '../lib/supabase';
 import { INITIAL_STUDENTS } from '../data/students';
 
 const AUTH_STORAGE_KEY = 'ceiis_rifas_session';
@@ -38,40 +38,80 @@ export async function loginUser(
     return { success: false, error: 'Por favor ingresa tu código UNI y contraseña.' };
   }
 
-  // Cargar estudiantes actualizados de Supabase
-  let students = await fetchStudentsFromSupabase();
-  if (!students || students.length === 0) {
-    students = getStudents();
+  // 1. Intentar autenticación segura en el servidor mediante RPC en Supabase
+  try {
+    const { data, error } = await supabase.rpc('verify_student_login', {
+      p_student_code: cleanId,
+      p_password: cleanPass,
+    });
+
+    if (!error && data && data.length > 0) {
+      const result = data[0];
+      if (result.success) {
+        const sessionUser: SessionUser = {
+          studentCode: result.student_code,
+          fullName: result.full_name,
+          promoCode: result.promo_code,
+          role: result.role,
+        };
+        setAuthSession(sessionUser);
+        return { success: true, user: sessionUser };
+      } else {
+        return { success: false, error: result.error_message || 'Credenciales incorrectas.' };
+      }
+    }
+  } catch (rpcErr) {
+    console.warn('RPC verify_student_login falló o no está instalada aún, verificando método alternativo:', rpcErr);
   }
 
-  // Buscar estrictamente por código de estudiante UNI
-  const found = students.find((s) => s.studentCode.toUpperCase() === cleanId);
+  // 2. Método alternativo directo en Supabase (si el RPC aún no fue ejecutado en SQL Editor)
+  try {
+    const { data: dbUser, error: dbError } = await supabase
+      .from('students')
+      .select('student_code, full_name, promo_code, role, password')
+      .eq('student_code', cleanId)
+      .maybeSingle();
 
-  // Si no se encuentra en Supabase, verificar con INITIAL_STUDENTS por si acaso
-  const student: Student | undefined =
-    found || INITIAL_STUDENTS.find((s) => s.studentCode.toUpperCase() === cleanId);
+    if (!dbError && dbUser) {
+      if (!dbUser.role || dbUser.role === 'ninguno') {
+        return {
+          success: false,
+          error: 'Acceso Denegado: Tu código no cuenta con permisos de Delegado ni de Administración CEIIS.',
+        };
+      }
 
-  if (!student) {
+      if (dbUser.password === cleanPass) {
+        const sessionUser: SessionUser = {
+          studentCode: dbUser.student_code,
+          fullName: dbUser.full_name,
+          promoCode: dbUser.promo_code,
+          role: dbUser.role,
+        };
+        setAuthSession(sessionUser);
+        return { success: true, user: sessionUser };
+      } else {
+        return {
+          success: false,
+          error: 'Contraseña incorrecta. Verifica tu clave o solicita un reseteo al CEIIS.',
+        };
+      }
+    }
+  } catch (dbErr) {
+    console.error('Error consultando base de datos:', dbErr);
+  }
+
+  // 3. Fallback de emergencia con INITIAL_STUDENTS
+  const fallback = INITIAL_STUDENTS.find((s) => s.studentCode.toUpperCase() === cleanId);
+  if (!fallback) {
+    return { success: false, error: 'Código UNI no encontrado en el padrón.' };
+  }
+  if (!fallback.role || fallback.role === 'ninguno') {
     return {
       success: false,
-      error: 'Código UNI no encontrado en el padrón.',
+      error: 'Acceso Denegado: Tu código no cuenta con permisos de Delegado ni de Administración CEIIS.',
     };
   }
-
-  // Verificar rol
-  if (!student.role || student.role === 'ninguno') {
-    return {
-      success: false,
-      error:
-        'Acceso Denegado: Tu código no cuenta con permisos de Delegado ni de Administración CEIIS.',
-    };
-  }
-
-  // Verificar contraseña
-  const expectedPassword =
-    student.password || (student.role === 'ceiis' ? 'ceiis2026' : 'dele2026');
-
-  if (cleanPass !== expectedPassword) {
+  if (fallback.password && fallback.password !== cleanPass) {
     return {
       success: false,
       error: 'Contraseña incorrecta. Verifica tu clave o solicita un reseteo al CEIIS.',
@@ -79,12 +119,11 @@ export async function loginUser(
   }
 
   const sessionUser: SessionUser = {
-    studentCode: student.studentCode,
-    fullName: student.fullName,
-    promoCode: student.promoCode,
-    role: student.role,
+    studentCode: fallback.studentCode,
+    fullName: fallback.fullName,
+    promoCode: fallback.promoCode,
+    role: fallback.role,
   };
-
   setAuthSession(sessionUser);
   return { success: true, user: sessionUser };
 }

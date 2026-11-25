@@ -26,6 +26,8 @@ export const SellerRegistrationForm: React.FC = () => {
   const [sellerSalesCount, setSellerSalesCount] = useState<number>(0);
 
   // Initialize and check code on mount or when inputs change
+  const [unidentifiedCode, setUnidentifiedCode] = useState<string | null>(null);
+
   useEffect(() => {
     let initialPromo: PromoCode | '' = selectedPromo;
     if (typeof window !== 'undefined') {
@@ -54,31 +56,24 @@ export const SellerRegistrationForm: React.FC = () => {
 
     if (!cleanCode) {
       setAuthenticatedSeller(null);
+      setUnidentifiedCode(null);
       return;
     }
 
     const student = findStudentByCode(cleanCode);
     if (!student) {
+      setAuthenticatedSeller(null);
       if (cleanCode.length >= 8) {
-        // Si no está registrado en la base de muestra, permitimos al estudiante registrarse dinámicamente
-        let inferredPromo = promo;
-        if (!inferredPromo && cleanCode.startsWith('2021')) {
-          inferredPromo = '21';
-        }
-        const dynamicStudent: Student = {
-          studentCode: cleanCode,
-          fullName: `Estudiante ${cleanCode}`,
-          promoCode: (inferredPromo || '24-1') as PromoCode,
-          role: 'ninguno',
-        };
-        setAuthenticatedSeller(dynamicStudent);
-        updateSellerProgress(cleanCode);
+        setUnidentifiedCode(cleanCode);
       } else {
-        setAuthenticatedSeller(null);
+        setUnidentifiedCode(null);
         if (showError) setCodeError('Ingresa un código universitario válido (ej. 20244517G)');
       }
       return;
     }
+
+    // Código encontrado exitosamente en la base de datos
+    setUnidentifiedCode(null);
 
     // Regla de Código para Vendedores:
     // 1. Si es miembro CEIIS:
@@ -298,6 +293,7 @@ export const SellerRegistrationForm: React.FC = () => {
                     handleVerifyStudent(val, selectedPromo, false, true);
                   } else {
                     setAuthenticatedSeller(null);
+                    setUnidentifiedCode(null);
                     setCodeError(null);
                   }
                 }}
@@ -326,6 +322,23 @@ export const SellerRegistrationForm: React.FC = () => {
           <div className="mt-4 p-3.5 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-200 text-xs flex items-center gap-2">
             <span className="font-bold text-[10px] uppercase px-1.5 py-0.5 rounded bg-rose-500/20 shrink-0">Aviso</span>
             <p>{codeError}</p>
+          </div>
+        )}
+
+        {/* Card de Vendedor No Identificado (Error / Rechazo) */}
+        {unidentifiedCode && !authenticatedSeller && (
+          <div className="mt-4 sm:mt-5 p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-rose-950/40 to-red-950/30 border border-rose-500/30 flex items-center gap-3 animate-fade-in">
+            <div className="w-9 h-9 rounded-full bg-rose-500/20 border border-rose-400/40 flex items-center justify-center text-rose-400 font-bold text-xs shrink-0">
+              ✕
+            </div>
+            <div className="min-w-0">
+              <p className="text-[11px] sm:text-xs text-rose-400 font-semibold uppercase tracking-wider">
+                Vendedor no identificado
+              </p>
+              <p className="font-heading font-bold text-white text-sm sm:text-base truncate">
+                Código {unidentifiedCode} no encontrado
+              </p>
+            </div>
           </div>
         )}
 
