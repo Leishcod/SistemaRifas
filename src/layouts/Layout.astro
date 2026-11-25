@@ -170,8 +170,8 @@ const pathname = Astro.url.pathname;
       </div>
     </header>
 
-    <!-- Main Content Slot: Añadido pt-20 en móvil para que el navbar fijo no tape el contenido -->
-    <main class="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-20 pb-8 sm:pt-24 sm:pb-12">
+    <!-- Main Content Slot: pt-24 en móvil y pt-28 en PC para un respiro limpio entre navbar y contenido -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-24 pb-10 sm:pt-28 sm:pb-14">
       <slot />
     </main>
 

@@ -50,14 +50,29 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
             />
           </div>
 
-          {/* Textos informativos debajo del boleto */}
-          <div className="text-center space-y-1 pt-1">
+          {/* Textos informativos condicionales según el estado del registro */}
+          <div className="text-center space-y-1.5 pt-1">
             <p className="text-[11px] sm:text-xs text-slate-400 font-medium tracking-wide">
               (Imagen Referencial)
             </p>
-            <p className="text-sm sm:text-base font-bold text-cyan-200 leading-snug">
-              ¡Gracias!, los boletos serán entregados al número indicado dentro de las 24 hrs siguientes cuando se verifique la venta.
-            </p>
+
+            {sale.status === 'verified' && (
+              <p className="text-sm sm:text-base font-bold text-emerald-300 leading-snug">
+                ¡Compra Verificada! Los boletos oficiales serán entregados al número indicado en las 24 hrs siguientes verificada el pago.
+              </p>
+            )}
+
+            {sale.status === 'pending' && (
+              <p className="text-sm sm:text-base font-bold text-cyan-200 leading-snug">
+                ¡Gracias! El pago está en revisión. Los boletos oficiales serán entregados al número indicado en las 24 hrs siguientes cuando se verifique el pago.
+              </p>
+            )}
+
+            {sale.status === 'rejected' && (
+              <div className="p-3 rounded-xl bg-rose-950/30 border border-rose-500/30 text-rose-200 text-xs sm:text-sm font-medium leading-relaxed max-w-lg mx-auto">
+                El pago no pudo ser validado. Los números han sido liberados. En caso de error, contacte al vendedor o al CEIIS.
+              </div>
+            )}
           </div>
         </div>
 

@@ -111,245 +111,246 @@ export const Leaderboard: React.FC = () => {
   const globalProgress = Math.round((totalSoldAll / TOTAL_EXPECTED_TICKETS) * 100);
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full">
       {/* Sección Vendedor Número 1 */}
       {topSeller && (
-        <div className="glass-panel p-5 sm:p-7 rounded-2xl border border-yellow-400/40 bg-gradient-to-r from-yellow-950/20 via-[#0a1128] to-cyan-950/20 relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="mb-10 sm:mb-14">
+          <div className="glass-panel p-5 sm:p-7 rounded-2xl border border-yellow-400/40 bg-gradient-to-r from-yellow-950/20 via-[#0a1128] to-cyan-950/20 relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 relative z-10">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-yellow-400 text-black flex items-center justify-center text-xs font-black shadow-[0_0_12px_rgba(250,204,21,0.6)]">
-                  1
-                </span>
-                <span className="text-xs uppercase tracking-widest font-black text-yellow-300">
-                  Vendedor Número 1
-                </span>
-              </div>
-              <div>
-                <h3 className="font-heading font-black text-xl sm:text-2xl text-white">
-                  {topSeller.sellerName}
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-300 font-mono mt-0.5">
-                  Cód. {topSeller.sellerStudentCode} •{' '}
-                  <span className="text-cyan-300 font-bold">
-                    {topSeller.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${topSeller.promoCode}`}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 relative z-10">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-3 h-3 rounded-full bg-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.9)] shrink-0"></span>
+                  <span className="text-xs uppercase tracking-widest font-black text-yellow-300">
+                    Vendedor Número 1
                   </span>
-                </p>
+                </div>
+                <div>
+                  <h3 className="font-heading font-black text-xl sm:text-2xl text-white">
+                    {topSeller.sellerName}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 font-mono mt-0.5">
+                    Cód. {topSeller.sellerStudentCode} |{' '}
+                    <span className="text-cyan-300 font-bold">
+                      {topSeller.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${topSeller.promoCode}`}
+                    </span>
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* Total Rifas Vendidas por el Top Seller */}
-            <div className="flex items-center gap-4 bg-[#030617]/80 p-3.5 sm:p-4 rounded-xl border border-yellow-500/20 w-fit shrink-0">
-              <div>
-                <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">
-                  Rifas Vendidas
-                </span>
-                <div className="text-2xl sm:text-3xl font-heading font-black text-yellow-300 font-mono">
-                  {topSeller.totalTickets}{' '}
-                  <span className="text-xs font-normal text-slate-400">boletos</span>
+              {/* Total Rifas Vendidas por el Top Seller */}
+              <div className="flex items-center gap-4 bg-[#030617]/80 p-3.5 sm:p-4 rounded-xl border border-yellow-500/20 w-fit shrink-0">
+                <div>
+                  <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">
+                    Rifas Registradas
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-heading font-black text-yellow-300 font-mono">
+                    {topSeller.totalTickets}{' '}
+                    <span className="text-xs font-normal text-slate-400">RIFAS</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Números de boletos vendidos por el Vendedor N°1 */}
-          <div className="mt-4 pt-3.5 border-t border-white/10 space-y-2 relative z-10">
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
-                Boletos registrados:
-              </span>
-              <span className="text-cyan-400 font-mono text-[11px]">
-                {topSeller.ticketNumbers.length} número(s)
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
-              {topSeller.ticketNumbers.map((num) => (
-                <span
-                  key={num}
-                  className="px-2 py-0.5 rounded-md bg-[#030617] border border-cyan-500/30 text-cyan-300 font-mono text-xs font-bold shadow-sm"
-                >
-                  N°{num}
+            {/* Números de boletos vendidos por el Vendedor N°1 */}
+            <div className="mt-4 pt-3.5 border-t border-white/10 space-y-2 relative z-10">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
+                  Boletos registrados:
                 </span>
-              ))}
+                <span className="text-cyan-400 font-mono text-[11px]">
+                  {topSeller.ticketNumbers.length} número(s)
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
+                {topSeller.ticketNumbers.map((num) => (
+                  <span
+                    key={num}
+                    className="px-2 py-0.5 rounded-md bg-[#030617] border border-cyan-500/30 text-cyan-300 font-mono text-xs font-bold shadow-sm"
+                  >
+                    N°{num}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Global Progress Banner */}
-      <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-cyan-500/25 relative overflow-hidden">
-        <div className="absolute -top-12 -right-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="space-y-6">
+        {/* Global Progress Banner */}
+        <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-cyan-500/25 relative overflow-hidden">
+          <div className="absolute -top-12 -right-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
-            <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-white">
-              Ranking General de Ventas
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
-              Códigos y CEIIS participando en la recaudación. Meta referencial: 150 rifas por código.
-            </p>
-          </div>
-
-          {/* Quick Metrics */}
-          <div className="flex items-center gap-3 sm:gap-6 bg-[#030617]/70 p-3 sm:p-4 rounded-xl border border-white/5 w-fit">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Total Rifas</span>
-              <div className="text-lg sm:text-2xl font-heading font-black text-white whitespace-nowrap">
-                {totalSoldAll} <span className="text-[10px] sm:text-xs font-normal text-slate-400">/ ~{TOTAL_EXPECTED_TICKETS}</span>
+              <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-white">
+                Ranking General de Ventas
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
+                Códigos y CEIIS participando en la recaudación. Meta referencial: 150 rifas por código.
+              </p>
+            </div>
+
+            {/* Quick Metrics */}
+            <div className="flex items-center gap-3 sm:gap-6 bg-[#030617]/70 p-3 sm:p-4 rounded-xl border border-white/5 w-fit">
+              <div>
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Total Rifas</span>
+                <div className="text-lg sm:text-2xl font-heading font-black text-white whitespace-nowrap">
+                  {totalSoldAll} <span className="text-[10px] sm:text-xs font-normal text-slate-400">/ ~{TOTAL_EXPECTED_TICKETS}</span>
+                </div>
+              </div>
+              <div className="w-px h-8 sm:h-10 bg-white/10"></div>
+              <div>
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Recaudado</span>
+                <div className="text-lg sm:text-2xl font-heading font-black text-cyan-400 whitespace-nowrap">
+                  S/. {totalAmountAll.toFixed(2)}
+                </div>
               </div>
             </div>
-            <div className="w-px h-8 sm:h-10 bg-white/10"></div>
-            <div>
-              <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Recaudado</span>
-              <div className="text-lg sm:text-2xl font-heading font-black text-cyan-400 whitespace-nowrap">
-                S/. {totalAmountAll.toFixed(2)}
-              </div>
+          </div>
+
+          {/* Global Progress Bar */}
+          <div className="mt-6 space-y-2">
+            <div className="flex justify-between text-xs text-slate-300 font-semibold">
+              <span>Avance general de la Facultad ({globalProgress}%)</span>
+              <span className="font-mono text-cyan-300">{totalSoldAll} vendidas de ~{TOTAL_EXPECTED_TICKETS}</span>
+            </div>
+            <div className="w-full h-3 rounded-full bg-[#030617] p-0.5 border border-cyan-500/20 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 transition-all duration-700 shadow-[0_0_12px_rgba(0,240,255,0.4)]"
+                style={{ width: `${Math.min(100, Math.max(3, globalProgress))}%` }}
+              ></div>
             </div>
           </div>
         </div>
 
-        {/* Global Progress Bar */}
-        <div className="mt-6 space-y-2">
-          <div className="flex justify-between text-xs text-slate-300 font-semibold">
-            <span>Avance general de la Facultad ({globalProgress}%)</span>
-            <span className="font-mono text-cyan-300">{totalSoldAll} vendidas de ~{TOTAL_EXPECTED_TICKETS}</span>
-          </div>
-          <div className="w-full h-3 rounded-full bg-[#030617] p-0.5 border border-cyan-500/20 overflow-hidden">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 transition-all duration-700 shadow-[0_0_12px_rgba(0,240,255,0.4)]"
-              style={{ width: `${Math.min(100, Math.max(3, globalProgress))}%` }}
-            ></div>
-          </div>
-        </div>
-      </div>
+        {/* Leaderboard Table / Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredStats.map((item, index) => {
+            const isCeiis = item.promoCode === 'CEIIS';
+            // Para códigos regulares, el % puede superar 100% si sobrepasan la meta referencial de 150
+            const percent = Math.round((item.soldTickets / item.targetTickets) * 100);
 
-      {/* Leaderboard Table / Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredStats.map((item, index) => {
-          const isCeiis = item.promoCode === 'CEIIS';
-          // Para códigos regulares, el % puede superar 100% si sobrepasan la meta referencial de 150
-          const percent = Math.round((item.soldTickets / item.targetTickets) * 100);
-
-          return (
-            <div
-              key={item.promoCode}
-              className={`glass-panel rounded-2xl p-5 border transition-all relative overflow-hidden group ${index === 0 && selectedPromoFilter === 'all'
-                ? 'border-yellow-400/40 bg-gradient-to-b from-yellow-950/20 to-[#080f26]'
-                : 'border-cyan-500/20 hover:border-cyan-400/40'
-                }`}
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  {/* Foto oficial del código desde src/assets/Codigos o medalla con número si aún no hay foto */}
-                  {getCodigoImageUrl(item.promoCode) ? (
-                    <div className="relative w-12 h-12 rounded-xl bg-[#030617] border border-cyan-500/30 p-1 flex items-center justify-center shrink-0 shadow-lg group-hover:border-cyan-400 transition-colors">
-                      <img
-                        src={getCodigoImageUrl(item.promoCode)!}
-                        alt={`Logo ${item.promoCode}`}
-                        className="w-full h-full object-contain drop-shadow"
-                      />
-                      {/* Puesto solo para el top 3 (1, 2, 3 sin numeral) */}
-                      {index < 3 && (
-                        <span className={`absolute -bottom-1 -right-1 text-[11px] font-black w-4 h-4 flex items-center justify-center rounded-full font-mono ${
-                          index === 0
+            return (
+              <div
+                key={item.promoCode}
+                className={`glass-panel rounded-2xl p-5 border transition-all relative overflow-hidden group ${index === 0 && selectedPromoFilter === 'all'
+                  ? 'border-yellow-400/40 bg-gradient-to-b from-yellow-950/20 to-[#080f26]'
+                  : 'border-cyan-500/20 hover:border-cyan-400/40'
+                  }`}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    {/* Foto oficial del código desde src/assets/Codigos o medalla con número si aún no hay foto */}
+                    {getCodigoImageUrl(item.promoCode) ? (
+                      <div className="relative w-12 h-12 rounded-xl bg-[#030617] border border-cyan-500/30 p-1 flex items-center justify-center shrink-0 shadow-lg group-hover:border-cyan-400 transition-colors">
+                        <img
+                          src={getCodigoImageUrl(item.promoCode)!}
+                          alt={`Logo ${item.promoCode}`}
+                          className="w-full h-full object-contain drop-shadow"
+                        />
+                        {/* Puesto solo para el top 3 (1, 2, 3 sin numeral) */}
+                        {index < 3 && (
+                          <span className={`absolute -bottom-1 -right-1 text-[11px] font-black w-4 h-4 flex items-center justify-center rounded-full font-mono ${index === 0
                             ? 'bg-yellow-400 text-black shadow-[0_0_8px_rgba(250,204,21,0.7)]'
                             : index === 1
-                            ? 'bg-slate-300 text-black'
-                            : 'bg-amber-600 text-white'
+                              ? 'bg-slate-300 text-black'
+                              : 'bg-amber-600 text-white'
+                            }`}>
+                            {index + 1}
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-heading font-black text-lg shrink-0 ${index === 0
+                        ? 'bg-gradient-to-tr from-yellow-500 to-amber-300 text-[#060621] shadow-[0_0_15px_rgba(250,204,21,0.4)]'
+                        : index === 1
+                          ? 'bg-gradient-to-tr from-slate-300 to-slate-100 text-[#060621]'
+                          : index === 2
+                            ? 'bg-gradient-to-tr from-amber-700 to-amber-500 text-white'
+                            : 'bg-[#030617] border border-cyan-500/30 text-cyan-300'
                         }`}>
-                          {index + 1}
-                        </span>
-                      )}
+                        {index + 1}
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="font-heading font-extrabold text-xl text-white group-hover:text-cyan-300 transition-colors">
+                        {isCeiis ? 'CEIIS' : `Código ${item.promoCode}`}
+                      </h3>
+                      <span className="text-xs font-semibold text-slate-400">
+                        Puesto #{index + 1}
+                      </span>
                     </div>
-                  ) : (
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-heading font-black text-lg shrink-0 ${index === 0
-                      ? 'bg-gradient-to-tr from-yellow-500 to-amber-300 text-[#060621] shadow-[0_0_15px_rgba(250,204,21,0.4)]'
-                      : index === 1
-                        ? 'bg-gradient-to-tr from-slate-300 to-slate-100 text-[#060621]'
-                        : index === 2
-                          ? 'bg-gradient-to-tr from-amber-700 to-amber-500 text-white'
-                          : 'bg-[#030617] border border-cyan-500/30 text-cyan-300'
-                      }`}>
-                      {index + 1}
-                    </div>
-                  )}
-                  <div>
-                    <h3 className="font-heading font-extrabold text-xl text-white group-hover:text-cyan-300 transition-colors">
-                      {isCeiis ? 'CEIIS' : `Código ${item.promoCode}`}
-                    </h3>
-                    <span className="text-xs font-semibold text-slate-400">
-                      Puesto #{index + 1}
+                  </div>
+
+                  <div className="text-right">
+                    <span className="text-2xl font-heading font-black text-cyan-300 font-mono">
+                      {item.soldTickets}
                     </span>
+                    {!isCeiis ? (
+                      <span className="text-xs text-slate-400 block">/ {item.targetTickets}</span>
+                    ) : (
+                      <span className="text-xs text-cyan-400/80 block font-medium">rifas</span>
+                    )}
                   </div>
                 </div>
 
-                <div className="text-right">
-                  <span className="text-2xl font-heading font-black text-cyan-300 font-mono">
-                    {item.soldTickets}
-                  </span>
-                  {!isCeiis ? (
-                    <span className="text-xs text-slate-400 block">/ {item.targetTickets}</span>
-                  ) : (
-                    <span className="text-xs text-cyan-400/80 block font-medium">rifas</span>
-                  )}
-                </div>
-              </div>
-
-              {/* Progress bar */}
-              {!isCeiis ? (
-                <div className="space-y-1.5 mb-4">
-                  <div className="flex justify-between text-[11px] font-semibold">
-                    <span className="text-slate-400">Meta referencial</span>
-                    <span className={`font-mono ${percent >= 100 ? 'text-emerald-300 font-bold' : 'text-cyan-300'}`}>
-                      {percent}% {percent >= 100 && '🎯'}
-                    </span>
-                  </div>
-                  <div className="w-full h-2 rounded-full bg-[#030617] overflow-hidden border border-white/5">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${percent >= 100
+                {/* Progress bar */}
+                {!isCeiis ? (
+                  <div className="space-y-1.5 mb-4">
+                    <div className="flex justify-between text-[11px] font-semibold">
+                      <span className="text-slate-400">Meta referencial</span>
+                      <span className={`font-mono ${percent >= 100 ? 'text-emerald-300 font-bold' : 'text-cyan-300'}`}>
+                        {percent}% {percent >= 100 && '🎯'}
+                      </span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-[#030617] overflow-hidden border border-white/5">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${percent >= 100
                           ? 'bg-gradient-to-r from-emerald-400 to-teal-300 shadow-[0_0_10px_rgba(52,211,153,0.5)]'
                           : percent >= 80
                             ? 'bg-emerald-400'
                             : percent >= 40
                               ? 'bg-cyan-400'
                               : 'bg-blue-500'
-                        }`}
-                      style={{ width: `${Math.min(100, Math.max(4, percent))}%` }}
-                    ></div>
+                          }`}
+                        style={{ width: `${Math.min(100, Math.max(4, percent))}%` }}
+                      ></div>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div className="space-y-1.5 mb-4">
-                  <div className="flex justify-between text-[11px] font-semibold">
-                    <span className="text-slate-400">Ventas directas CEIIS</span>
-                    <span className="text-cyan-300 font-mono">{item.soldTickets} rifas</span>
+                ) : (
+                  <div className="space-y-1.5 mb-4">
+                    <div className="flex justify-between text-[11px] font-semibold">
+                      <span className="text-slate-400">Ventas directas CEIIS</span>
+                      <span className="text-cyan-300 font-mono">{item.soldTickets} rifas</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-[#030617] overflow-hidden border border-white/5">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 transition-all duration-500 shadow-[0_0_10px_rgba(0,240,255,0.3)]"
+                        style={{ width: item.soldTickets > 0 ? '100%' : '4%' }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-[#030617] overflow-hidden border border-white/5">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 transition-all duration-500 shadow-[0_0_10px_rgba(0,240,255,0.3)]"
-                      style={{ width: item.soldTickets > 0 ? '100%' : '4%' }}
-                    ></div>
-                  </div>
-                </div>
-              )}
+                )}
 
-              {/* Stats Footer */}
-              <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
-                <div>
-                  <span>Recaudado: </span>
-                  <strong className="text-white font-mono">S/. {item.totalAmount.toFixed(2)}</strong>
-                </div>
-                <div>
-                  <span className="text-slate-500">Vendedores: </span>
-                  <strong className="text-cyan-400 font-mono">{item.sellersCount}</strong>
+                {/* Stats Footer */}
+                <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
+                  <div>
+                    <span>Recaudado: </span>
+                    <strong className="text-white font-mono">S/. {item.totalAmount.toFixed(2)}</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-500">Vendedores: </span>
+                    <strong className="text-cyan-400 font-mono">{item.sellersCount}</strong>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
