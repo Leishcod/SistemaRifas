@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Sale } from '../types';
 import { generateWhatsAppLink } from '../utils/storage';
 import boletoTemplate from '../assets/Boletos/Boleto_Template.webp';
@@ -9,7 +9,35 @@ interface Props {
 }
 
 export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = true }) => {
+  const [downloadingNum, setDownloadingNum] = useState<number | null>(null);
   const waLink = generateWhatsAppLink(sale);
+
+  const handleDownloadTicket = async (url: string, num: number, formattedNum: string) => {
+    setDownloadingNum(num);
+    const filename = `rifa_${formattedNum}.png`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Error al descargar');
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+    } catch {
+      const link = document.createElement('a');
+      link.href = `${url}?download=${encodeURIComponent(filename)}`;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } finally {
+      setDownloadingNum(null);
+    }
+  };
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -53,26 +81,25 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
                   <div key={num} className="relative w-full rounded-xl overflow-hidden border border-cyan-500/30 bg-[#020617] p-2 space-y-2 shadow-inner">
                     <img
                       src={boletoUrl}
-                      alt={`Boleto Oficial N°${num} Gran Rifa FIIS 2026`}
+                      alt={`Boleto N°${num} Gran Rifa FIIS 2026`}
                       className="w-full h-auto max-h-[300px] object-contain rounded-lg mx-auto"
                       loading="lazy"
                     />
                     <div className="flex justify-between items-center px-1">
                       <span className="font-mono font-bold text-xs text-cyan-300">
-                        Boleto Oficial N°{num}
+                        Boleto N°{num}
                       </span>
-                      <a
-                        href={boletoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        download={`rifa_${formattedNum}.png`}
-                        className="px-3 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-[11px] font-bold text-cyan-200 transition-colors inline-flex items-center gap-1.5"
+                      <button
+                        type="button"
+                        disabled={downloadingNum === num}
+                        onClick={() => handleDownloadTicket(boletoUrl, num, formattedNum)}
+                        className="px-3 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 disabled:opacity-60 border border-cyan-400/40 text-[11px] font-bold text-cyan-200 transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
-                        Descargar Imagen
-                      </a>
+                        {downloadingNum === num ? 'Descargando...' : 'Descargar Imagen'}
+                      </button>
                     </div>
                   </div>
                 );

@@ -140,7 +140,7 @@ export const TicketViewer: React.FC<Props> = ({ initialSaleId }) => {
                 Rifa aún no vendida
               </h3>
               <p className="text-[14px] text-slate-300 mt-1.5 max-w-md mx-auto">
-                El boleto oficial  <strong className="text-amber-300 font-mono">N°{unassignedTicketNumber}</strong>  todavía no ha sido vendido ni registrado en el sistema.
+                El boleto  <strong className="text-amber-300 font-mono">N°{unassignedTicketNumber}</strong>  todavía no ha sido vendido ni registrado en el sistema.
               </p>
             </div>
           </div>
