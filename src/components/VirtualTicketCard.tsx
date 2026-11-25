@@ -33,7 +33,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
                 }`}
             >
               {sale.status === 'verified'
-                ? 'Verificado'
+                ? 'Aprobado'
                 : sale.status === 'rejected'
                   ? 'Rechazado'
                   : 'Pendiente'}
@@ -43,7 +43,7 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
 
         {/* Espacio para la Imagen de los Boletos Oficiales de la Rifa */}
         <div className="p-3 sm:p-5 pb-3 bg-[#030617]/70 space-y-3">
-          {sale.ticketNumbers && sale.ticketNumbers.length > 0 ? (
+          {sale.status === 'verified' && sale.ticketNumbers && sale.ticketNumbers.length > 0 ? (
             <div className="space-y-3">
               {sale.ticketNumbers.map((num) => {
                 const formattedNum = String(num).padStart(4, '0');
@@ -90,22 +90,28 @@ export const VirtualTicketCard: React.FC<Props> = ({ sale, showShareActions = tr
 
           {/* Textos informativos condicionales según el estado del registro */}
           <div className="text-center space-y-1.5 pt-1">
+            {sale.status !== 'verified' && (
+              <p className="text-[11px] sm:text-xs text-slate-400 font-medium tracking-wide">
+                (Imagen Referencial)
+              </p>
+            )}
+
             {sale.status === 'verified' && (
               <p className="text-sm sm:text-base font-bold text-emerald-300 leading-snug">
-                ¡Compra Verificada! Aquí tienes tus boletos oficiales para el sorteo.
+                ¡Compra Aprobada! Aquí tienes tus boletos oficiales para el sorteo.
               </p>
             )}
 
             {sale.status === 'pending' && (
               <p className="text-sm sm:text-base font-bold text-cyan-200 leading-snug">
-                ¡Gracias! El pago está en revisión por el CEIIS. Una vez aprobado, tus boletos quedarán activos para el sorteo.
+                ¡Gracias! El pago está en revisión por el CEIIS. Una vez aprobado, los boletos se entregarán, a más tardar, en 24 hrs.
               </p>
             )}
 
             {sale.status === 'rejected' && (
-              <div className="p-3 rounded-xl bg-rose-950/30 border border-rose-500/30 text-rose-200 text-xs sm:text-sm font-medium leading-relaxed max-w-lg mx-auto">
+              <p className="text-sm sm:text-base font-bold text-rose-400 leading-snug max-w-lg mx-auto">
                 El pago no pudo ser validado. Los números han sido liberados. En caso de error, contacte al vendedor o al CEIIS.
-              </div>
+              </p>
             )}
           </div>
         </div>

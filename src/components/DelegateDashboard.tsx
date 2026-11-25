@@ -219,7 +219,7 @@ export const DelegateDashboard: React.FC = () => {
 
         <div className="glass-panel p-3.5 sm:p-5 rounded-2xl border border-cyan-500/20">
           <span className="text-[10px] sm:text-[11px] font-semibold text-emerald-400 uppercase tracking-wider block">
-            Vouchers Verificados
+            Vouchers Aprobados
           </span>
           <p className="text-xl sm:text-3xl font-heading font-black text-emerald-400 mt-1">
             {verifiedCount}
@@ -244,7 +244,7 @@ export const DelegateDashboard: React.FC = () => {
           >
             <option value="all">Todos los Estados</option>
             <option value="pending">Pendientes</option>
-            <option value="verified">Verificados</option>
+            <option value="verified">Aprobados</option>
             <option value="rejected">Rechazados</option>
           </select>
         </div>
@@ -368,7 +368,7 @@ export const DelegateDashboard: React.FC = () => {
                           }`}
                       >
                         {sale.status === 'verified'
-                          ? 'Verificado'
+                          ? 'Aprobado'
                           : sale.status === 'rejected'
                             ? 'Rechazado'
                             : 'Pendiente'}

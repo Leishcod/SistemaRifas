@@ -337,7 +337,7 @@ export function getPromoStats(): PromoStats[] {
 // ---------------------------------------------------------------------------
 export function generateWhatsAppLink(sale: Sale, originUrl?: string): string {
   const phone = sale.buyerPhone.startsWith('51') ? sale.buyerPhone : `51${sale.buyerPhone}`;
-  const ticketsList = sale.ticketNumbers.map((n) => `🎟️ *N°${n}*`).join(', ');
+  const ticketsList = sale.ticketNumbers.join(' ');
   const host = originUrl || (typeof window !== 'undefined' ? window.location.origin : '');
   const ticketViewUrl = `${host}/consultar?id=${sale.id}`;
 
