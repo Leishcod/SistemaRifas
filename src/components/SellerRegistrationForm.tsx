@@ -61,10 +61,14 @@ export const SellerRegistrationForm: React.FC = () => {
     if (!student) {
       if (cleanCode.length >= 8) {
         // Si no está registrado en la base de muestra, permitimos al estudiante registrarse dinámicamente
+        let inferredPromo = promo;
+        if (!inferredPromo && cleanCode.startsWith('2021')) {
+          inferredPromo = '21';
+        }
         const dynamicStudent: Student = {
           studentCode: cleanCode,
           fullName: `Estudiante ${cleanCode}`,
-          promoCode: (promo || '24-1') as PromoCode,
+          promoCode: (inferredPromo || '24-1') as PromoCode,
           role: 'ninguno',
         };
         setAuthenticatedSeller(dynamicStudent);

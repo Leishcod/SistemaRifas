@@ -3,6 +3,14 @@ import Layout from "../layouts/Layout.astro";
 import { PROMO_CODES } from "../data/students";
 import qrPlin from "../assets/qr_plin.webp";
 
+// Importación de imágenes oficiales de los premios de la rifa
+import lunahuanaImg from "../assets/Premios/lunahuana.webp";
+import smartwatchImg from "../assets/Premios/smartwatch.webp";
+import billete100Img from "../assets/Premios/100so.webp";
+import sorpresaImg from "../assets/Premios/sorpresa.webp";
+import mochilaImg from "../assets/Premios/mochila.webp";
+import billetesImg from "../assets/Premios/billetes.webp";
+
 // Importación de imágenes oficiales de los códigos desde src/assets/Codigos/
 const codigoImages = import.meta.glob<{ default: ImageMetadata | string }>(
   "../assets/Codigos/*.webp",
@@ -29,6 +37,70 @@ function getCodigoImageUrl(promoCode: string): string | null {
   }
   return null;
 }
+
+// =========================================================================
+// SECCIÓN DE PREMIOS (EDITA AQUÍ FÁCILMENTE LOS TÍTULOS Y DESCRIPCIONES)
+// =========================================================================
+
+// PARTE 1: Premios para los compradores y ganadores del sorteo de la rifa
+const PREMIOS_RIFA = [
+  {
+    badge: "PRIMER PREMIO",
+    titulo: "Full Day a Lunahuaná",
+    imagen: lunahuanaImg.src,
+    destacado: true,
+  },
+  {
+    badge: "SEGUNDO PREMIO",
+    titulo: "Smartwatch + Audífonos",
+    imagen: smartwatchImg.src,
+    destacado: false,
+  },
+  {
+    badge: "TERCER PREMIO",
+    titulo: "S/. 100 Soles",
+    imagen: billete100Img.src,
+    destacado: false,
+  },
+  {
+    badge: "PREMIO SORPRESA",
+    titulo: "Premio Sorpresa",
+    imagen: sorpresaImg.src,
+    destacado: false,
+  },
+];
+
+// PARTE 2: Premios para los 3 mejores códigos (bases más vendedoras)
+const PREMIOS_CODIGOS = [
+  {
+    badge: "1° CÓDIGO",
+    titulo: "Pack de Trago + Six Pack Tres Cruces + 20 Pases Directos",
+    imagen: sorpresaImg.src,
+    destacado: true,
+  },
+  {
+    badge: "2° CÓDIGO",
+    titulo: "Six Pack de Four Loko + 15 Pases Directos",
+    imagen: sorpresaImg.src,
+    destacado: false,
+  },
+  {
+    badge: "3° CÓDIGO",
+    titulo: "10 Pases Directos Adicionales",
+    imagen: sorpresaImg.src,
+    destacado: false,
+  },
+];
+
+// PARTE 3: Premio para el Estudiante Mejor Vendedor
+const PREMIO_MEJOR_VENDEDOR = {
+  badge: "Vendedor N°1 de la Facultad",
+  titulo: "Premio al Mejor Vendedor FIIS",
+  premioPrincipal: "Mochila Especial 150 Años UNI",
+  premioEfectivo: "25% de SU Recaudación",
+  descripcion:
+    "Reconocimiento máximo al estudiante que venda la mayor cantidad de boletos. Recibe la mochila conmemorativa oficial de los 150 años de la UNI más el 25% del dinero recaudado en sus ventas.",
+};
 ---
 
 <Layout title="Gran Rifa FIIS 2026">
@@ -265,15 +337,233 @@ function getCodigoImageUrl(promoCode: string): string | null {
       </div>
     </section>
 
+    <!-- ========================================== -->
+    <!-- SECCIÓN: PREMIOS DE LA GRAN RIFA FIIS      -->
+    <!-- ========================================== -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 space-y-12 sm:space-y-16">
+      <!-- Encabezado Principal de Premios -->
+      <div class="text-center space-y-3">
+        <h2 class="font-heading font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight">
+          Premios de la Gran Rifa FIIS
+        </h2>
+      </div>
+
+      <!-- PARTE 1: Premios de los Ganadores de la Rifa -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 border-b border-cyan-500/20 pb-3">
+          <span class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 flex items-center justify-center font-heading font-black text-sm">
+            1
+          </span>
+          <div>
+            <h3 class="font-heading font-black text-xl sm:text-2xl text-white">
+              Premios de los Ganadores de la Rifa
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Sorteo oficial entre todos los compradores con boletos válidos
+              registrados.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 justify-items-center pt-4">
+          {PREMIOS_RIFA.map((p) => (
+            <div class="flex flex-col items-center text-center space-y-3 sm:space-y-4 group w-full max-w-[220px]">
+              {/* Badge de Premio */}
+              <div
+                class={`px-3.5 sm:px-4 py-1 rounded-full border text-[11px] sm:text-xs font-heading font-black tracking-wider uppercase transition-all duration-300 ${
+                  p.destacado
+                    ? "border-yellow-400 text-yellow-300 bg-yellow-400/10 shadow-[0_0_15px_rgba(250,204,21,0.35)]"
+                    : "border-cyan-400 text-cyan-300 bg-cyan-400/10 shadow-[0_0_15px_rgba(0,240,255,0.25)]"
+                }`}
+              >
+                {p.badge}
+              </div>
+
+              {/* Título del Premio (sin descripción) */}
+              <div class="min-h-[44px] sm:min-h-[50px] flex items-center justify-center">
+                <h4 class="font-heading font-black text-sm sm:text-base md:text-lg text-white group-hover:text-cyan-200 transition-colors leading-snug">
+                  {p.titulo}
+                </h4>
+              </div>
+
+              {/* Imagen Libre con Iluminado Neón (sin círculo contenedor) */}
+              <div class="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 flex items-center justify-center">
+                {/* Halo de luz difusa ambiental */}
+                <div
+                  class={`absolute inset-2 sm:inset-4 rounded-full blur-2xl -z-10 transition-all duration-500 pointer-events-none ${
+                    p.destacado
+                      ? "bg-yellow-400/30 group-hover:bg-yellow-400/50 group-hover:scale-110"
+                      : "bg-cyan-400/25 group-hover:bg-cyan-400/40 group-hover:scale-110"
+                  }`}
+                ></div>
+
+                {/* Imagen libre flotante con drop-shadow neón brillante */}
+                <img
+                  src={p.imagen}
+                  alt={p.titulo}
+                  class={`w-auto h-auto max-w-[90%] max-h-[90%] object-contain transition-transform duration-500 group-hover:scale-110 select-none ${
+                    p.destacado
+                      ? "drop-shadow-[0_0_20px_rgba(250,204,21,0.7)] group-hover:drop-shadow-[0_0_35px_rgba(250,204,21,0.95)]"
+                      : "drop-shadow-[0_0_20px_rgba(0,240,255,0.6)] group-hover:drop-shadow-[0_0_35px_rgba(0,240,255,0.85)]"
+                  }`}
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- PARTE 2: Premios para los 3 Mejores Códigos -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 border-b border-indigo-500/20 pb-3">
+          <span class="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 flex items-center justify-center font-heading font-black text-sm">
+            2
+          </span>
+          <div>
+            <h3 class="font-heading font-black text-xl sm:text-2xl text-white">
+              Premios para los 3 Mejores Códigos
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Incentivo exclusivo para los 3 códigos con mayor número de rifas
+              vendidas.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 justify-items-center pt-4">
+          {PREMIOS_CODIGOS.map((c) => (
+            <div class="flex flex-col items-center text-center space-y-3 sm:space-y-4 group w-full max-w-[260px]">
+              {/* Badge de Código */}
+              <div
+                class={`px-4 py-1 rounded-full border text-[11px] sm:text-xs font-heading font-black tracking-wider uppercase transition-all duration-300 ${
+                  c.destacado
+                    ? "border-yellow-400 text-yellow-300 bg-yellow-400/10 shadow-[0_0_15px_rgba(250,204,21,0.35)]"
+                    : "border-cyan-400 text-cyan-300 bg-cyan-400/10 shadow-[0_0_15px_rgba(0,240,255,0.25)]"
+                }`}
+              >
+                {c.badge}
+              </div>
+
+              {/* Título del Premio */}
+              <div class="min-h-[48px] sm:min-h-[56px] flex items-center justify-center">
+                <h4 class="font-heading font-black text-sm sm:text-base md:text-lg text-white group-hover:text-cyan-200 transition-colors leading-snug">
+                  {c.titulo}
+                </h4>
+              </div>
+
+              {/* Imagen Libre con Iluminado Neón */}
+              <div class="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 flex items-center justify-center">
+                {/* Halo de luz difusa ambiental */}
+                <div
+                  class={`absolute inset-2 sm:inset-4 rounded-full blur-2xl -z-10 transition-all duration-500 pointer-events-none ${
+                    c.destacado
+                      ? "bg-yellow-400/30 group-hover:bg-yellow-400/50 group-hover:scale-110"
+                      : "bg-cyan-400/25 group-hover:bg-cyan-400/40 group-hover:scale-110"
+                  }`}
+                ></div>
+
+                {/* Imagen libre flotante con drop-shadow neón brillante */}
+                <img
+                  src={c.imagen}
+                  alt={c.titulo}
+                  class={`w-auto h-auto max-w-[90%] max-h-[90%] object-contain transition-transform duration-500 group-hover:scale-110 select-none ${
+                    c.destacado
+                      ? "drop-shadow-[0_0_20px_rgba(250,204,21,0.7)] group-hover:drop-shadow-[0_0_35px_rgba(250,204,21,0.95)]"
+                      : "drop-shadow-[0_0_20px_rgba(0,240,255,0.6)] group-hover:drop-shadow-[0_0_35px_rgba(0,240,255,0.85)]"
+                  }`}
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- PARTE 3: Premio para el Estudiante Mejor Vendedor -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-3 border-b border-yellow-500/20 pb-3">
+          <span class="w-8 h-8 rounded-xl bg-yellow-500/20 text-yellow-300 border border-yellow-400/30 flex items-center justify-center font-heading font-black text-sm">
+            3
+          </span>
+          <div>
+            <h3 class="font-heading font-black text-xl sm:text-2xl text-white">
+              Premio al Mejor Vendedor
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Reconocimiento exclusivo para el o la estudiante con más boletos
+              vendidos.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pt-2">
+          {/* Columna Izquierda: Información del Premio al Mejor Vendedor */}
+          <div class="lg:col-span-6 space-y-5">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-yellow-400/15 border border-yellow-400/40 text-yellow-300 text-xs font-bold tracking-wide shadow-[0_0_12px_rgba(250,204,21,0.25)]">
+              <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+              {PREMIO_MEJOR_VENDEDOR.badge}
+            </div>
+
+            <h4 class="font-heading font-black text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight">
+              {PREMIO_MEJOR_VENDEDOR.titulo}
+            </h4>
+
+            {/* Cajas de premios apiladas verticalmente con colores invertidos (Azul arriba, Dorado abajo) */}
+            <div class="flex flex-col gap-3.5 pt-1 max-w-lg">
+              <div class="p-4 sm:p-5 rounded-2xl bg-[#030617]/90 border border-cyan-400/40 shadow-[0_0_20px_rgba(0,240,255,0.15)] flex items-center">
+                <span class="font-heading font-black text-base sm:text-xl text-cyan-300">
+                  {PREMIO_MEJOR_VENDEDOR.premioPrincipal}
+                </span>
+              </div>
+
+              <div class="p-4 sm:p-5 rounded-2xl bg-[#030617]/90 border border-yellow-400/40 shadow-[0_0_20px_rgba(250,204,21,0.15)] flex items-center">
+                <span class="font-heading font-black text-base sm:text-xl text-yellow-300">
+                  {PREMIO_MEJOR_VENDEDOR.premioEfectivo}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Columna Derecha: Imágenes ampliadas de Mochila (Azul) + Dinero (Dorado) */}
+          <div class="lg:col-span-6 flex items-center justify-center gap-4 sm:gap-8 pt-4 lg:pt-0">
+            {/* Mochila con Iluminado Azul */}
+            <div class="relative group flex items-center justify-center">
+              <div class="absolute inset-1 sm:inset-2 rounded-full blur-3xl -z-10 bg-cyan-400/35 group-hover:bg-cyan-400/55 group-hover:scale-110 transition-all duration-500 pointer-events-none"></div>
+              <img
+                src={mochilaImg.src}
+                alt="Mochila Oficial UNI 150 Años"
+                class="w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 lg:w-64 lg:h-64 object-contain drop-shadow-[0_0_25px_rgba(0,240,255,0.75)] group-hover:drop-shadow-[0_0_40px_rgba(0,240,255,1)] group-hover:scale-110 transition-transform duration-500 select-none"
+                loading="lazy"
+              />
+            </div>
+
+            {/* Símbolo '+' */}
+            <span class="text-3xl sm:text-5xl font-heading font-black text-slate-300 drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] select-none">
+              +
+            </span>
+
+            {/* Dinero (billetes.webp) con Iluminado Dorado */}
+            <div class="relative group flex items-center justify-center">
+              <div class="absolute inset-1 sm:inset-2 rounded-full blur-3xl -z-10 bg-yellow-400/40 group-hover:bg-yellow-400/60 group-hover:scale-110 transition-all duration-500 pointer-events-none"></div>
+              <img
+                src={billetesImg.src}
+                alt="25% de recaudación en efectivo"
+                class="w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 lg:w-64 lg:h-64 object-contain drop-shadow-[0_0_25px_rgba(250,204,21,0.8)] group-hover:drop-shadow-[0_0_40px_rgba(250,204,21,1)] group-hover:scale-110 transition-transform duration-500 select-none"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Códigos Participantes List -->
-    <section class="space-y-6 pt-4 pb-24 sm:pb-36 lg:pb-48">
+    <section class="space-y-15 pt-4 pb-24 sm:pb-36 lg:pb-48">
       <div class="text-center max-w-2xl mx-auto">
-        <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white">
+        <h2 class="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white">
           Códigos Participantes
         </h2>
-        <p class="text-xs sm:text-sm text-slate-400 mt-1">
-          Elige tu código de ingreso o CEIIS para registrar tus ventas de rifas.
-        </p>
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4">
