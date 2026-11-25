@@ -337,7 +337,7 @@ export function getPromoStats(): PromoStats[] {
 // ---------------------------------------------------------------------------
 export function generateWhatsAppLink(sale: Sale, originUrl?: string): string {
   const phone = sale.buyerPhone.startsWith('51') ? sale.buyerPhone : `51${sale.buyerPhone}`;
-  const ticketsList = sale.ticketNumbers.join(' ');
+  const ticketsList = sale.ticketNumbers.join(', ');
   const host = originUrl || (typeof window !== 'undefined' ? window.location.origin : '');
   const ticketViewUrl = `${host}/consultar?id=${sale.id}`;
 
@@ -349,6 +349,7 @@ export function generateWhatsAppLink(sale: Sale, originUrl?: string): string {
     `*Vendedor(a):* ${sale.sellerName} (${sale.promoCode === 'CEIIS' ? 'CEIIS' : `Código ${sale.promoCode}`})\n` +
     `Puedes visualizar tu(s) boleto(s) aquí:\n` +
     `${ticketViewUrl}\n\n` +
+    `La fecha de sorteo es el 6 de diciembre en live de Instagram de CEIIS y nos comunicaremos con los ganadores por WhatsApp.\n` +
     `¡Mucha suerte en el sorteo!`;
 
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
