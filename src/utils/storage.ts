@@ -215,13 +215,31 @@ export function saveSales(sales: Sale[]) {
 
 export async function fetchSalesFromSupabase(): Promise<Sale[]> {
   try {
-    const { data, error } = await supabase
-      .from('sales')
-      .select('*')
-      .order('created_at', { ascending: false });
+    // Paginar en bloques de 1,000 para no perder ventas si se superan los 1,000 registros
+    const pageSize = 1000;
+    let from = 0;
+    let hadError = false;
+    const allRows: any[] = [];
 
-    if (!error && data) {
-      const mapped = data.map(mapDbToSale);
+    while (true) {
+      const { data, error } = await supabase
+        .from('sales')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .range(from, from + pageSize - 1);
+
+      if (error) {
+        hadError = true;
+        break;
+      }
+      if (!data || data.length === 0) break;
+      allRows.push(...data);
+      if (data.length < pageSize) break;
+      from += pageSize;
+    }
+
+    if (!hadError) {
+      const mapped = allRows.map(mapDbToSale);
       saveSales(mapped);
       return mapped;
     }
