@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import type { Sale, SaleStatus, SessionUser } from '../types';
-import { getSales, fetchSalesFromSupabase } from '../utils/storage';
+import type { Sale, SaleStatus, SessionUser, Student } from '../types';
+import { getSales, fetchSalesFromSupabase, getStudents, fetchStudentsByPromoFromSupabase } from '../utils/storage';
 import { getAuthSession, clearAuthSession } from '../utils/auth';
 import { LoginForm } from './LoginForm';
 
@@ -8,7 +8,9 @@ export const DelegateDashboard: React.FC = () => {
   const [authUser, setAuthUser] = useState<SessionUser | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [sales, setSales] = useState<Sale[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
   const [statusFilter, setStatusFilter] = useState<'all' | SaleStatus>('all');
+  const [showSellersView, setShowSellersView] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedVoucherSale, setSelectedVoucherSale] = useState<Sale | null>(null);
 
@@ -18,10 +20,24 @@ export const DelegateDashboard: React.FC = () => {
     setIsCheckingAuth(false);
 
     loadSales();
+    setStudents(getStudents());
     fetchSalesFromSupabase().then((data) => {
       setSales(data);
     });
+    if (session?.promoCode) {
+      fetchStudentsByPromoFromSupabase(session.promoCode).then((data) => {
+        setStudents(data);
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    if (authUser?.promoCode) {
+      fetchStudentsByPromoFromSupabase(authUser.promoCode).then((data) => {
+        setStudents(data);
+      });
+    }
+  }, [authUser?.promoCode]);
 
   const loadSales = () => {
     setSales(getSales());
@@ -149,6 +165,56 @@ export const DelegateDashboard: React.FC = () => {
   const pendingCount = filteredSales.filter((s) => s.status === 'pending').length;
   const verifiedCount = filteredSales.filter((s) => s.status === 'verified').length;
 
+  // Consolidado de todos los vendedores (estudiantes) del código del delegado
+  const promoSalesActive = sales.filter(
+    (s) => s.promoCode === delegatePromo && s.status !== 'rejected'
+  );
+
+  const sellersMap = new Map<
+    string,
+    { studentCode: string; fullName: string; ticketsCount: number; ticketNumbers: number[] }
+  >();
+
+  students
+    .filter((st) => st.promoCode === delegatePromo)
+    .forEach((st) => {
+      sellersMap.set(st.studentCode.toUpperCase(), {
+        studentCode: st.studentCode,
+        fullName: st.fullName,
+        ticketsCount: 0,
+        ticketNumbers: [],
+      });
+    });
+
+  promoSalesActive.forEach((sale) => {
+    const codeKey = sale.sellerStudentCode.toUpperCase();
+    const current = sellersMap.get(codeKey) || {
+      studentCode: sale.sellerStudentCode,
+      fullName: sale.sellerName,
+      ticketsCount: 0,
+      ticketNumbers: [],
+    };
+    current.ticketsCount += sale.ticketsCount;
+    current.ticketNumbers.push(...sale.ticketNumbers);
+    sellersMap.set(codeKey, current);
+  });
+
+  const filteredSellers = Array.from(sellersMap.values())
+    .map((seller) => ({
+      ...seller,
+      ticketNumbers: [...seller.ticketNumbers].sort((a, b) => a - b),
+    }))
+    .filter((seller) => {
+      if (!searchTerm.trim()) return true;
+      const term = searchTerm.toLowerCase();
+      return (
+        seller.fullName.toLowerCase().includes(term) ||
+        seller.studentCode.toLowerCase().includes(term) ||
+        seller.ticketNumbers.some((n) => String(n).includes(term))
+      );
+    })
+    .sort((a, b) => b.ticketsCount - a.ticketsCount || a.fullName.localeCompare(b.fullName));
+
   return (
     <div className="space-y-6">
       {/* Top Header & Delegado Info */}
@@ -236,17 +302,33 @@ export const DelegateDashboard: React.FC = () => {
             {delegatePromo === 'CEIIS' ? 'CEIIS' : `Código ${delegatePromo}`}
           </div>
 
-          {/* Status Filter */}
+          {/* Status Filter: bloqueado cuando está activa la vista de vendedores */}
           <select
             value={statusFilter}
+            disabled={showSellersView}
             onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="w-full md:w-auto bg-[#030617] border border-cyan-500/30 rounded-xl px-2.5 sm:px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"
+            className={`w-full md:w-auto bg-[#030617] border border-cyan-500/30 rounded-xl px-2.5 sm:px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400 transition-opacity ${
+              showSellersView ? 'opacity-40 cursor-not-allowed' : ''
+            }`}
           >
             <option value="all">Todos los Estados</option>
             <option value="pending">Pendientes</option>
             <option value="verified">Aprobados</option>
             <option value="rejected">Rechazados</option>
           </select>
+
+          {/* Botón para alternar a la cinta de Vendedores del Código */}
+          <button
+            type="button"
+            onClick={() => setShowSellersView((prev) => !prev)}
+            className={`col-span-2 md:col-span-1 px-3.5 py-2 rounded-xl border text-xs font-bold transition-all active:scale-95 whitespace-nowrap ${
+              showSellersView
+                ? 'bg-cyan-500 text-[#000c18] border-cyan-400 shadow-[0_0_15px_rgba(0,240,255,0.3)]'
+                : 'bg-cyan-950/60 hover:bg-cyan-900 border-cyan-500/40 text-cyan-300'
+            }`}
+          >
+            {showSellersView ? 'Ver Ventas' : 'Ver Vendedores'}
+          </button>
         </div>
 
         {/* Search Input */}
@@ -255,16 +337,90 @@ export const DelegateDashboard: React.FC = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Buscar comprador, vendedor o boleto..."
+            placeholder={
+              showSellersView
+                ? 'Buscar vendedor, código UNI o boleto...'
+                : 'Buscar comprador, vendedor o boleto...'
+            }
             className="w-full md:w-64 bg-[#030617] border border-cyan-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400 placeholder:text-slate-600"
           />
         </div>
       </div>
 
-      {/* Sales Table (Delegados SOLO tienen botón VER, sin Aprobar ni Rechazar) */}
-      <div className="glass-panel rounded-2xl border border-cyan-500/20 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300">
+      {showSellersView ? (
+        /* Sellers Table: Todos los usuarios del código y su avance de ventas */
+        <div className="glass-panel rounded-2xl border border-cyan-500/20 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-slate-300">
+              <thead className="bg-[#030617] text-slate-400 text-[11px] uppercase font-bold tracking-wider border-b border-cyan-500/20">
+                <tr>
+                  <th className="py-3 px-4">Código</th>
+                  <th className="py-3 px-4">Vendedor</th>
+                  <th className="py-3 px-4">Cant. Rifas Vendidas</th>
+                  <th className="py-3 px-4">Números Vendidos</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 font-normal">
+                {filteredSellers.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="py-12 text-center text-slate-500 text-xs">
+                      No se encontraron vendedores para tu código con la búsqueda ingresada.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredSellers.map((seller) => (
+                    <tr key={seller.studentCode} className="hover:bg-white/[0.02] transition-colors">
+                      {/* Código UNI */}
+                      <td className="py-3 px-3 sm:px-4">
+                        <span className="px-2 py-0.5 sm:py-1 rounded-md bg-blue-950/60 border border-blue-500/40 text-blue-300 font-mono font-bold text-[11px] whitespace-nowrap inline-block text-center">
+                          {seller.studentCode}
+                        </span>
+                      </td>
+
+                      {/* Vendedor */}
+                      <td className="py-3 px-4">
+                        <p className="font-semibold text-cyan-200">{seller.fullName}</p>
+                      </td>
+
+                      {/* Cant. Rifas Vendidas */}
+                      <td className="py-3 px-4">
+                        <span className="font-heading font-bold text-white text-xs sm:text-sm">
+                          {seller.ticketsCount}
+                        </span>{' '}
+                        <span className="text-[11px] text-slate-400">
+                          {seller.ticketsCount === 1 ? 'rifa' : 'rifas'}
+                        </span>
+                      </td>
+
+                      {/* Números Vendidos */}
+                      <td className="py-3 px-4">
+                        {seller.ticketNumbers.length > 0 ? (
+                          <div className="flex flex-wrap gap-1 max-w-[260px]">
+                            {seller.ticketNumbers.map((num) => (
+                              <span
+                                key={num}
+                                className="px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-mono font-bold text-[10px]"
+                              >
+                                N°{num}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-slate-500 font-mono text-[11px]">Sin ventas</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : (
+        /* Sales Table (Delegados SOLO tienen botón VER, sin Aprobar ni Rechazar) */
+        <div className="glass-panel rounded-2xl border border-cyan-500/20 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-slate-300">
             <thead className="bg-[#030617] text-slate-400 text-[11px] uppercase font-bold tracking-wider border-b border-cyan-500/20">
               <tr>
                 <th className="py-3 px-4">Voucher</th>
@@ -392,6 +548,7 @@ export const DelegateDashboard: React.FC = () => {
           </table>
         </div>
       </div>
+      )}
 
       {/* Voucher Inspection Modal (SOLO LECTURA PARA DELEGADOS: Sin Aprobar ni Rechazar) */}
       {selectedVoucherSale && (

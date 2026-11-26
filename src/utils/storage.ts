@@ -79,14 +79,25 @@ export function getStudents(): Student[] {
 
 export async function fetchStudentsFromSupabase(): Promise<Student[]> {
   try {
-    // Supabase limita por defecto a 1,000 registros si no se especifica range
-    const { data, error } = await supabase
-      .from('students')
-      .select('student_code, full_name, promo_code, role')
-      .range(0, 4999);
+    // PostgREST tiene un límite máximo de 1,000 filas por petición; paginamos hasta traer todos
+    const pageSize = 1000;
+    let from = 0;
+    const allRows: any[] = [];
 
-    if (!error && data && data.length > 0) {
-      const list: Student[] = data.map((d: any) => ({
+    while (true) {
+      const { data, error } = await supabase
+        .from('students')
+        .select('student_code, full_name, promo_code, role')
+        .range(from, from + pageSize - 1);
+
+      if (error || !data || data.length === 0) break;
+      allRows.push(...data);
+      if (data.length < pageSize) break;
+      from += pageSize;
+    }
+
+    if (allRows.length > 0) {
+      const list: Student[] = allRows.map((d: any) => ({
         studentCode: d.student_code,
         fullName: d.full_name,
         promoCode: d.promo_code as PromoCode,
@@ -101,6 +112,39 @@ export async function fetchStudentsFromSupabase(): Promise<Student[]> {
     console.warn('No se pudo conectar a Supabase students, usando cache:', err);
   }
   return getStudents();
+}
+
+export async function fetchStudentsByPromoFromSupabase(promoCode: PromoCode): Promise<Student[]> {
+  try {
+    const pageSize = 1000;
+    let from = 0;
+    const allRows: any[] = [];
+
+    while (true) {
+      const { data, error } = await supabase
+        .from('students')
+        .select('student_code, full_name, promo_code, role')
+        .eq('promo_code', promoCode)
+        .range(from, from + pageSize - 1);
+
+      if (error || !data || data.length === 0) break;
+      allRows.push(...data);
+      if (data.length < pageSize) break;
+      from += pageSize;
+    }
+
+    if (allRows.length > 0) {
+      return allRows.map((d: any) => ({
+        studentCode: d.student_code,
+        fullName: d.full_name,
+        promoCode: d.promo_code as PromoCode,
+        role: d.role ? (d.role.toLowerCase() as any) : 'ninguno',
+      }));
+    }
+  } catch (err) {
+    console.warn('Error cargando estudiantes del código desde Supabase:', err);
+  }
+  return getStudents().filter((s) => s.promoCode === promoCode);
 }
 
 export async function findStudentByCodeAsync(studentCode: string): Promise<Student | undefined> {
