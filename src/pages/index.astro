@@ -10,6 +10,9 @@ import billete100Img from "../assets/Premios/100so.webp";
 import sorpresaImg from "../assets/Premios/sorpresa.webp";
 import mochilaImg from "../assets/Premios/mochila.webp";
 import billetesImg from "../assets/Premios/billetes.webp";
+import roncocaImg from "../assets/Premios/roncoca.webp";
+import tresCrucesImg from "../assets/Premios/tres_cruces.webp";
+import fourlokoImg from "../assets/Premios/fourloko.webp";
 
 // Importación de imágenes oficiales de los códigos desde src/assets/Codigos/
 const codigoImages = import.meta.glob<{ default: ImageMetadata | string }>(
@@ -63,7 +66,7 @@ const PREMIOS_RIFA = [
     destacado: false,
   },
   {
-    badge: "PREMIO SORPRESA",
+    badge: "CUARTO PREMIO",
     titulo: "Premio Sorpresa",
     imagen: sorpresaImg.src,
     destacado: false,
@@ -75,19 +78,22 @@ const PREMIOS_CODIGOS = [
   {
     badge: "1° CÓDIGO",
     titulo: "Pack de Trago + Six Pack Tres Cruces + 20 Pases Directos",
-    imagen: sorpresaImg.src,
+    imagenes: [roncocaImg.src, tresCrucesImg.src],
+    textoCentral: null,
     destacado: true,
   },
   {
     badge: "2° CÓDIGO",
     titulo: "Six Pack de Four Loko + 15 Pases Directos",
-    imagen: sorpresaImg.src,
+    imagenes: [fourlokoImg.src],
+    textoCentral: null,
     destacado: false,
   },
   {
     badge: "3° CÓDIGO",
     titulo: "10 Pases Directos Adicionales",
-    imagen: sorpresaImg.src,
+    imagenes: [],
+    textoCentral: "+10",
     destacado: false,
   },
 ];
@@ -452,8 +458,8 @@ const PREMIO_MEJOR_VENDEDOR = {
                 </h4>
               </div>
 
-              {/* Imagen Libre con Iluminado Neón */}
-              <div class="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 flex items-center justify-center">
+              {/* Imagen Libre o Número Destacado con Iluminado Neón */}
+              <div class="relative w-44 h-36 sm:w-56 sm:h-44 md:w-64 md:h-52 flex items-center justify-center">
                 {/* Halo de luz difusa ambiental */}
                 <div
                   class={`absolute inset-2 sm:inset-4 rounded-full blur-2xl -z-10 transition-all duration-500 pointer-events-none ${
@@ -463,17 +469,37 @@ const PREMIO_MEJOR_VENDEDOR = {
                   }`}
                 ></div>
 
-                {/* Imagen libre flotante con drop-shadow neón brillante */}
-                <img
-                  src={c.imagen}
-                  alt={c.titulo}
-                  class={`w-auto h-auto max-w-[90%] max-h-[90%] object-contain transition-transform duration-500 group-hover:scale-110 select-none ${
-                    c.destacado
-                      ? "drop-shadow-[0_0_20px_rgba(250,204,21,0.7)] group-hover:drop-shadow-[0_0_35px_rgba(250,204,21,0.95)]"
-                      : "drop-shadow-[0_0_20px_rgba(0,240,255,0.6)] group-hover:drop-shadow-[0_0_35px_rgba(0,240,255,0.85)]"
-                  }`}
-                  loading="lazy"
-                />
+                {c.textoCentral ? (
+                  <span class="font-heading font-black text-6xl sm:text-7xl md:text-8xl tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-cyan-200 to-cyan-400 drop-shadow-[0_0_25px_rgba(0,240,255,0.7)] group-hover:scale-110 group-hover:drop-shadow-[0_0_38px_rgba(0,240,255,0.95)] transition-all duration-500 select-none">
+                    {c.textoCentral}
+                  </span>
+                ) : c.imagenes.length > 1 ? (
+                  <div class="flex items-center justify-center gap-1.5 sm:gap-2 w-full h-full">
+                    {c.imagenes.map((imgSrc, idx) => (
+                      <img
+                        src={imgSrc}
+                        alt={`${c.titulo} ${idx + 1}`}
+                        class={`w-auto h-auto max-w-[46%] max-h-[88%] object-contain transition-transform duration-500 group-hover:scale-105 select-none ${
+                          c.destacado
+                            ? "drop-shadow-[0_0_20px_rgba(250,204,21,0.7)] group-hover:drop-shadow-[0_0_35px_rgba(250,204,21,0.95)]"
+                            : "drop-shadow-[0_0_20px_rgba(0,240,255,0.6)] group-hover:drop-shadow-[0_0_35px_rgba(0,240,255,0.85)]"
+                        }`}
+                        loading="lazy"
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <img
+                    src={c.imagenes[0]}
+                    alt={c.titulo}
+                    class={`w-auto h-auto max-w-[90%] max-h-[90%] object-contain transition-transform duration-500 group-hover:scale-110 select-none ${
+                      c.destacado
+                        ? "drop-shadow-[0_0_20px_rgba(250,204,21,0.7)] group-hover:drop-shadow-[0_0_35px_rgba(250,204,21,0.95)]"
+                        : "drop-shadow-[0_0_20px_rgba(0,240,255,0.6)] group-hover:drop-shadow-[0_0_35px_rgba(0,240,255,0.85)]"
+                    }`}
+                    loading="lazy"
+                  />
+                )}
               </div>
             </div>
           ))}
