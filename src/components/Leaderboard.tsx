@@ -159,9 +159,6 @@ export const Leaderboard: React.FC = () => {
                 <span className="text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
                   Boletos registrados:
                 </span>
-                <span className="text-cyan-400 font-mono text-[11px]">
-                  {topSeller.ticketNumbers.length} número(s)
-                </span>
               </div>
               <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
                 {topSeller.ticketNumbers.map((num) => (
@@ -198,7 +195,7 @@ export const Leaderboard: React.FC = () => {
               <div>
                 <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-400 block font-semibold">Total Rifas</span>
                 <div className="text-lg sm:text-2xl font-heading font-black text-white whitespace-nowrap">
-                  {totalSoldAll} <span className="text-[10px] sm:text-xs font-normal text-slate-400">/ ~{TOTAL_EXPECTED_TICKETS}</span>
+                  {totalSoldAll}
                 </div>
               </div>
               <div className="w-px h-8 sm:h-10 bg-white/10"></div>
@@ -215,7 +212,6 @@ export const Leaderboard: React.FC = () => {
           <div className="mt-6 space-y-2">
             <div className="flex justify-between text-xs text-slate-300 font-semibold">
               <span>Avance general de la Facultad ({globalProgress}%)</span>
-              <span className="font-mono text-cyan-300">{totalSoldAll} vendidas de ~{TOTAL_EXPECTED_TICKETS}</span>
             </div>
             <div className="w-full h-3 rounded-full bg-[#030617] p-0.5 border border-cyan-500/20 overflow-hidden">
               <div
